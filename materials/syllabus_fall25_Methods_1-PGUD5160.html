@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-07-24">
+
+<title>Urban Ecologies Methods 1: Syllabus</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/clipboard/clipboard.min.js"></script>
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/quarto.js"></script>
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/popper.min.js"></script>
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/anchor.min.js"></script>
+<link href="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="syllabus_fall25_Methods_1-PGUD5160_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="syllabus_fall25_Methods_1-PGUD5160_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="syllabus_fall25_Methods_1-PGUD5160_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#faculty-instructor" id="toc-faculty-instructor" class="nav-link active" data-scroll-target="#faculty-instructor">Faculty Instructor</a></li>
+  <li><a href="#weekly-class-session" id="toc-weekly-class-session" class="nav-link" data-scroll-target="#weekly-class-session">Weekly Class Session</a></li>
+  <li><a href="#course-description" id="toc-course-description" class="nav-link" data-scroll-target="#course-description">Course Description</a></li>
+  <li><a href="#course-structure" id="toc-course-structure" class="nav-link" data-scroll-target="#course-structure">Course Structure</a></li>
+  <li><a href="#course-themes" id="toc-course-themes" class="nav-link" data-scroll-target="#course-themes">Course Themes</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link" data-scroll-target="#learning-outcomes">Learning Outcomes</a></li>
+  <li><a href="#recommended-equipment" id="toc-recommended-equipment" class="nav-link" data-scroll-target="#recommended-equipment">Recommended Equipment</a></li>
+  <li><a href="#course-technical-texts" id="toc-course-technical-texts" class="nav-link" data-scroll-target="#course-technical-texts">Course Technical Texts</a></li>
+  <li><a href="#course-critial-theory-texts" id="toc-course-critial-theory-texts" class="nav-link" data-scroll-target="#course-critial-theory-texts">Course Critial Theory Texts</a></li>
+  <li><a href="#course-outline" id="toc-course-outline" class="nav-link" data-scroll-target="#course-outline">Course Outline</a>
+  <ul class="collapse">
+  <li><a href="#class-1-course-orientation-introduction-to-data-data-science-the-r-programming-environment" id="toc-class-1-course-orientation-introduction-to-data-data-science-the-r-programming-environment" class="nav-link" data-scroll-target="#class-1-course-orientation-introduction-to-data-data-science-the-r-programming-environment">Class 1 | Course Orientation + Introduction to Data, Data Science &amp; the R programming environment</a></li>
+  <li><a href="#class-2-introduction-to-eda-r-workflow-basics" id="toc-class-2-introduction-to-eda-r-workflow-basics" class="nav-link" data-scroll-target="#class-2-introduction-to-eda-r-workflow-basics">Class 2 | Introduction to EDA &amp; R Workflow Basics</a></li>
+  <li><a href="#class-3-working-with-us-census-data---part-i---data-structures" id="toc-class-3-working-with-us-census-data---part-i---data-structures" class="nav-link" data-scroll-target="#class-3-working-with-us-census-data---part-i---data-structures">Class 3 | Working with US Census Data - Part I - Data Structures</a></li>
+  <li><a href="#class-4-working-with-us-census-data---part-ii---analysis-basics" id="toc-class-4-working-with-us-census-data---part-ii---analysis-basics" class="nav-link" data-scroll-target="#class-4-working-with-us-census-data---part-ii---analysis-basics">Class 4 | Working with US Census Data - Part II - Analysis Basics</a></li>
+  <li><a href="#class-5-working-with-us-census-data---part-iii---thematic-mapping-techniques" id="toc-class-5-working-with-us-census-data---part-iii---thematic-mapping-techniques" class="nav-link" data-scroll-target="#class-5-working-with-us-census-data---part-iii---thematic-mapping-techniques">Class 5 | Working with US Census Data - Part III - Thematic Mapping Techniques</a></li>
+  <li><a href="#class-6-using-r-as-a-gis-geographic-information-system---part-i---vector-layers" id="toc-class-6-using-r-as-a-gis-geographic-information-system---part-i---vector-layers" class="nav-link" data-scroll-target="#class-6-using-r-as-a-gis-geographic-information-system---part-i---vector-layers">Class 6 | Using R as a GIS (Geographic Information System) - Part I - Vector Layers</a></li>
+  <li><a href="#class-7-using-r-as-a-gis-geographic-information-system---part-ii---overlay-analysis" id="toc-class-7-using-r-as-a-gis-geographic-information-system---part-ii---overlay-analysis" class="nav-link" data-scroll-target="#class-7-using-r-as-a-gis-geographic-information-system---part-ii---overlay-analysis">Class 7 | Using R as a GIS (Geographic Information System) - Part II - Overlay Analysis</a></li>
+  <li><a href="#class-8-data-transformations---tidyverse---part-i---data-manipulation" id="toc-class-8-data-transformations---tidyverse---part-i---data-manipulation" class="nav-link" data-scroll-target="#class-8-data-transformations---tidyverse---part-i---data-manipulation">Class 8 | Data Transformations - Tidyverse - Part I - Data Manipulation</a></li>
+  <li><a href="#class-9-visualization-techniques---tidyverse---part-ii---data-visualization" id="toc-class-9-visualization-techniques---tidyverse---part-ii---data-visualization" class="nav-link" data-scroll-target="#class-9-visualization-techniques---tidyverse---part-ii---data-visualization">Class 9 | Visualization Techniques - Tidyverse - Part II - Data Visualization</a></li>
+  <li><a href="#class-10-time-series-analysis-and-plotting" id="toc-class-10-time-series-analysis-and-plotting" class="nav-link" data-scroll-target="#class-10-time-series-analysis-and-plotting">Class 10 | Time Series Analysis and Plotting</a></li>
+  <li><a href="#class-11-statistical-thinking-tests" id="toc-class-11-statistical-thinking-tests" class="nav-link" data-scroll-target="#class-11-statistical-thinking-tests">Class 11 | Statistical Thinking &amp; Tests</a></li>
+  <li><a href="#class-12-communication-quarto-r-markdown" id="toc-class-12-communication-quarto-r-markdown" class="nav-link" data-scroll-target="#class-12-communication-quarto-r-markdown">Class 12 | Communication: Quarto &amp; R Markdown</a></li>
+  </ul></li>
+  <li><a href="#required-recommended-reading---weekly-quizzes" id="toc-required-recommended-reading---weekly-quizzes" class="nav-link" data-scroll-target="#required-recommended-reading---weekly-quizzes">Required &amp; Recommended Reading - Weekly Quizzes</a>
+  <ul class="collapse">
+  <li><a href="#materials" id="toc-materials" class="nav-link" data-scroll-target="#materials">Materials</a></li>
+  </ul></li>
+  <li><a href="#evaluation-and-grading" id="toc-evaluation-and-grading" class="nav-link" data-scroll-target="#evaluation-and-grading">Evaluation and Grading</a></li>
+  <li><a href="#grading-categories" id="toc-grading-categories" class="nav-link" data-scroll-target="#grading-categories">Grading Categories</a></li>
+  <li><a href="#course-policies" id="toc-course-policies" class="nav-link" data-scroll-target="#course-policies">Course Policies</a></li>
+  <li><a href="#university-resources" id="toc-university-resources" class="nav-link" data-scroll-target="#university-resources">University Resources</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Urban Ecologies Methods 1: Syllabus</h1>
+<p class="subtitle lead">Fall 2025 | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 24, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><img src="syllabus_fall25_Methods_1-PGUD5160_files/img/syllabus_1.png" class="img-fluid" alt="header"> <em>Source: David Rumsey Historical Map Collection | G.W. Bromley and Co.&nbsp;- Atlas Map 1891</em></p>
+<section id="faculty-instructor" class="level2">
+<h2 class="anchored" data-anchor-id="faculty-instructor">Faculty Instructor</h2>
+<ul>
+<li>Stephen Metts | Part Time Associate Professor - NSSR &amp; Parsons School of Design</li>
+<li><a href="mailto:mettss@newschool.edu">Email</a></li>
+</ul>
+</section>
+<section id="weekly-class-session" class="level2">
+<h2 class="anchored" data-anchor-id="weekly-class-session">Weekly Class Session</h2>
+<ul>
+<li>Friday (08/29/2025 - 12/12/2025)</li>
+<li>12:10pm - 2:50pm</li>
+<li>Academic Entrance 63 Fifth Ave | Room # 601</li>
+</ul>
+</section>
+<section id="course-description" class="level2">
+<h2 class="anchored" data-anchor-id="course-description">Course Description</h2>
+<p>Through a combination of weekly lectures, guided laboratory sessions, independent research, and a culminating final project, this course provides students with a strong foundation in data collection, analysis, and visualization using the R programming language and software environment. In coordination with <a href="https://courses.newschool.edu/courses/PGUD5160/">Urban Ecologies Studio 1</a>, students will engage in assignments and projects that center on the exploration and critical analysis of the complex urban dynamics that define New York City.</p>
+<p>Emphasizing the role of data in shaping decision-making processes, the course examines how socio-spatial patterns, public policy, and both physical and social infrastructures form the urban landscape. Weekly exercises will guide students in applying quantitative methods to real-world urban issues, encouraging a critical approach to planning, design, and policy interventions.</p>
+<p>By integrating theoretical concepts with hands-on technical skills, students will develop the ability to critically assess data sources, evaluate data quality, and produce meaningful visualizations and analyses. The course is designed to strengthen research methodologies and analytical thinking, preparing students to extract actionable insights from quantitative research and to engage data as a powerful tool for understanding and addressing contemporary urban challenges.</p>
+</section>
+<section id="course-structure" class="level2">
+<h2 class="anchored" data-anchor-id="course-structure">Course Structure</h2>
+<p>Lecture sessions will introduce students to the history, theory and capabilities of data, data science and particularly the R programming environment in a public policy urban context; corresponding weekly lab demonstrations will guide students towards mastery of R programming skills. Each week students will work both together in a class setting, as well as independently to complete technical assignments which draw upon concepts introduced and detailed in a lecture setting. In the latter portion of the course, students will segue towards developing collaborative projects in coordination with <a href="https://courses.newschool.edu/courses/PGUD5160/">Urban Ecologies Studio 1</a>. Through these final projects, students will demonstrate their mastery and integration of course concepts through the technical application of data analysis within the R programming environment.</p>
+<p>In the syllabus schedule to follow, the class as a group will meet in person via the meeting scheduled for consecutive Fridays, 12:10 - 2:50pm. Each class meeting will build upon the previous week’s theory and practical concepts. Each week will feature a <em>Lecture</em> and <em>Demonstration Lab</em> component in addition to the <em>Weekly Assignment</em> deliverable. The <em>Demonstration Lab</em> is designed to reinforce concepts found in the weekly assignments. After completing <em>Demonstration Labs</em> in the class group setting, students are encouraged to use these guided labs as supplemental materials to assist each week’s assignment deliverable.</p>
+<p>In the final third of the course session, assignments will give way to several class sessions devoted to collaborative group projects coordinated with <a href="https://courses.newschool.edu/courses/PGUD5160/">Urban Ecologies Studio 1</a>. During this period, weekly instruction will give way to structured work sessions designed to support students in preparing their final course project deliverables.</p>
+</section>
+<section id="course-themes" class="level2">
+<h2 class="anchored" data-anchor-id="course-themes">Course Themes</h2>
+<ul>
+<li><p>Fundamentals of the R programming language and environment</p></li>
+<li><p>Data types and structures; basic syntax and operations</p></li>
+<li><p>Data manipulation and analyses</p></li>
+<li><p>Statistical approaches to data</p></li>
+<li><p>Design and visualization strategies for effective public dissemination</p></li>
+<li><p>Critical approaches to bias in data collection and analyses</p></li>
+<li><p>Reproducible workflows</p></li>
+</ul>
+</section>
+<section id="learning-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="learning-outcomes">Learning Outcomes</h2>
+<p>By the end of the semester, successful students will:</p>
+<ul>
+<li><p>Demonstrate a solid, working knowledge of data and R programming conventions through all graded outcomes of course.</p></li>
+<li><p>Articulate and develop research and data collection strategies for the course final project.</p></li>
+<li><p>Use a variety of unique data sources - including US Census data products - to analyze socio-spatial patterns in the urban environment.</p></li>
+<li><p>Use a critical data theory lens to assess data collection, research methods, analysis and visualizations.</p></li>
+<li><p>Demonstrate understanding of the systematic approaches of data science to the urban environment.</p></li>
+<li><p>Participate effectively in class discussions and group projects, as well as conduct independent research and successfully master weekly data assignments.</p></li>
+<li><p>Gain the ability to apply concepts and skills learned through course to future work in public policy and urban design.</p></li>
+</ul>
+</section>
+<section id="recommended-equipment" class="level2">
+<h2 class="anchored" data-anchor-id="recommended-equipment">Recommended Equipment</h2>
+<ul>
+<li><p>Ability to download and install on their own machine various data software - including the R programming suite - utilized for the course.</p></li>
+<li><p>Hard drive (laptop), portable drive and/or cloud storage space necessary to archive and transport weekly coursework and student final projects.</p></li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Students are strongly encouraged to have their own laptop for the duration of the course. The course is designed to be platform agnostic; however, weekly labs and assignment instructions will be designed primarily via the macOS platform. In the course classroom, there will also be several lab computers available for student use beyond individual laptop machines. Please note that multiple options are available to students for computer hardware both inside and beyond the course classroom facility itself. Consult with instructor for hardware issues as needed.</p>
+</div>
+</div>
+</section>
+<section id="course-technical-texts" class="level2">
+<h2 class="anchored" data-anchor-id="course-technical-texts">Course Technical Texts</h2>
+<p>The following technical titles are recommended for students who wish to augment tailored weekly instruction. Please note that all required readings and resources, both theory and technical, will be provided to students for full, free online as well as download access.</p>
+<ul>
+<li><p>Grolemund, G. (2014). Hands-on programming with R: Write your own functions and simulations. O’Reilly Media.</p></li>
+<li><p>Wickham, H., Çetinkaya-Rundel, M., &amp; Grolemund, G. (2023). R for data science (2nd ed.). O’Reilly Media.</p></li>
+<li><p>Bearman, N. (2016). Using R as a GIS: Geographic data and mapping in R. Packt Publishing.</p></li>
+<li><p>Lovelace, R., Nowosad, J., &amp; Muenchow, J. (2019). Geocomputation with R. CRC Press.</p></li>
+</ul>
+</section>
+<section id="course-critial-theory-texts" class="level2">
+<h2 class="anchored" data-anchor-id="course-critial-theory-texts">Course Critial Theory Texts</h2>
+<ul>
+<li><p>Kitchin, R. (2025). Critical Data Studies: An A to Z Guide to Concepts and Methods. Polity.</p></li>
+<li><p>D’Ignazio, C., &amp; Klein, L. F. (2020). Data Feminism. MIT Press.</p></li>
+<li><p>O’Neil, C. (2016). Weapons of Math Destruction: How Big Data Increases Inequality and Threatens Democracy. Crown Publishing.</p></li>
+<li><p>Eubanks, V. (2018). Automating inequality: How high-tech tools profile, police, and punish the poor. St.&nbsp;Martin’s Press.</p></li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The preceding theory and technical titles are recommended for students who wish to augment tailored weekly instruction. Please note that all required readings and resources, both theory and technical, will be provided to students for full, free online as well as download access on a weekly basis.</p>
+</div>
+</div>
+</section>
+<section id="course-outline" class="level2">
+<h2 class="anchored" data-anchor-id="course-outline">Course Outline</h2>
+<section id="class-1-course-orientation-introduction-to-data-data-science-the-r-programming-environment" class="level3">
+<h3 class="anchored" data-anchor-id="class-1-course-orientation-introduction-to-data-data-science-the-r-programming-environment">Class 1 | Course Orientation + Introduction to Data, Data Science &amp; the R programming environment</h3>
+<section id="lecture" class="level4">
+<h4 class="anchored" data-anchor-id="lecture">Lecture:</h4>
+<ul>
+<li>An Introduction to Data, Data Science &amp; the R programming environment</li>
+</ul>
+</section>
+<section id="demonstration-lab" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab">Demonstration Lab:</h4>
+<ul>
+<li>Introduction to R Programming Interface</li>
+</ul>
+</section>
+<section id="assignment" class="level4">
+<h4 class="anchored" data-anchor-id="assignment">Assignment:</h4>
+<ul>
+<li>Create &amp; develop an R script (<code>assignment_1.R</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-2-introduction-to-eda-r-workflow-basics" class="level3">
+<h3 class="anchored" data-anchor-id="class-2-introduction-to-eda-r-workflow-basics">Class 2 | Introduction to EDA &amp; R Workflow Basics</h3>
+<section id="lecture-1" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-1">Lecture:</h4>
+<ul>
+<li>Introduction to EDA &amp; R Workflow Basics</li>
+</ul>
+</section>
+<section id="demonstration-lab-1" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-1">Demonstration Lab:</h4>
+<ul>
+<li>EDA workflow basics</li>
+</ul>
+</section>
+<section id="assignment-1" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-1">Assignment:</h4>
+<ul>
+<li>Create and develop an EDA workflow and submit as an R Markdown file (<code>assignment_2.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-3-working-with-us-census-data---part-i---data-structures" class="level3">
+<h3 class="anchored" data-anchor-id="class-3-working-with-us-census-data---part-i---data-structures">Class 3 | Working with US Census Data - Part I - Data Structures</h3>
+<section id="lecture-2" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-2">Lecture:</h4>
+<ul>
+<li>Introduction to US Census Data</li>
+<li>Typical themes and statistics in US Census Data</li>
+<li>US Census Data as a tidyverse-ready data frame</li>
+</ul>
+</section>
+<section id="demonstration-lab-2" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-2">Demonstration Lab:</h4>
+<ul>
+<li>Downloading and exploring US Census Data</li>
+</ul>
+</section>
+<section id="assignment-2" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-2">Assignment:</h4>
+<ul>
+<li>Create and develop an EDA workflow for an US Census theme and submit as an R Markdown file (<code>assignment_3.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-4-working-with-us-census-data---part-ii---analysis-basics" class="level3">
+<h3 class="anchored" data-anchor-id="class-4-working-with-us-census-data---part-ii---analysis-basics">Class 4 | Working with US Census Data - Part II - Analysis Basics</h3>
+<section id="lecture-3" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-3">Lecture:</h4>
+<ul>
+<li>Basic R Analysis Techniques for US Census Data</li>
+</ul>
+</section>
+<section id="demonstration-lab-3" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-3">Demonstration Lab:</h4>
+<ul>
+<li>Basic R Analysis Techniques for US Census Data</li>
+</ul>
+</section>
+<section id="assignment-3" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-3">Assignment:</h4>
+<ul>
+<li>Create an advanced workflow for an US Census data frame and submit as an R Markdown file (<code>assignment_4.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-5-working-with-us-census-data---part-iii---thematic-mapping-techniques" class="level3">
+<h3 class="anchored" data-anchor-id="class-5-working-with-us-census-data---part-iii---thematic-mapping-techniques">Class 5 | Working with US Census Data - Part III - Thematic Mapping Techniques</h3>
+<section id="lecture-4" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-4">Lecture:</h4>
+<ul>
+<li>Thematic Mapping | Choropleth mapping</li>
+<li>R packages for Thematic Mapping</li>
+</ul>
+</section>
+<section id="demonstration-lab-4" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-4">Demonstration Lab:</h4>
+<ul>
+<li>Displaying Data via Classification Schemes</li>
+<li>Cartographic thematic design</li>
+<li>Choropleth Mapping</li>
+</ul>
+</section>
+<section id="assignment-4" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-4">Assignment:</h4>
+<ul>
+<li>Create thematic map(s) for an US Census data frame and submit as an R Markdown file (<code>assignment_5.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-6-using-r-as-a-gis-geographic-information-system---part-i---vector-layers" class="level3">
+<h3 class="anchored" data-anchor-id="class-6-using-r-as-a-gis-geographic-information-system---part-i---vector-layers">Class 6 | Using R as a GIS (Geographic Information System) - Part I - Vector Layers</h3>
+<section id="lecture-5" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-5">Lecture:</h4>
+<ul>
+<li>Using R as a GIS (Geographic Information System)</li>
+</ul>
+</section>
+<section id="demonstration-lab-5" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-5">Demonstration Lab:</h4>
+<ul>
+<li>Mapping 311 NYC Open Data</li>
+</ul>
+</section>
+<section id="assignment-5" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-5">Assignment:</h4>
+<ul>
+<li>Map a 311 NYC dataset and submit as an R Markdown file (<code>assignment_6.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-7-using-r-as-a-gis-geographic-information-system---part-ii---overlay-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="class-7-using-r-as-a-gis-geographic-information-system---part-ii---overlay-analysis">Class 7 | Using R as a GIS (Geographic Information System) - Part II - Overlay Analysis</h3>
+<section id="lecture-6" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-6">Lecture:</h4>
+<ul>
+<li>Overlay Analysis in R</li>
+</ul>
+</section>
+<section id="demonstration-lab-6" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-6">Demonstration Lab:</h4>
+<ul>
+<li>Overlay Techniques within R</li>
+</ul>
+</section>
+<section id="assignment-6" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-6">Assignment:</h4>
+<ul>
+<li>Conduct Spatial Analysis using R overlay technique(s) and submit results as an R Markdown file (<code>assignment_7.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-8-data-transformations---tidyverse---part-i---data-manipulation" class="level3">
+<h3 class="anchored" data-anchor-id="class-8-data-transformations---tidyverse---part-i---data-manipulation">Class 8 | Data Transformations - Tidyverse - Part I - Data Manipulation</h3>
+<section id="lecture-7" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-7">Lecture:</h4>
+<ul>
+<li>Introduction to the Tidyverse package and process</li>
+</ul>
+</section>
+<section id="demonstration-lab-7" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-7">Demonstration Lab:</h4>
+<ul>
+<li>Data Manipulation using the Tidyverse package</li>
+</ul>
+</section>
+<section id="assignment-7" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-7">Assignment:</h4>
+<ul>
+<li>Design and conduct a data manipulation workflow using the Tidyverse package; submit results as an R Markdown file (<code>assignment_8.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-9-visualization-techniques---tidyverse---part-ii---data-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="class-9-visualization-techniques---tidyverse---part-ii---data-visualization">Class 9 | Visualization Techniques - Tidyverse - Part II - Data Visualization</h3>
+<section id="lecture-8" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-8">Lecture:</h4>
+<ul>
+<li>Introduction to visualization capacities in the Tidyverse package</li>
+</ul>
+</section>
+<section id="demonstration-lab-8" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-8">Demonstration Lab:</h4>
+<ul>
+<li>Tidyverse visualization strategies</li>
+</ul>
+</section>
+<section id="assignment-8" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-8">Assignment:</h4>
+<ul>
+<li>Design and conduct a data visualization workflow using the Tidyverse package; submit results as an R Markdown file (<code>assignment_9.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-10-time-series-analysis-and-plotting" class="level3">
+<h3 class="anchored" data-anchor-id="class-10-time-series-analysis-and-plotting">Class 10 | Time Series Analysis and Plotting</h3>
+<section id="lecture-9" class="level4">
+<h4 class="anchored" data-anchor-id="lecture-9">Lecture:</h4>
+<ul>
+<li>Time Series Analysis and Plotting</li>
+</ul>
+</section>
+<section id="demonstration-lab-9" class="level4">
+<h4 class="anchored" data-anchor-id="demonstration-lab-9">Demonstration Lab:</h4>
+<ul>
+<li>Time Series Analysis and Plotting</li>
+</ul>
+</section>
+<section id="assignment-9" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-9">Assignment:</h4>
+<ul>
+<li>Design and conduct a time series analysis and plot; submit results as an R Markdown file (<code>assignment_10.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-11-statistical-thinking-tests" class="level3">
+<h3 class="anchored" data-anchor-id="class-11-statistical-thinking-tests">Class 11 | Statistical Thinking &amp; Tests</h3>
+<section id="lecture-10" class="level5">
+<h5 class="anchored" data-anchor-id="lecture-10">Lecture:</h5>
+<ul>
+<li>Introduction to Statistical Thinking &amp; Tests using R</li>
+</ul>
+</section>
+<section id="lab" class="level4">
+<h4 class="anchored" data-anchor-id="lab">Lab:</h4>
+<ul>
+<li>Statistical Tests in R</li>
+</ul>
+</section>
+<section id="assignment-10" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-10">Assignment:</h4>
+<ul>
+<li>Design and conduct a statistical test(s) in R; submit results as an R Markdown file (<code>assignment_11.Rmd</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="class-12-communication-quarto-r-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="class-12-communication-quarto-r-markdown">Class 12 | Communication: Quarto &amp; R Markdown</h3>
+<section id="lecture-11" class="level5">
+<h5 class="anchored" data-anchor-id="lecture-11">Lecture:</h5>
+<ul>
+<li>Introduction advanced communication techniques in R: Quarto + R Markdown</li>
+</ul>
+</section>
+<section id="lab-1" class="level4">
+<h4 class="anchored" data-anchor-id="lab-1">Lab:</h4>
+<ul>
+<li>Developing reports in Quarto</li>
+</ul>
+</section>
+<section id="assignment-11" class="level4">
+<h4 class="anchored" data-anchor-id="assignment-11">Assignment:</h4>
+<ul>
+<li>Design and develop a Quarto report detailing proposed workflow for course final project (<code>assignment_12.QMD</code>)</li>
+</ul>
+<hr>
+</section>
+</section>
+</section>
+<section id="required-recommended-reading---weekly-quizzes" class="level2">
+<h2 class="anchored" data-anchor-id="required-recommended-reading---weekly-quizzes">Required &amp; Recommended Reading - Weekly Quizzes</h2>
+<p>Starting Class 2, there will be a short quiz that will open on the day before (Thursday) of each Friday class meeting. The quiz is designed to cover technical terminology and readings assigned during the previous week. The course readings will be selected each week by the instructor and placed online, fully accessible as readable and downloadable PDFs. Students are responsible to complete each week’s readings and be ready for the quiz which will open Thursday AM (quizzes will stay open throughout Friday, closing at noon). A quiz code will be provided on a weekly basis to access each quiz. This quiz code will be located on each week’s agenda posted each Thursday at 7am.</p>
+<section id="materials" class="level3">
+<h3 class="anchored" data-anchor-id="materials">Materials</h3>
+<p>During each class session, reading materials, data files and your notes can be on your local computer; materials and course access will happen generally online via Canvas and Slack. For moving data files and research materials back and forth between machines, a USB drive is ideal. Further, online storage such as <a href="https://www.box.com/home">Box</a>, <a href="https://www.dropbox.com/home">Dropbox</a>, <a href="https://www.google.com/drive/">Google Drive</a> and <a href="https://www.amazon.com/clouddrive">Amazon Cloud Drive</a> is encouraged. Course lecture topics, readings and in-class exercise data will be available via the online course management location (Canvas); however, each student will be required to organize and maintain their own data files, especially pertaining to the final project. These files should be consistently backed up in multiple locations, ensuring redundancy and security. During Class 1 and Class 2, data and project file management will be discussed and demonstrated in detail.</p>
+</section>
+</section>
+<section id="evaluation-and-grading" class="level2">
+<h2 class="anchored" data-anchor-id="evaluation-and-grading">Evaluation and Grading</h2>
+<p><br></p>
+<table class="table">
+<colgroup>
+<col style="width: 46%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Course Component</th>
+<th style="text-align: center;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Weekly technical assignments</td>
+<td style="text-align: center;">50%</td>
+</tr>
+<tr class="even">
+<td>Independent research, data development &amp; project scope (Final Project)</td>
+<td style="text-align: center;">10%</td>
+</tr>
+<tr class="odd">
+<td>Final project presentation (Final Project)</td>
+<td style="text-align: center;">25%</td>
+</tr>
+<tr class="even">
+<td>Participation &amp; weekly quizzes</td>
+<td style="text-align: center;">15%</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: center;">100%</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="grading-categories" class="level2">
+<h2 class="anchored" data-anchor-id="grading-categories">Grading Categories</h2>
+<ul>
+<li><p><strong>A/A-</strong> Students receiving an “A” grade show exceptional mastery over course material, and produce exceptionally engaging and unique final projects. Student excels in all aspects of the weekly assignments and participates very actively in class discussions and activities. Throughout the class, students receiving A’s will consistently accomplish each week’s goals while further establishing their own interests and approaches to particular technical and research data issues in both the weekly course content and final course project.</p></li>
+<li><p><strong>B/B+</strong> Unlike C/C+ average work, students receiving a “B” grade show definitive engagement with all aspects of the class, complete assignments in a timely fashion, and produce an engaging final project. Student offers own approach to class readings, and participates well with in-class exercises and activities. Students are engaged with instructor through questioning and feedback over course material to ensure course mastery.</p></li>
+<li><p><strong>C/C+</strong> Average work that shows some success in engaging with course concepts but no particular distinction or unique approaches to data collection, research concepts and final presentation. Student shows some participation with class discussion and exercises, but not a significant interest level to achieve real mastery over course concepts and material.</p></li>
+<li><p><strong>F</strong> An “F” grade will be given if partial required work is submitted; some classes are missed completely and work is not completed on a make-up basis. Weekly exercises are either completed late or not at all. General class concepts are not translated into the final course project. Limited participation in both in-class sessions and out-of-class research requirements.</p></li>
+<li><p><strong>I</strong> A grade of I (Incomplete), signifying a temporary deferment of a regular grade, may be assigned when coursework has been delayed at the end of the semester for unavoidable and legitimate reasons. Incomplete grades are given only with the written approval of the instructor and the program director. The Request for an Incomplete Grade form must be filled out by the student and instructor prior to the end of the semester. This grade option is only available for very uncommon, unforeseeable complicating issues as outlined in the student handbook. For undergraduate students, if a grade of incomplete is approved, outstanding work must be submitted by the seventh week of the following semester. Otherwise, a grade of I will automatically convert to a permanent unofficial withdrawal (WF) after a period of four weeks. For graduate students, the maximum deadline for completion of an incomplete is one year, though a shorter period may be imposed at the discretion of the instructor.</p></li>
+</ul>
+</section>
+<section id="course-policies" class="level2">
+<h2 class="anchored" data-anchor-id="course-policies">Course Policies</h2>
+<ul>
+<li><p><strong>Email &amp; Course assignments:</strong> Students are required to maintain and check their TNS email account on a regular basis, except over official breaks. There will be a <a href="https://slack.com/">Slack</a> group established for the course; this will be the official channel for course communication, especially technical issues. For more personal/private issues, students can email instructor directly at the following address - <a href="mailto:mettss@newschool.edu">email</a>. The course management software (Canvas) should be utilized during the week to accomplish each week’s assignment. Students are required to check in via the online course site to gain needed course materials and submit completed assignments. Students should be working through class assignments early in the week to be certain they understand the technical challenges of each assignment; and finalize these assignments prior to assignment deadlines, usually midnight each consecutive Sunday. Students that practice and prepare early in the week can avoid the stress that comes with a looming assignment deadline late in the week.</p></li>
+<li><p><strong>Academic Honesty:</strong> As part of the larger New School academic policy, plagiarism and cheating are unacceptable. Using other’s ideas, analysis and projects as one’s own is unacceptable. Being positively influenced by a methodology or past project is one thing; taking the details of that work and claiming them as your own is another. The university’s academic policy applies to both GIS projects and any theory and narrative responses that you will author throughout the course.</p></li>
+<li><p><strong>Adaptations:</strong> If you need course adaptations or accommodations because of a disability, emergency medical information to share with me, or if you need special arrangements, please bring it to my attention as soon as possible.</p></li>
+<li><p><strong>Attendance:</strong> Class attendance is mandatory. Students are expected to participate in each class session. Importantly, sequential coursework will be completed in a timely manner and uploaded by due dates per assignment/deliverable. As this course is sequential and depends heavily on weekly skills development to proceed to following weeks, any absences are consequential; and multiple absences quickly risk success in the course. If a students knows in advance of an absence, its critical to notify the faculty for arrangements. Approximately three absences will put a student at clear risk of a failing grade. It is your responsibility to make up work missed due to an absence. If you know in advance that you will miss a class you should notify faculty as a courtesy in advance. Your third absence will put you at risk of a failing grade in the course, as stated in the <a href="http://www.newschool.edu/forms/ss_student_handbook.pdf">Student Handbook</a>.</p></li>
+<li><p><strong>Electronic Devices:</strong> The use of electronic devices (laptops) is permitted when the device is being used in relation to the course’s work, and is allowed in the weekly class meetings as long as it does not interrupt any other students or the instructor. The one exception is cell phones: all phones should be turned OFF at beginning of the class session, only to be turned ON following the class.</p></li>
+<li><p><strong>Use of AI Tools (ChatGPT, DALL-E, Midjourney, etc):</strong> Because this course builds on many existing ideas, facts and systems, AI tools can be a helpful for querying averaged or compiled responses. For this reason, you are allowed to use it in research, brainstorming and code development. Particularly for code development, AI can assist in solutions to particular data problems. However, be warned: simply running AI-derived code without the knowledge and understanding of the larger development process can be of little benefit, and can actually become a costly distraction. Using AI-derived code to <em>assist</em> in your larger learning process is a better approach: streamline your attention to core code concepts while minimizing syntax and sequence burdens. If you do utilize AI tools, it is important that the written work required by the course is authored by you alone. Further, you will need to provide citations for research, so AI tools are only a first pass, not an easy solution. Lastly, Generative AI does pose increased carbon emissions, as both the training and response require extra computing power. Be mindful in using it.</p></li>
+<li><p><strong>Intellectual Property Rights:</strong> The New School (the “university”) seeks to encourage creativity and invention among its faculty members and students. In doing so, the University affirms its traditional commitment to the personal ownership by its faculty members and students of Intellectual Property Rights in works they create. The complete policy governing Intellectual Property Rights may be seen on the university website, on the Provost’s page.</p></li>
+<li><p><strong>Student Course Ratings (Course Evaluations):</strong> During the last two weeks of the semester, students are asked to provide feedback for each of their courses through an online survey. They cannot view grades until providing feedback or officially declining to do so. Course evaluations are a vital space where students can speak about the learning experience. It is an important process which provides valuable data about the successful delivery and support of a course or topic to both the faculty and administrators. Instructors rely on course rating surveys for feedback on the course and teaching methods, so they can understand what aspects of the class are most successful in teaching students, and what aspects might be improved or changed in future. Without this information, it can be difficult for an instructor to reflect upon and improve teaching methods and course design. In addition, program/department chairs and other administrators review course surveys. Over the history of this particular course, student feedback has been fundamental to adapting the course on a semester basis to be suit needs and preferences of students.</p></li>
+</ul>
+</section>
+<section id="university-resources" class="level2">
+<h2 class="anchored" data-anchor-id="university-resources">University Resources</h2>
+<p>The university provides many resources to help students achieve academic and creative excellence. These resources include:</p>
+<ul>
+<li><p><strong>The University (and associated) Libraries</strong></p></li>
+<li><p><strong>The University Learning Center</strong></p></li>
+<li><p><strong>University Disabilities Services:</strong> In keeping with the university’s policy of providing equal access for students with disabilities, any student with a disability who needs academic accommodations must contact SDS. There are several ways for students to contact the office: via email at StudentDisability@newschool.edu, through the Starfish service catalog, or by calling the office at 212.229.5626. A self-ID form can also be completed on the SDS webpage at www.newschool.edu/student-disability-services. Once you contact the office, SDS staff will arrange an intake appointment to discuss your concerns and, if appropriate, provide you with accommodation notices to give to me. Please note that faculty will not work unilaterally with students to provide accommodations. If you inform me of a disability but do not provide any official notification, I must refer you to SDS.</p></li>
+<li><p><strong>Health and Wellness:</strong> Additional services and support available to New School students.</p></li>
+<li><p><strong>IT, Adobe and Printing Services IT Central:</strong> For help with IT needs you can stop by IT - Central at 72 Fifth Avenue, Lower Level 8:00 am - 9:00pm (Mon - Thurs); 8:00 am - 7:00pm (Friday); 9:00am - 5:00pm (Saturday) IT Pop Up Desk Each semester IT holds IT Pop Up Desk events around campus. Scheduled events are updated on the TechTalk blog (techtalk.newschool.edu) and will be advertised on Digital Easels around campus. If you are unable to come to IT Central, this is a great option to get assistance throughout campus.</p></li>
+<li><p><strong>Adobe Creative Suite:</strong> Each degree and credit seeking student is entitled to subscriptions for the full Adobe Creative Cloud suite of applications. All home-use subscriptions provided by The New School are equipped with 20GB of cloud storage.</p></li>
+<li><p><strong>Printing:</strong> You may print in Labs and Classrooms using your NetID username and password, which is also your print account. There are different printer formats available, including black and white, color, plotter and photo plotter printing.</p></li>
+<li><p><strong>Food and housing security:</strong> Any student who has difficulty affording groceries or accessing sufficient food to eat every day, or who lacks a safe and stable place to live, and believes this may affect their performance in the course, is urged to contact Student Support and Crisis Management for support and access to resources (see the contact information and hours directly below under Student Support and Crisis Management)</p></li>
+<li><p><strong>Student Support and Crisis Management (SSCM):</strong> SSCM works with students who are struggling with non-academic challenges, distressing experiences, and crisis situations. Contact SSCM staff for assistance in navigating challenges and connecting to on-and off-campus services and resources, including for emergency financial, housing, food, or other needs.</p></li>
+<li><p><strong>Student Financial Services:</strong> SFS can help you manage your education costs. They welcome students and family inquiries about Financial Aid eligibility and financing.</p></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="syllabus_fall25_Methods_1-PGUD5160_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

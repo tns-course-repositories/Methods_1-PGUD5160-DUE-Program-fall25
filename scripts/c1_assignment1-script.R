@@ -10,8 +10,8 @@ enclosed <- c(FALSE, TRUE, TRUE, FALSE)
 name <- c("BofA", "Capital One", "Bob's Bakery", "Starbucks")
 fee <- c(3.45, 4.00, 2.50, 5.00)
 
-# the following example is a combination of the element vectors into an R data frame.
+# The following example is a combination of the element vectors into an R data frame.
 local_ATMS <- data.frame(name = name, address = sa, advertisement = advert, inside = enclosed, fee = fee)
 
-# print to the console the final R data frame.
+# Print to the console the final R data frame.
 print(local_ATMS)

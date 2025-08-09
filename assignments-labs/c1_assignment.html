@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-08-09">
+
+<title>Class 1 Assignment: Creating an Urban Dataset - from primary observations to R data frame</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c1_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c1_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c1_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c1_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c1_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c1_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c1_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c1_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c1_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c1_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c1_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-1-class-1-materials" id="toc-week-1-class-1-materials" class="nav-link" data-scroll-target="#week-1-class-1-materials">Week 1 Class 1 Materials:</a></li>
+  <li><a href="#week-1-class-1-reading" id="toc-week-1-class-1-reading" class="nav-link" data-scroll-target="#week-1-class-1-reading">Week 1 Class 1 Reading:</a></li>
+  <li><a href="#class-1-assignment" id="toc-class-1-assignment" class="nav-link" data-scroll-target="#class-1-assignment">Class 1 Assignment:</a></li>
+  <li><a href="#step-3-develop-an-r-script" id="toc-step-3-develop-an-r-script" class="nav-link" data-scroll-target="#step-3-develop-an-r-script">Step 3: Develop an R script</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 1 Assignment: Creating an Urban Dataset - from primary observations to R data frame</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 9, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this first week’s assignment, we will utilize the framework from <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c1_lab">Class 1 lab</a> steps to develop a data frame that captures your unique interests in New York’s urban space - the very neighborhood around you. Follow the sequence of steps below to first orient to this week’s content: lecture, materials and weekly reading(s). Once complete, move along to creating your own data frame, making sure to upload the assignment deliverable, due Thursday, September 4th, 2025 at 11:59pm.</p>
+</section>
+<section id="week-1-class-1-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-1-class-1-materials">Week 1 Class 1 Materials:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c1_agenda">Class 1 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c1_lab">Class 1 lab</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/075b87b99e684032288e31e38c4026ce523d6a78/scripts/c1_lab1-script.R">Class 1 lab script</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.1/index.html">Class 1 Lecture Slides</a></li>
+</ul>
+</section>
+<section id="week-1-class-1-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-1-class-1-reading">Week 1 Class 1 Reading:</h2>
+<ul>
+<li><a href="https://weekly-reading-research.s3.us-east-1.amazonaws.com/KITCHIN-9781509566525-EPDF.pdf">Kitchin, R. (2025). Critical data studies. Oxford, England: Polity Press.</a></li>
+</ul>
+<p>We will utilize the previous title throughout the course. For this week, focus only on the following definitions listed alphabetically both here and in the book:</p>
+<ul>
+<li>analogue data</li>
+<li>autographic data</li>
+<li>categorisation and classification</li>
+<li>data</li>
+<li>data dictionary</li>
+<li>data entry</li>
+<li>Data Science</li>
+<li>data walks</li>
+<li>information</li>
+<li>metadata</li>
+<li>mundane data</li>
+<li>observation</li>
+<li>primary data</li>
+<li>raw data</li>
+<li>secondary data</li>
+</ul>
+<p>At 7am Friday, September 5th, the first weekly quiz will open in Canvas. Utilize the posted <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c2_agenda">Class 2 Agenda</a> to gain the quiz access code which will be posted towards the beginning of the agenda. Expect 10 questions in total that cover the concept definitions listed above.</p>
+</section>
+<section id="class-1-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="class-1-assignment">Class 1 Assignment:</h2>
+<section id="step-1-review-resources-and-examples" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-review-resources-and-examples">Step 1: Review resources and examples</h4>
+<p>In this first assignment, we will transform everyday observations about the urban space(s) around you into an organized dataset for R: a valid R data frame. As we all experience and know, a urban environment like New York City is extremely dynamic and ever-changing. However, the physical environment can be observed and cataloged; and this can occur in very unique ways. In the following three example prompts, think about the priority of each platform and how each offers unique insight into urban space in a systematic way.</p>
+<ul>
+<li><strong>Example Prompt 1</strong> - Ed Ruscha’s Sunset Strip</li>
+</ul>
+<p>Ruscha’s original work, “Every Building on the Sunset Strip,” was an accordion-fold book showcasing photographs of both sides of a mile and a half stretch of Sunset Boulevard. The online archive expands upon this, offering a comprehensive and interactive way to experience his documentation of the famed Los Angeles street.</p>
+<ul>
+<li><a href="https://12sunsets.getty.edu/">Link to online project</a></li>
+</ul>
+<p>In this example, note that Ruscha deployed a deadpan, documentary approach to a complex urban environment. Across the voluminous archive, themes start to emerge, what one might call the typology of Los Angeles - at least Sunset Strip - itself.</p>
+<p>How would you describe your immediate environment as a typology? What stands out? What elements repeat facade to facade, block to block? This can be a good approach to thinking about an item, element or street furniture worthy of transcribing into a data set.</p>
+<ul>
+<li><strong>Example Prompt 2</strong> - Old NYC</li>
+</ul>
+<p>Unlike Ruscha’s work spanning the totality of the Sunset Strip in Los Angeles, this online interactive mapping project draws attention to specific, singular street locations offering a portal ‘back in time’ to archival photographs <em>at the same location</em>.</p>
+<ul>
+<li><a href="https://www.oldnyc.org/">Link to online project</a></li>
+</ul>
+<p>Like Old NYC, is the past readily evident in certain street locations in your immediate neighborhood? What visible clues to past decoration and uses exist in the present, building to building, parcel lot to parcel lot along the street? Considering past usage and evidence of historical dimensions can be another great approach to developing an urban data set for past, present and even future use scenarios.</p>
+<ul>
+<li><strong>Example Prompt 3</strong> - Open Street Map - Map Features Catalog</li>
+</ul>
+<p>OpenStreetMap (OSM) represents the real world using a data model built upon three core elements: nodes, ways, and relations, enhanced by a system of descriptive tags. At its core, the mapping project represents point-like features in a database format. This is a great example of how elements in the urban environment are cataloged and transformed into a coherent database for worldwide use.</p>
+<ul>
+<li><a href="https://wiki.openstreetmap.org/wiki/Map_features">Link to online project</a></li>
+</ul>
+<p>Lik OSM, consider both very familiar but also overlooked infrastructure elements in the urban environment. The OSM map features catalog is an excellent prompt to isolate and develop a particular urban element into a data set.</p>
+</section>
+<section id="step-2-transcribe-your-observations-into-vectors-followed-as-a-r-data-frame" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-transcribe-your-observations-into-vectors-followed-as-a-r-data-frame">Step 2: Transcribe your observations into vectors, followed as a R data frame</h4>
+<p>Once you have landed upon a theme, element or phenomena that you wish to catalog and transcribe into your assignment data frame, the first step is to develop several attributes that are integral to the description of the object in an urban environment.</p>
+<p>For the assignment example, we will use the following theme:</p>
+<p>Catalog all ATM machines within 5 blocks of place of residence. For this element we might have the following attributes and their type:</p>
+<ul>
+<li>Street Address (<code>string</code>)</li>
+<li>Advertising Yes or No (<code>logical</code>)</li>
+<li>Enclosed (<code>logical</code>)</li>
+<li>Company Name (<code>character or string</code>)</li>
+<li>Fee Amount (<code>number</code>)</li>
+</ul>
+<p>In the example above, we have 5 attributes which will require us to first make 5 atomic vector statements and then combine these into a data frame in R. An example of the vectors could be the following:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>sa &lt;- c("122 2nd street", "157 3rd street", "87 4th street", "25 5th street")</span>
+<span id="cb1-2"><a href="#cb1-2"></a>advert &lt;- c(TRUE, FALSE, TRUE, FALSE)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>enclosed &lt;- c(FALSE, TRUE, TRUE, FALSE)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>name &lt;- c("BofA", "Capital One", "Bob's Bakery", "Starbucks")</span>
+<span id="cb1-5"><a href="#cb1-5"></a>fee &lt;- c(3.45, 4.00, 2.50, 5.00)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once complete, these 5 vectors would be combined into a final data frame using the function structure as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>local_ATMS &lt;- data.frame(name = name, address = sa, advertisement = advert, inside = enclosed, fee = fee)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The sucessful completion of the data frame is then followed by a print function to the console:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>print(local_ATMS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="step-3-develop-an-r-script" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-develop-an-r-script">Step 3: Develop an R script</h2>
+<p>To complete the assignment deliverable, you will author, complete, save and upload to Canvas an R script that contains the following:</p>
+<ul>
+<li>Comments that describe the data frame theme and various attributes. Comments in R, like many programming languages, start with a <code>#</code>.</li>
+<li>A series of complete vectors representing each development vector.</li>
+<li>A data frame printed to the console which envelops the vectors into the data frame using the <code>data.frame()</code> function.</li>
+<li>The script itself is to be developed and uploaded to Canvas in the following naming convention and extension format: <code>c1_assignment1-first-name_last-name.R</code></li>
+</ul>
+<p>In developing your data frame theme and variables, you are not limited to any type of attribute variable or number of observations. Certainly more than a 100 observations is probably too many; anywhere from 10-30 makes good sense. Conversely, if you wanted to just have several observations but a deep field of of variables, that could be interesting also.</p>
+<p>Make sure prior to submission that you script is valid in R and that you are able to full print to the console the final data frame. Once ready for submission, make sure to submit the script with the naming convention <code>c1_assignment1-first-name_last-name.R</code>. Utilize the following example script to revise and adapt to your own assignment 1 specifics:</p>
+<ul>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/fda06a31f3016179ad43008a4a5d7e5fa1db8117/scripts/c1_assignment1-script.R"><code>c1_assignment1-script-example.R</code></a></li>
+</ul>
+<p>In order to open an R script, navigate to top RStuio menu <code>File&gt;Open File</code> and point to the R script.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c1_assignment_files/img/open-script.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Open R script</em></figcaption><p></p>
+</figure>
+</div>
+<p>In order to save an R script, navigate to the top ribbon and find the blue disk icon <code>Save current document</code> and save to your assignment directory (folder), followed by an upload to Canvas. Don’t forget to back up your work both locally and remotely.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c1_assignment_files/img/save-script.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Save Current Document</em></figcaption><p></p>
+</figure>
+</div>
+<p>The assignment 1 submission is due to Canvas on Thursday, September 4th, 2025 at 11:59pm.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c1_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

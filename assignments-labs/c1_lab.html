@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-08-06">
+<meta name="dcterms.date" content="2025-08-09">
 
 <title>Class 1 Lab: Loading R Software + Fundamentals of Data Types and Forms in R</title>
 <style>
@@ -21,6 +21,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -50,7 +113,8 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
   <li><a href="#part-i-loading-required-r-programming-components" id="toc-part-i-loading-required-r-programming-components" class="nav-link" data-scroll-target="#part-i-loading-required-r-programming-components">Part I: Loading Required R Programming Components</a></li>
-  <li><a href="#part-ii" id="toc-part-ii" class="nav-link" data-scroll-target="#part-ii">Part II:</a></li>
+  <li><a href="#part-ii-rstudio-interface" id="toc-part-ii-rstudio-interface" class="nav-link" data-scroll-target="#part-ii-rstudio-interface">Part II: RStudio Interface</a></li>
+  <li><a href="#part-iii-syntax-functions-and-data-types-in-r-programming" id="toc-part-iii-syntax-functions-and-data-types-in-r-programming" class="nav-link" data-scroll-target="#part-iii-syntax-functions-and-data-types-in-r-programming">Part III: Syntax, Functions and Data Types in R programming</a></li>
   <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
   </ul>
@@ -72,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 6, 2025</p>
+      <p class="date">August 9, 2025</p>
     </div>
   </div>
   
@@ -84,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="preamble" class="level2">
 <h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
-<p>In this first demonstration lab, we will first download the necessary software for the course: first, <a href="https://www.r-project.org/">R Interpreter</a>, followed by <a href="https://posit.co/download/rstudio-desktop/">RSTudio</a>. In July 2022, the company RStudio, PBC changed its name to Posit, PBC to reflect its broader mission beyond just the R language. Nicely for us, Posit makes the R components easy for download.</p>
+<p>In this first demonstration lab, we will first download the necessary software for the course: first, <a href="https://www.r-project.org/">R Interpreter</a>, followed by <a href="https://posit.co/download/rstudio-desktop/">RStudio</a>. In July 2022, the company RStudio, PBC changed its name to Posit, PBC to reflect its broader mission beyond just the R language. Nicely for us, Posit makes the R components easy for download.</p>
 <p>Once we finalizing the initial loads and ensure the software is working on our machines, we will seque to a series of guided prompts and exercises in order the understand the R interface as well as some of the basic syntax and forms of data germane to the R programming language and environment.</p>
 </section>
 <section id="part-i-loading-required-r-programming-components" class="level2">
@@ -150,20 +214,246 @@ Note
 </div>
 </section>
 </section>
-<section id="part-ii" class="level2">
-<h2 class="anchored" data-anchor-id="part-ii">Part II:</h2>
+<section id="part-ii-rstudio-interface" class="level2">
+<h2 class="anchored" data-anchor-id="part-ii-rstudio-interface">Part II: RStudio Interface</h2>
+<p>Following the successful installation of the R programming components, we will review the RStudio interface and practice a series of fundamental R syntax and form conventions that will be necessary for Assignment #1.</p>
+<section id="step-1-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-1">Step 1:</h4>
+<p>To start, we will open RStudio and in the console - lower-left pane - enter the following command which should return information about the R install we’ve just accomplished:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>R.version</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c1_lab_files/img/console1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em><code>R.version</code> returns R install summary</em></figcaption><p></p>
+</figure>
+</div>
+<p>Next, enter the <em>get working directory</em> command, which will return the current directory:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>getwd()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This first week we will not be too concerned with setting our working directory; the second week we will cover project management including directories.</p>
+</div>
+</div>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>Before proceeding into the functionality of R, we will first review the RStudio interface:</p>
+<table class="table">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 41%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><pre><code>        1.
+   Source Editor
+(Scripts, Rmd Files)</code></pre></td>
+<td><pre><code>       3.
+      Environment /
+History / Connections</code></pre></td>
+</tr>
+<tr class="even">
+<td><pre><code>        2.
+     Console</code></pre></td>
+<td><pre><code>       4.</code></pre>
+<p>Files / Plots / Packages / Help / Viewer</p></td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c1_lab_files/img/IDE1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>RStudio IDE Interface</em></figcaption><p></p>
+</figure>
+</div>
+<p>Tip: You can customize or move panes via Tools &gt; Global Options &gt; Pane Layout.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can customize or move panes via <code>Tools &gt; Global Options &gt; Pane Layout</code>.</p>
+</div>
+</div>
+<p>As noted above, RStudio is divided into four main panes, each with specific purposes to support coding, debugging, data visualization, and workspace management.</p>
+<ol type="1">
+<li>Source (Top-Left Pane) Purpose: Where you write and edit R scripts, R Markdown documents, or view data files.</li>
+</ol>
+<ul>
+<li><p>Common Tabs:</p>
+<ul>
+<li><p><code>Untitled.R</code> or <code>*.R</code>: Script file tabs</p></li>
+<li><p><code>*.Rmd</code>: R Markdown for reports/notebooks</p></li>
+<li><p><code>*.csv</code>, <code>*.txt</code>: Data file previews</p></li>
+</ul></li>
+</ul>
+<ol start="2" type="1">
+<li>Console (Bottom-Left Pane) Purpose: Where you execute R commands interactively.</li>
+</ol>
+<ul>
+<li><p>Common Tabs:</p>
+<ul>
+<li><p>Run code line-by-line</p></li>
+<li><p>Test snippets before saving to a script</p></li>
+<li><p>View immediate outputs or errors</p></li>
+</ul></li>
+</ul>
+<ol start="3" type="1">
+<li>Environment / History / Connections (Top-Right Pane) Purpose: Shows all active objects (data frames, lists, vectors, etc.)</li>
+</ol>
+<ul>
+<li>Environment Tab:
+<ul>
+<li>Show all active objects (data frames, lists, vectors, etc.)</li>
+</ul></li>
+<li>History Tab:
+<ul>
+<li>Records all executed commands</li>
+</ul></li>
+<li>Connections Tab (if enabled):
+<ul>
+<li>Manage database and data source connections</li>
+</ul></li>
+</ul>
+<ol start="4" type="1">
+<li>Files / Plots / Packages / Help / Viewer (Bottom-Right Pane) Purpose: Shows all active objects (data frames, lists, vectors, etc.)</li>
+</ol>
+<ul>
+<li><p>Files: Browse and manage files in your working directory</p></li>
+<li><p>Plots: View visualizations generated by R</p></li>
+<li><p>Packages: Install, update, and load R packages</p></li>
+<li><p>Help: Search R documentation (<code>?function</code>)</p></li>
+<li><p>Viewer: Displays HTML widgets or R Markdown output</p></li>
+</ul>
+</section>
+</section>
+<section id="part-iii-syntax-functions-and-data-types-in-r-programming" class="level2">
+<h2 class="anchored" data-anchor-id="part-iii-syntax-functions-and-data-types-in-r-programming">Part III: Syntax, Functions and Data Types in R programming</h2>
+<section id="step-1-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-2">Step 1:</h4>
+<p>Before reviewing standard R object types, we will get familiar with the console and some of the fundamental syntax of R programming. In the exercises below, necessary code snippets designed to run in the console can also be accessed by downloading the following script and opening it into the Source editor in RStudio:</p>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/075b87b99e684032288e31e38c4026ce523d6a78/scripts/c1_lab1-script.R">Class_1 - Lab.1 R Script</a></p></li>
+<li><p><strong>R as a calculator</strong>. To start, we can do some basic syntax and functions via the console the way we would interact with a standard calculator.</p>
+<ul>
+<li>arithmetic operators</li>
+<li>creating and assigning variables</li>
+<li>using functions</li>
+</ul></li>
+</ul>
+<p>First, let’s assign <code>5</code> to the variable <code>x</code> and <code>3</code> to the variable <code>y</code>. Once complete, we will see this variable assignment in the Environment pane. Continue apace to then use the console to add the variable <code>x</code> and the variable <code>y</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>x &lt;- 5</span>
+<span id="cb7-2"><a href="#cb7-2"></a>y &lt;- 3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>x + y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>R functions</strong>. Functions are an unique kind of R object. Very simply, a function is an object that performs some action and (usually) produces an output. Functions exist to simplify a task. You can identify a function by the parentheses that are appended to the function name. A function looks like <code>function_name()</code>.</li>
+</ul>
+<p>R has many functions that come built in. The collection of functions that come out of the box with R are called <strong>Base R</strong>.</p>
+<p>An example of a simple base R function is <code>sum()</code>. <code>sum()</code> takes any number of inputs and calculates the sum of those inputs. Let’s try the following:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a>sum(10,5,7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>sum(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you ever need to know how a function works, you can look at its help page by typing <code>?function_name()</code> in your console. That will bring up the documentation page in the bottom right pane. Let’s enter the following as an example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href="#cb11-1"></a>?sum()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-2-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-2-1">Step 2:</h4>
+<p>In R, a data structure is a specialized format for organizing, storing, and manipulating data. Beyond syntax and functions, these are the very <code>building blocks</code> necessary for data analysis. If we don’t have a data structure by which our data is organized, functionality is severely limited. Here we will review some of the basic data structures, and why we might want to use one versus another.</p>
+<p><strong>Atomic Vectors - (homogeneous) </strong>:</p>
+<p>The most common way to create a vector in R is to use the <code>c()</code> function. This stands for combine. We can combine as many elements as we want into a single vector using <code>c()</code>. Each element of the vector is it’s own argument (separated by a comma).</p>
+<p>For our example, we can utilize the average New York City Unemployment Rate (dating back to October 2024, through June 2025). This data can be accessed via the city’s <a href="https://dol.ny.gov/labor-statistics-new-york-city-region">Department of Labor</a>, <a href="https://dol.ny.gov/statistics-new-york-city-labor-force-data">direct link to data</a></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="#cb12-1"></a>NYC_unemp &lt;- c(5.6, 5.6, 5.6, 5.5, 5.3, 5.1, 5.0, 4.8, 4.7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can then apply a function to our newly created vector <code>NYC_unemp</code> and gain a valuable statistic:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a href="#cb13-1"></a>mean(NYC_unemp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we were conducting an analysis for a full year dating back to October 2024, ideally we would have 12 months of data. In this case we only have data available to June 2025. What we might do is append the vector to include the missing months looking forward for our custom 12 month period.</p>
+<p>This brings us to a critical point: R uses <code>NA</code> to represent missing data; we are always looking out for missing data because it can <em>significantly</em> impact our analysis of the data. In the following example, we add <code>NA</code> to July through September 2025 for a total of 12 months of data:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>NYC_unemp &lt;- c(5.6, 5.6, 5.6, 5.5, 5.3, 5.1, 5.0, 4.8, 4.7, NA, NA, NA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s ensure we indeed have 12 months of data:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a href="#cb15-1"></a>length(NYC_unemp) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sure enough, R recognizes our <code>NA</code> as missing data or rather correctly <strong>not available</strong>. But it <em>could</em> be there, and thus we have a placeholder, or better yet <em>an indicator of missingness</em> for 3 of our 12 months. Now, if we run our <code>mean</code> function on the new vector with <code>NA</code> values, we inevitably produce an <code>NA</code> result. We can get around this by appending our function to <em>remove</em> the <code>NA</code>, structured as follows:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a href="#cb16-1"></a>mean(NYC_unemp, na.rm = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Lists (recursive vectors - heterogeneous)</strong></p>
+<p>When creating our unemployment vector above, we utilized numbers exclusively, specifically a double (numeric), represented in our Environment panel as <code>num</code>. What if we create a vector with not just numbers, but a mix of numbers and characters and logical values? In the following example we include an integer, a character, a logical value and a ‘list within a list’:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a href="#cb17-1"></a>random_list &lt;- list(1, "a", TRUE, c(1,2,3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Check the Environment panel result:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c1_lab_files/img/epanel1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Environment panel result</em></figcaption><p></p>
+</figure>
+</div>
+<p><strong>Factor (categorical data)</strong></p>
+<p>In our first unemployment vector example above, for each month we utilized a normalized number - a rate - of persons relative to a total population that are unemployment. Intuitively, we know this to be a number, or rather a <em>statistic</em>. Additionally, we might want to give a rank or some type of grading for each of our months. For instance, a low unemployment month might be deemed <em>good</em> or given a rating of <em>A</em>. When we are are concerned with categories and ranks, we are typically dealing with categorical data which R deems as type <strong>Factor</strong>. Here is a technical definition of a factor:</p>
+<blockquote class="blockquote">
+<p>A factor in R is a data structure used to represent categorical variables. Technically, it is an integer vector with a set of predefined character labels called levels. Factors are used to store both nominal and ordinal categorical data efficiently and are treated specially in modeling functions.</p>
+</blockquote>
+<p>To start, we will create a character vector representing grades to be theoretically applied to each month depending on its unemployment statistic; we will follow immediately by a <code>print</code> function:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a href="#cb18-1"></a>grades &lt;- c("A", "B", "C", "D", "F", "Exceptional" )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a href="#cb19-1"></a>print(grades)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we transform this character vector into an explicit <strong>Factor</strong> and print its result:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a href="#cb20-1"></a>NYC_unemp_grade_factor &lt;- factor(grades)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1"><a href="#cb21-1"></a>print(NYC_unemp_grade_factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In review of the resulting Environment panel, we can see we have very different values in our original grading system compared to the <strong>Factor</strong> version of the grading system:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c1_lab_files/img/epanel2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Environment panel result</em></figcaption><p></p>
+</figure>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you create a factor, R will automatically arrange its levels alphabetically unless and until you provide a specific order.</p>
+</div>
+</div>
+<p><strong>Data Frame (tabular)</strong></p>
+<p>Arguably the <strong>Data Frame</strong> data type in R is its most flexible and powerful structure. Soon we will be reading into R relatively complex datasets that we will transform to the <strong>Data Frame</strong> data type, something which R can handle with great efficiency. To start, here is a definition of a data frame:</p>
+<blockquote class="blockquote">
+<p>A data frame in R is a two-dimensional, tabular data structure where:</p>
+<p>Each column is a vector (or factor) of the same length.</p>
+<p>Columns can be of different types (numeric, character, logical, etc.).</p>
+<p>It is the most commonly used structure for storing and manipulating datasets in R.</p>
+<p>Think of it like a spreadsheet or SQL table — rows are observations, and columns are variables.</p>
+</blockquote>
+<p>Using our example above of the unemployment rate per month in New York City, let’s finish the analogy as a data frame. We will first make a series of vectors, keeping in mind that the data type per vector needs to remain the same per vector:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb22-1"><a href="#cb22-1"></a>NYC_unemp_rate &lt;- c(5.6, 5.6, 5.6, 5.5, 5.3, 5.1, 5.0, 4.8, 4.7, NA, NA, NA)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>NYC_unemp_grade &lt;- c("D", "D", "D", "C", "C", "C", "B", "A", "Exceptional", "Not Available", "Not Available", "Not Available")</span>
+<span id="cb22-3"><a href="#cb22-3"></a>NYC_unemp_month &lt;- c("october-24","november-24","december-24","january-25","february-25","march-25","april-25","may-25","june-25","july-25","august-25","september-25")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To create the data frame, we can utilize the <code>data.frame()</code> function as follows:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb23-1"><a href="#cb23-1"></a>NYC_unemp_dframe &lt;- data.frame(month = NYC_unemp_month, rate = NYC_unemp_rate, score = NYC_unemp_grade)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Print the data frame to the console:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb24-1"><a href="#cb24-1"></a>print(NYC_unemp_dframe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 <section id="concluding-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
-<p>In this first demonstration lab, we have created and imported spatial data, and created meaningful spatial analysis results from our data inputs. This is just a short introduction to the analysis capacities of GIS, QGIS in particular. The following references are good resources to learn more about QGIS generally, and the John Snow historical mapping and its recreation in modern GIS.</p>
+<p>In this first demonstration lab, we have downloaded and installed R and RStudio; reviewed core R syntax, applied several functions and created various data structure types. In addition to the data structures we’ve covered, there (at least) two more: <strong>Matrix</strong> and <strong>Array</strong>; however, we will not use these types for this week’s assignment. As we move to a review of the first week’s assignment, individual steps demonstrated here can be used and revised to assist you in the completion of the assignment deliverable.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References:</h2>
 <ul>
-<li><a href="x">x</a></li>
-<li><a href="x">x</a></li>
-<li><a href="x">x</a></li>
-<li><a href="x">x</a></li>
+<li><a href="https://intro2r.com/data-structures.html">intro2r - data structures</a></li>
+<li><a href="https://rstudio.github.io/cheatsheets/base-r.pdf">Base R - Cheatsheet</a></li>
+<li><a href="https://dol.ny.gov/labor-statistics-new-york-city-region">Labor Statistics for NYC Region</a></li>
 </ul>
 </section>
 

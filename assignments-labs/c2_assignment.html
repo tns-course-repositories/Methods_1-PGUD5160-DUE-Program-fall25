@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-08-21">
+
+<title>Class 2 Assignment: Exploratory Data Analysis with NYC Arrest Data, Jan-June 2025</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c2_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c2_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c2_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c2_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c2_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c2_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c2_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c2_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c2_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c2_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c2_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-1-class-1-materials" id="toc-week-1-class-1-materials" class="nav-link" data-scroll-target="#week-1-class-1-materials">Week 1 Class 1 Materials:</a></li>
+  <li><a href="#week-1-class-1-reading" id="toc-week-1-class-1-reading" class="nav-link" data-scroll-target="#week-1-class-1-reading">Week 1 Class 1 Reading:</a></li>
+  <li><a href="#class-2-assignment" id="toc-class-2-assignment" class="nav-link" data-scroll-target="#class-2-assignment">Class 2 Assignment:</a>
+  <ul class="collapse">
+  <li><a href="#step-3" id="toc-step-3" class="nav-link" data-scroll-target="#step-3">Step 3:</a></li>
+  <li><a href="#step-4" id="toc-step-4" class="nav-link" data-scroll-target="#step-4">Step 4:</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 2 Assignment: Exploratory Data Analysis with NYC Arrest Data, Jan-June 2025</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 21, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this second week’s assignment, we will utilize the framework from <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c2_lab">Class 2 lab</a> steps to develop an R Markdown report that features an EDA for NYC Arrest Data. Follow the sequence of steps below to first orient to this week’s content: lecture, materials and weekly reading(s). Once complete, move along to creating your R Markdown deliverable, making sure to upload the assignment deliverable, due Thursday, September 11th, 2025 at 11:59pm.</p>
+</section>
+<section id="week-1-class-1-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-1-class-1-materials">Week 1 Class 1 Materials:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c2_agenda">Class 2 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c2_lab">Class 2 lab</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c2_lab2-script.R">Class 2 lab script</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_2.Rmd">Class 2 Assignment .Rmd ‘starter file’</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.2/index.html">Class 2 Lecture Slides</a></li>
+</ul>
+</section>
+<section id="week-1-class-1-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-1-class-1-reading">Week 1 Class 1 Reading:</h2>
+<ul>
+<li><a href="https://weekly-reading-research.s3.us-east-1.amazonaws.com/KITCHIN-9781509566525-EPDF.pdf">Kitchin, R. (2025). Critical data studies. Oxford, England: Polity Press.</a></li>
+</ul>
+<p>We will utilize the previous title throughout the course. For this week, focus only on the following definitions listed alphabetically both here and in the book:</p>
+<ul>
+<li>x</li>
+</ul>
+<p>At 7am Friday, September 12th, the second weekly quiz will open in Canvas. Utilize the posted <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c2_agenda">Class 3 Agenda</a> to gain the quiz access code which will be posted towards the beginning of the agenda. Expect 10 questions in total that cover the concept definitions listed above.</p>
+<p>In addition to the quizzed reading material, review following three short articles. Each details very recent and real issues surrounding data collection - who controls that process and why data collection has become ‘controversial’.</p>
+<ul>
+<li><a href="https://www.russiamatters.org/analysis/russias-demographic-vanishing-act-warning-history">Russia’s Demographic Vanishing Act: A Warning From History</a></li>
+<li><a href="https://thehill.com/homenews/state-watch/5461239-doj-investigation-dc-crime-data-trump-takeover/">DOJ investigating whether DC officials falsified crime data</a></li>
+<li><a href="https://www.epi.org/policywatch/firing-bls-commissioner-erika-mcentarfer/">Firing BLS Commissioner Erika McEntarfer</a></li>
+</ul>
+</section>
+<section id="class-2-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="class-2-assignment">Class 2 Assignment:</h2>
+<section id="step-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1">Step 1:</h4>
+<p>Similar to how we started our <code>lab_2</code> project directory, we will first simply <code>copy/paste</code> the <code>lab_2</code> directory at the desktop and name the new copied directory <code>assignment_2</code>. Notice that there are 4 files, not 5; the script for <code>lab_2</code> can/should be removed.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c2_assignment_files/img/copy-folder.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Copy lab_2 directory as new assignment_2 directory</em></figcaption><p></p>
+</figure>
+</div>
+<p>Next, create a new R project, but this time instead of creating a <em>New Directory</em>, utilize an <em>Existing Directory</em> and point it to the just copied <code>assignment_2</code> folder:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c2_assignment_files/img/existing-directory-a.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Choose Existing Directory</em></figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c2_assignment_files/img/existing-directory.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Point to Existing Directory</em></figcaption><p></p>
+</figure>
+</div>
+<p>Run the standard <code>getwd()</code> before beginning assignment 2, ensuring you are within the newly created <code>assignment_2</code> project directory.</p>
+<p>Next, we will be utilizing the <code>lab_2</code> arrest data that we processed as the <strong>start point</strong> for the deliverable. In the first assignment, we developed a r script; this week we will create and deliver a R Markdown File:</p>
+<blockquote class="blockquote">
+<p>R Markdown provides an unified authoring framework for data science, combining your code, its results, and your prose commentary. R Markdown documents are fully reproducible and support dozens of output formats, like PDFs, Word files, slideshows, and more.</p>
+</blockquote>
+<p>R Markdown integrates a number of R packages and external tools. This means that help is, by-and-large, not available through ?. The help documents are as follows:</p>
+<ul>
+<li><p>R Markdown Cheat Sheet: <em>Help &gt; Posit Cheatsheets &gt; R Markdown Cheat Sheet</em></p></li>
+<li><p><a href="https://rstudio.github.io/cheatsheets/html/rmarkdown.html">R Markdown Cheat Sheet Online</a></p></li>
+</ul>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>From within your <code>assignment_2</code> project, navigate to the docs folder. This is the location in which you will first download the example R Markdown file (<code>.rmd</code>), and open it anew in your project. Alternatively, you can create your own R Markdown file, but the download version has some formatting set up that can be a helpful start point.</p>
+<p>To open an existing R Markdown file:</p>
+<p><em>File &gt; Open File &gt; assignment_2 &gt; docs &gt; assignment_2.Rmd</em></p>
+<p>To create your own R Markdown file:</p>
+<p><em>File &gt; New File &gt; R Markdown</em></p>
+<ul>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_2.Rmd"><code>assignment_2.Rmd</code> ‘starter file’</a></li>
+</ul>
+<p>Next, loading, working with and saving data in the Console is <em>NOT</em> the same as loading, displaying and plotting data in an <code>.Rmd</code> file. Keep in mind that the Console is the iterative, working environment, whereas <code>.Rmd</code> is designed for publishing and sharing your analysis results.</p>
+<blockquote class="blockquote">
+<p>R Markdown documents, when knitted, are rendered in a clean, isolated environment, separate from the R Global Environment where you might be interactively working in RStudio. This design ensures reproducibility, as the document’s output depends solely on the code within the R Markdown file itself, not on any objects previously loaded or created in your interactive R session. Therefore, if an R Markdown chunk does not “see” a data frame you created in your interactive session, it is because that data frame was not created within the R Markdown document’s own execution environment.</p>
+</blockquote>
+<p>So, the first step is to load the data we cleaned in <code>lab_2</code> which is located as follows in the new <code>assignment_2</code> folder:</p>
+<ul>
+<li><code>~/Desktop/assignment_2/results/arrestNYC.RData</code></li>
+</ul>
+<p>We load the data as follows from <em>within</em> the <code>.Rmd</code> document. Utilize the green <em>run</em> button to the far right of the code block to execute the code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>load("~/Desktop/assignment_2/results/arrestNYC.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c2_assignment_files/img/rmd-code-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Load the arrest data from within the .Rmd document</em></figcaption><p></p>
+</figure>
+</div>
+<p>Next, you will find a copy of the <code>lab_2</code> arrest count table then barplot for borough arrests in the <code>.Rmd</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>arrest_counts_boro &lt;- table(arrestNYC$ARREST_BORO)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>barplot(arrest_counts_boro,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>        main = "Arrest in NYC by Arrest Borough (Jan-June 2025)",</span>
+<span id="cb2-4"><a href="#cb2-4"></a>        xlab = "Borough",</span>
+<span id="cb2-5"><a href="#cb2-5"></a>        ylab = "Count",</span>
+<span id="cb2-6"><a href="#cb2-6"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can certainly use this code chunk for your deliverable if needed, but consider better to adapt the existing code chunk to plot one of the other factor variables that we did not cover in the lab. The degree to which you plot and produce a context response and narrative for a custom theme that we have <em>not</em> yet covered is a metric considered in the grading of this assignment. Variables that have yet to be plotted:</p>
+<ul>
+<li><code>OFNS_DESC</code> - Description of internal classification corresponding with KY code (more general category than PD description)</li>
+<li><code>LAW_CAT_CD</code> - Level of offense: felony, misdemeanor, violation</li>
+<li>JURISDICTION_CODE` - Jurisdiction responsible for arrest. Jurisdiction codes 0(Patrol), 1(Transit) and 2(Housing) represent NYPD whilst codes 3 and more represent non NYPD jurisdictions</li>
+<li><code>AGE_GROUP</code> - Perpetrator’s age within a category</li>
+<li><code>PERP_SEX</code> - Perpetrator’s sex description</li>
+<li><code>PERP_RACE</code> - Perpetrator’s race description</li>
+</ul>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Be careful with the offense description; it may contain numerous codes that are a challenge to plot together. Consider trying the approach used for the precinct plot wherein we forced an explicit labeling of each 78 precincts.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level3">
+<h3 class="anchored" data-anchor-id="step-3">Step 3:</h3>
+<p>The formatting of the <code>Rmd</code> is unique and several elements are absolutely required to run. To start, the header - known as the YAML header - includes a title, author, date type and output type. The default for this week’s submission can indeed be <code>.html</code>. However, its strongly recommended to try to produce as a <code>.pdf</code> document instead. To do this however, those of you working within the macOS environment are going to need to install a package via the console to do this. Those in a Windows environment, you should be able to skip this and proceed to PDF output without the package dependency.</p>
+<blockquote class="blockquote">
+<p>If you would like to create PDF documents from R Markdown, you will need to have a LaTeX distribution installed. Although there are several traditional options including MiKTeX, MacTeX, and TeX Live, we recommend that R Markdown users install TinyTeX.</p>
+</blockquote>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>tinytex::install_tinytex()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To uninstall tinytex for some reason:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>tinytex::uninstall_tinytex()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will allow you to change the YAML header output and have a successful PDF document knitted from the <code>.Rmd</code> document.</p>
+<ul>
+<li>default as HTML
+<ul>
+<li><code>output: html_document</code></li>
+</ul></li>
+<li>output as PDF
+<ul>
+<li><code>output: pdf_document</code></li>
+</ul></li>
+</ul>
+<p>Another option is to place in the YAML header two options that allow for both PDF and HTML:</p>
+<p><code>pdf_document: default</code> <code>html_document: default</code></p>
+<p>For more documentation on the TinyTex package access <a href="https://bookdown.org/yihui/rmarkdown-cookbook/install-latex.html">HERE</a></p>
+</section>
+<section id="step-4" class="level3">
+<h3 class="anchored" data-anchor-id="step-4">Step 4:</h3>
+<p>In addition to the YAML header revisions to the output type, author and title, after you have produced your required one (1) EDA visualization, you can certainly continue to producing more plots and/or different types of plots. Also make sure to add in some context and your own thoughts. Consider the following prompts to help author your report:</p>
+<ul>
+<li>Of all the themes, why did you pick this one, or these particular ones?</li>
+<li>What surprised you the most in your EDA plot?<br>
+</li>
+<li>Are there current political or policy dimensions that are either supported or refuted by your EDA analysis? If so, can you expand on these and give reference for them?</li>
+<li>What other dimensions of the data do you wish address maybe at a later time?<br>
+</li>
+<li>Are there variables in the dataset that you are particularly interested in exploring further?</li>
+<li>What do you think are the benefits or the deficiencies of the dataset format that is available to the public, i.e.&nbsp;the dataset we are working with?</li>
+</ul>
+<p>The assignment 2 submission is due to Canvas on Thursday, September 11th, 2025 at 11:59pm. The format is either a <code>.html</code> or <code>.pdf</code> document. The pdf output is preferred; the <code>.html</code> output only if you are unable to get latex up and working on your machine. You will not be penalized for an <code>.html</code> format whatsoever - both will be accepted.</p>
+<section id="references" class="level4">
+<h4 class="anchored" data-anchor-id="references">References:</h4>
+<ul>
+<li><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science - Markdown and Rmd Guide</a></li>
+<li><a href="https://bookdown.org/yihui/rmarkdown-cookbook/install-latex.html">R Markdown Cookboos - install latex (tinytex)</a></li>
+</ul>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c2_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

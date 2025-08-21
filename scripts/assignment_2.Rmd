@@ -1,0 +1,58 @@
+---
+title: "assignment_2 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This is a Title/Header
+### This is a Title/Header but smaller
+#### This is a Title/Header but smaller
+
+This is body text.
+
+When you click the **Knit** button at the top a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
+
+You can embed R code chunks as follows. First we load the arrest data, then plot a variable via the barplot approach.
+
+```{r}
+#load the arrest data into the .Rmd document before proceeding to any plot development
+load("~/Desktop/assignment_2/results/arrestNYC.RData")
+```
+
+```{r}
+arrest_counts_boro <- table(arrestNYC$ARREST_BORO)
+barplot(arrest_counts_boro,
+        main = "Arrest in NYC by Arrest Borough (Jan-June 2025)",
+        xlab = "Borough",
+        ylab = "Count",
+)
+```
+
+Note that at the top for knitr options, echo is set to TRUE; this will result in the code chunks being printed as well as the executed output.  For your assignment, you can choose which you prefer: if set to FALSE, only the code chunk executed action will result without the code itself printing into the document.
+
+
+Review the cheatsheet for `.Rmd` for all the things that you can do with this type of R output.  Here are some examples that you might want to include in your assignment 2 deliverable:
+
+- [This is a link.](link url)
+- > block quotes
+- horizontal rule:
+
+---
+
+
+
+
+
+
+
+
+
+
+

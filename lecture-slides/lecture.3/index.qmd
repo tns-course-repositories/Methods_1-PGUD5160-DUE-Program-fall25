@@ -1,0 +1,303 @@
+---
+title: "Class 3 Lecture | Census, Data, and R: A Historical and Critical Overview"
+subtitle: "Fall 2025 | Instructor: Stephen Metts | [PGUD 5160 - CRN 2247](https://courses.newschool.edu/courses/PGUD5160/)"
+format:
+  revealjs: 
+    slide-number: true
+    theme: [index_files/custom.scss]
+    touch: true
+    incremental: true   
+resources:
+  - demo.pdf
+---
+
+## Census - Definition and Introduction
+
+- A **census** is an official, systematic count of a population
+  - In the 'modern' era, typically occurs every 10 years.
+  - Often includes information about age, sex, household, occuptation and other demgraphic details.
+  - It obsensible purpose is to create a 'data snapshot' of society, at a particular given time.
+  - Stands as a critical data ecosystem to understand society, plan resources, and make 'fair' political decisions.
+
+
+::: footer
+Source: [US Census Introduction](https://www.census.gov/programs-surveys/censuses.html)
+:::
+
+## Census - Definition and Introduction
+
+- Historical Context
+  - Babylon (c. 4000 BCE): counted land & livestock
+  - Rome (6th c. BCE → CE): population for taxes & military service
+  - China (Han Dynasty, 2 CE): ~60 million recorded in household registers
+  - 1790: First U.S. Census (3.9 million people)
+  - 1958+: UN promotes international census standards
+  - Today: ~200 countries conduct censuses
+  
+## Census - Definition and Introduction
+
+UN “Principles & Recommendations”
+
+| **Standard**              | **Definition**                                                                 | **Key Characteristic**                                |
+|----------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------|
+| Universality              | Every person in the country must be included.                                   | Complete population coverage.                        |
+| Individual Enumeration    | Each person is recorded separately, not just by household aggregate.            | Person-level detail (age, sex, education, etc.).      |
+
+::: footer
+Source: [unstats](https://unstats.un.org/unsd/demographic-social/Standards-and-Methods/files/Principles_and_Recommendations/Population-and-Housing-Censuses/Series_M67rev3-E.pdf)
+:::
+
+## Census - Definition and Introduction
+
+| **Standard**              | **Definition**                                                                 | **Key Characteristic**                                |
+|----------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------|
+| Simultaneity              | Data should refer to the same census reference date.                            | Avoids duplication/omission; ensures consistency.     |
+| Periodicity               | Census should be conducted at regular intervals.                                | Generally every 10 years (aligned with UN rounds).    |
+| Defined Territory         | Census must cover the entire geographic area of the country.                    | All administrative and settlement areas included.     |
+
+::: footer
+Source: [unstats](https://unstats.un.org/unsd/demographic-social/Standards-and-Methods/files/Principles_and_Recommendations/Population-and-Housing-Censuses/Series_M67rev3-E.pdf)
+:::
+
+## Census - Definition and Introduction
+
+| **Standard**              | **Definition**                                                                 | **Key Characteristic**                                |
+|----------------------------|---------------------------------------------------------------------------------|-------------------------------------------------------|
+| Small-Area Data           | Must provide data for small administrative/geographic units.                    | Enables local planning and spatial analysis.          |
+| Confidentiality           | Protection of personal information of respondents.                              | Ensures trust and participation.                      |
+
+::: footer
+Source: [unstats](https://unstats.un.org/unsd/demographic-social/Standards-and-Methods/files/Principles_and_Recommendations/Population-and-Housing-Censuses/Series_M67rev3-E.pdf)
+:::
+
+## US Census - Historical Overview
+  
+![](index_files/img/us_census_timeline_bw.png){.absolute top="200" left="50" width="1000"}
+
+
+## US Census - Historical Overview
+
+![](index_files/img/hollerith.punch.card.png){.absolute top="120" left="150" width="800"}
+
+
+::: footer
+Source: [Smithsonian](https://www.si.edu/spotlight/punch-cards/punch-cards-data-processing)
+:::
+
+## US Census - Historical Overview
+
+Hollerith punch cards
+
+- Data from ~63 million Americans was encoded onto punch cards; first deployment = 1890 Census
+
+- Each hole corresponded to a binary “yes/no” response—hole present = attribute true.
+
+- **Mechanism**: Metal pins dropped through holes; if a hole was present, the pin completed an electrical circuit.
+
+- **Accuracy**: Improved consistency by reducing clerical errors.
+
+## US Census - Historical Overview
+
+![](index_files/img/census.intro.1.png){.absolute top="100" left="50" width="1000"}
+
+::: footer
+Source: [Yale + Pew Research Center](https://onlineexhibits.library.yale.edu/s/Census/page/introduction)
+:::
+
+## US Census - Future
+
+![](index_files/img/census.intro.3.png){.absolute top="100" left="50" width="1000"}
+
+## US Census - Current 
+
+![](index_files/img/2020-decennial-envelop.png){.absolute top="100" left="50" width="800"}
+
+
+::: footer
+Source: [US Census](https://www2.census.gov/programs-surveys/decennial/2020/resources/mailings/Envelopes/Outgoing-Envelope_D-EO-F1_ES.pdf)
+:::
+
+## US Census - Current
+
+**US Census Decennial Themes**
+<br>
+<br>
+
+| **Category**              | **Details Collected**                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Personal Demographics** | Name, relationship, sex, age, date of birth, Hispanic origin, race (with detailed origin write-in) |
+| **Household Count**       | How many people live/stay there, and any additional occupants                                      |
+| **Housing Info**          | Type of unit and occupancy status                                                                  |
+
+## US Census - Current
+
+- **The U.S. Decennial Census** is a headcount of every person in the country, done once every 10 years. It collects only basic information (age, sex, race, Hispanic origin, relationship, and housing occupancy) to determine representation in Congress and the distribution of federal funds.
+
+- **The American Community Survey (ACS)**, by contrast, is an ongoing yearly survey of a sample of households. It collects much more detailed information—such as education, income, employment, housing costs, and commuting patterns—to provide up-to-date social, economic, and housing data for communities between censuses.
+
+## US Census - Current
+
+US Decennial Census vs American Community Survey (ACS)
+
+![](index_files/img/census_vs_acs_infographic_simple.png){.absolute top="250" left="90" width="800"}
+
+## US Census - Geographies
+
+Standard US Census Hierarchy
+
+![](index_files/img/census_ALL_area_geography.png){.absolute top="200" left="40" width="1000"}
+
+::: footer
+Source: [census.gov](https://www2.census.gov/training-workshops/2022/2022-09-08-mdat-presentation.pdf)
+:::
+
+## US Census - Geographies
+
+![](index_files/img/census.entities.png){.absolute top="150" left="250" width="550"}
+
+::: footer
+Source: [BMC](https://www.bmc.com/blogs/data-analytics-vs-data-analysis/)
+:::
+
+
+## US Census - Geographies
+
+![](index_files/img/census_small_area_geography.png){.absolute top="200" left="170" width="700"}
+
+::: footer
+Source: [census.gov](https://www2.census.gov/training-workshops/2022/2022-09-08-mdat-presentation.pdf)
+:::
+
+## US Census - Geographies
+
+![](index_files/img/structure_characteristics.png){.absolute top="150" left="0" width="1300"}
+
+## US Census - Geographies
+
+![](index_files/img/fips-diagram.png){.absolute top="80" left="250" width="500"}
+
+
+## US Census - Geographies
+
+![](index_files/img/fips-diagram1.png){.absolute top="120" left="220" width="600"}
+
+::: footer
+Source: [census.gov](https://www.census.gov/programs-surveys/geography/guidance/geo-identifiers.html)
+:::
+
+## US Census - Geographies
+
+![](index_files/img/fips-diagram3.png){.absolute top="120" left="80" width="850"}
+
+::: footer
+Source: [tidycensus - basic usage](https://walker-data.com/tidycensus/articles/basic-usage.html)
+:::
+
+## US Census - Limitations & Biases
+
+| Limitation                       | Brief Definition                                                                                                                                                   |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Undercounting & Overcounting** | Some groups are systematically missed (renters, immigrants, children under 5), while others may be counted more than once (college students, affluent homeowners). |
+| **Snapshot in Time**             | Census occurs only once every 10 years, so data quickly becomes outdated in rapidly changing areas.                                                                |
+                                                 
+
+## US Census - Limitations & Biases
+
+| Limitation                       | Brief Definition                                                                                                                                                   |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Limited Detail**               | Collects only basic demographic and housing data; richer socioeconomic information (income, education, commuting) comes from the ACS.                              |
+| **Operational Constraints**      | Challenges include mail and internet response rates, pandemic disruptions (2020), and uneven follow-up resources.                                                  |
+
+## US Census - Limitations & Biases
+
+**'Hard to Count' Census Geographies**
+
+![](index_files/img/HTC1.png){.absolute top="180" left="30" width="1000"}
+
+::: footer
+Source: [HTC2020](https://www.censushardtocountmaps2020.us)
+:::
+
+## US Census - Limitations & Biases
+
+**'Hard to Count' Census Geographies**
+
+![](index_files/img/HTC2.png){.absolute top="180" left="30" width="1000"}
+
+::: footer
+Source: [HTC2020](https://www.censushardtocountmaps2020.us)
+:::
+
+## US Census - Limitations & Biases
+
+**'Hard to Count' Census Geographies**
+
+![](index_files/img/HTC3.png){.absolute top="180" left="30" width="1000"}
+
+::: footer
+Source: [HTC2020](https://www.censushardtocountmaps2020.us)
+:::
+
+## US Census - Limitations & Biases
+
+| Bias                                   | Brief Definition                                                                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Racial & Ethnic Bias**               | Categories may not align with lived identities; historically misclassified groups (e.g., multiracial, MENA populations).                                           |
+| **Immigration & Citizenship Concerns** | Fear of enforcement or exclusion leads immigrant communities to under-participate, even without a citizenship question.                                            |
+| **Geographic Bias**                    | Rural, tribal, and transient urban populations are harder to count, leading to gaps.                                                                               |
+
+## US Census - Limitations & Biases
+
+| Bias                                   | Brief Definition                                                                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |                                                                      
+| **Digital Divide Bias**                | The internet-first 2020 Census disadvantaged those with limited broadband or digital literacy (rural, elderly, low-income groups).                                 |
+| **Political Bias & Manipulation Risk** | Because census data drives representation and funding, political actors may influence definitions, redistricting, or population counts (e.g., prison populations). |
+
+## US Census - Information & Understanding
+
+![](index_files/img/census-table-gov.png){.absolute top="200" left="120" width="800"}
+
+::: footer
+Source: [US Census](https://data.census.gov/table)
+:::
+
+## US Census - Information & Understanding
+
+```{{r}}
+# Load required package
+library(tidycensus)
+
+# Set your Census API key if not already set (replace with your own key)
+# census_api_key("YOUR_KEY_HERE", install = TRUE)
+
+# List all available variables for the 2020 Decennial Census
+# You can specify "pl" (Public Law 94-171 Redistricting) or "dhc" (Demographic and Housing Characteristics)
+census_vars <- load_variables(2020, "pl", cache = TRUE)
+
+# Preview the first rows
+head(census_vars)
+
+# If you want to view in a browsable data frame
+View(census_vars)
+```
+
+## US Census - Information & Understanding
+
+![](index_files/img/decennial-diff-table.png){.absolute top="150" left="200" width="500"}
+
+## US Census - Information & Understanding
+
+![](index_files/img/ipums.png){.absolute top="250" left="20" width="1200"}
+
+::: footer
+Source: [ipums](https://usa.ipums.org/usa/)
+:::
+
+## US Census - Information & Understanding
+
+![](index_files/img/ipums-gis.png){.absolute top="250" left="20" width="1200"}
+
+::: footer
+Source: [ipums (NHGIS)](https://www.nhgis.org/)
+:::
+

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-02">
+<meta name="dcterms.date" content="2025-09-03">
 
 <title>Class 3 Lab: Working with US Census Decennial 2020 Data</title>
 <style>
@@ -136,7 +136,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 2, 2025</p>
+      <p class="date">September 3, 2025</p>
     </div>
   </div>
   
@@ -338,6 +338,24 @@ Tip
 <span id="cb11-3"><a href="#cb11-3"></a>                          year = 2020,</span>
 <span id="cb11-4"><a href="#cb11-4"></a>                          sumfile = "pl"</span>
 <span id="cb11-5"><a href="#cb11-5"></a>                          )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>census calls via <code>tidycensus</code> can fail - particularly on wifi vs more stable ethernet connections - especially when the geometry coupled with the data is declared. In this lab, we are calling the data <em>without</em> geometry so the chances are lower that a failed return will result. However, if errors are reported, and the data is unable to return, the following script and backup data endpoint can be utilized to load the lab backup data <em>after</em> it is uncompressed.</p>
+</div>
+</div>
+<ul>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_3_backup-data.zip">lab 3 backup data (compressed)</a></p></li>
+<li><p>code line for loading uncompressed data; use setwd() as needed:</p></li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="#cb12-1"></a>load("ny_housing.RData"); load("ny_population.RData"); load("pop_data.RData"); load("race.RData"); load("urban_rural.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -352,7 +370,7 @@ Tip
 </div>
 </div>
 <p>Follow the call by viewing the head:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="#cb12-1"></a>head(pop_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a href="#cb13-1"></a>head(pop_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c3_lab_files/img/3_head.png" class="img-fluid figure-img"></p>
@@ -363,11 +381,11 @@ Tip
 <blockquote class="blockquote">
 <p>The <code>%&gt;%</code> operator, also known as the pipe operator, is a widely used feature in the R programming language, particularly within the Tidyverse ecosystem. It originates from the <code>magrittr</code> package. Its primary function is to chain together a sequence of operations by taking the output of one function or expression and passing it as the first argument to the next function in the chain. This creates a more readable and intuitive flow for data transformations and analyses, resembling a “pipeline” of operations.</p>
 </blockquote>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a href="#cb13-1"></a>pop_data %&gt;%</span>
-<span id="cb13-2"><a href="#cb13-2"></a>  ggplot(aes(x = reorder(NAME, value), y = value)) +</span>
-<span id="cb13-3"><a href="#cb13-3"></a>  geom_col() +</span>
-<span id="cb13-4"><a href="#cb13-4"></a>  coord_flip() +</span>
-<span id="cb13-5"><a href="#cb13-5"></a>  labs(title="Population by State, 2020") </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>pop_data %&gt;%</span>
+<span id="cb14-2"><a href="#cb14-2"></a>  ggplot(aes(x = reorder(NAME, value), y = value)) +</span>
+<span id="cb14-3"><a href="#cb14-3"></a>  geom_col() +</span>
+<span id="cb14-4"><a href="#cb14-4"></a>  coord_flip() +</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  labs(title="Population by State, 2020") </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Next, we will make a call on the <code>dhc</code> file which has a rural and urban designation:</p>
 <blockquote class="blockquote">
 <p>For the 2020 Census, an urban area is a densely settled territory that meets specific population and housing density thresholds. A core cluster of census blocks must encompass one of the following to qualify:</p>
@@ -381,11 +399,11 @@ Tip
 <blockquote class="blockquote">
 <p>Urban areas can include adjacent land uses, like residential or commercial areas, as long as they meet the required density criteria.</p>
 </blockquote>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>urban_rural &lt;- get_decennial(</span>
-<span id="cb14-2"><a href="#cb14-2"></a>  geography = "us",</span>
-<span id="cb14-3"><a href="#cb14-3"></a>  variables = c("P2_002N","P2_003N"),</span>
-<span id="cb14-4"><a href="#cb14-4"></a>  year = 2020,</span>
-<span id="cb14-5"><a href="#cb14-5"></a>  sumfile = "dhc")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a href="#cb15-1"></a>urban_rural &lt;- get_decennial(</span>
+<span id="cb15-2"><a href="#cb15-2"></a>  geography = "us",</span>
+<span id="cb15-3"><a href="#cb15-3"></a>  variables = c("P2_002N","P2_003N"),</span>
+<span id="cb15-4"><a href="#cb15-4"></a>  year = 2020,</span>
+<span id="cb15-5"><a href="#cb15-5"></a>  sumfile = "dhc")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c3_lab_files/img/3_head-urban-rural.png" class="img-fluid figure-img"></p>
@@ -393,54 +411,54 @@ Tip
 </figure>
 </div>
 <p>Next, we pass <code>urban_rural</code> <code>tibble</code> to a <code>mutate</code> function to rename the variables to <code>Urban</code> and <code>Rural</code>, then to <code>ggplot</code> with parameters for the plotting:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a href="#cb15-1"></a>urban_rural %&gt;%</span>
-<span id="cb15-2"><a href="#cb15-2"></a>  mutate(name = recode(variable, P2_002N = "Urban", P2_003N = "Rural")) |&gt;</span>
-<span id="cb15-3"><a href="#cb15-3"></a>  ggplot(aes(x = name, y = value)) +</span>
-<span id="cb15-4"><a href="#cb15-4"></a>  geom_col() +</span>
-<span id="cb15-5"><a href="#cb15-5"></a>  labs(title = "Rural vs Urban Population (2020)", x = NULL, y = "Population") +</span>
-<span id="cb15-6"><a href="#cb15-6"></a>  theme_minimal() + scale_y_continuous(labels = scales::comma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a href="#cb16-1"></a>urban_rural %&gt;%</span>
+<span id="cb16-2"><a href="#cb16-2"></a>  mutate(name = recode(variable, P2_002N = "Urban", P2_003N = "Rural")) |&gt;</span>
+<span id="cb16-3"><a href="#cb16-3"></a>  ggplot(aes(x = name, y = value)) +</span>
+<span id="cb16-4"><a href="#cb16-4"></a>  geom_col() +</span>
+<span id="cb16-5"><a href="#cb16-5"></a>  labs(title = "Rural vs Urban Population (2020)", x = NULL, y = "Population") +</span>
+<span id="cb16-6"><a href="#cb16-6"></a>  theme_minimal() + scale_y_continuous(labels = scales::comma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="step-6" class="level4">
 <h4 class="anchored" data-anchor-id="step-6">Step 6:</h4>
 <p>With some practice with first calling census data and then plotting the results, we will move along to another geography at the state level.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a href="#cb16-1"></a>ny_population &lt;- get_decennial(</span>
-<span id="cb16-2"><a href="#cb16-2"></a>  geography = "county",</span>
-<span id="cb16-3"><a href="#cb16-3"></a>  variables = "P1_001N", # Total Population</span>
-<span id="cb16-4"><a href="#cb16-4"></a>  state = "NY",</span>
-<span id="cb16-5"><a href="#cb16-5"></a>  year = 2020, #desired decennial year</span>
-<span id="cb16-6"><a href="#cb16-6"></a>  geometry = FALSE #no need for spatial data for a bar chart</span>
-<span id="cb16-7"><a href="#cb16-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a href="#cb17-1"></a>ny_population &lt;- get_decennial(</span>
+<span id="cb17-2"><a href="#cb17-2"></a>  geography = "county",</span>
+<span id="cb17-3"><a href="#cb17-3"></a>  variables = "P1_001N", # Total Population</span>
+<span id="cb17-4"><a href="#cb17-4"></a>  state = "NY",</span>
+<span id="cb17-5"><a href="#cb17-5"></a>  year = 2020, #desired decennial year</span>
+<span id="cb17-6"><a href="#cb17-6"></a>  geometry = FALSE #no need for spatial data for a bar chart</span>
+<span id="cb17-7"><a href="#cb17-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We will clean up the resulting county names with the following code. Note here that we utilize <code>$</code> to first declare the dataframe, then the specific column upon which to run the code. this code substitutes the declaration with ““, or rather nothing, and just returns the resulting county name alone:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a href="#cb17-1"></a>ny_population$NAME &lt;- gsub(" County, New York", "", ny_population$NAME)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally, for the population value, we reorder this value from large to small (decreasing) for a size-sequence plot:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a href="#cb18-1"></a>ny_population$NAME &lt;- gsub(" County, New York", "", ny_population$NAME)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, for the population value, we reorder this value from large to small (decreasing) for a size-sequence plot:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a href="#cb19-1"></a>ny_population$NAME &lt;- gsub(" County, New York", "", ny_population$NAME)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now we are ready to plot, this time with just base R, not utilizing our installed packages:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a href="#cb19-1"></a>barplot(</span>
-<span id="cb19-2"><a href="#cb19-2"></a>  height = ny_population$value,</span>
-<span id="cb19-3"><a href="#cb19-3"></a>  names.arg = ny_population$NAME,</span>
-<span id="cb19-4"><a href="#cb19-4"></a>  main = "Total Population of New York State Counties (2020 Census)",</span>
-<span id="cb19-5"><a href="#cb19-5"></a>  xlab = "County",</span>
-<span id="cb19-6"><a href="#cb19-6"></a>  ylab = "Total Population",</span>
-<span id="cb19-7"><a href="#cb19-7"></a>  col = "skyblue", #optional: Set bar color</span>
-<span id="cb19-8"><a href="#cb19-8"></a>  las = 2, #rotate x-axis labels vertically for readability</span>
-<span id="cb19-9"><a href="#cb19-9"></a>  cex.names = 0.7 #adjust label size if needed</span>
-<span id="cb19-10"><a href="#cb19-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a href="#cb20-1"></a>barplot(</span>
+<span id="cb20-2"><a href="#cb20-2"></a>  height = ny_population$value,</span>
+<span id="cb20-3"><a href="#cb20-3"></a>  names.arg = ny_population$NAME,</span>
+<span id="cb20-4"><a href="#cb20-4"></a>  main = "Total Population of New York State Counties (2020 Census)",</span>
+<span id="cb20-5"><a href="#cb20-5"></a>  xlab = "County",</span>
+<span id="cb20-6"><a href="#cb20-6"></a>  ylab = "Total Population",</span>
+<span id="cb20-7"><a href="#cb20-7"></a>  col = "skyblue", #optional: Set bar color</span>
+<span id="cb20-8"><a href="#cb20-8"></a>  las = 2, #rotate x-axis labels vertically for readability</span>
+<span id="cb20-9"><a href="#cb20-9"></a>  cex.names = 0.7 #adjust label size if needed</span>
+<span id="cb20-10"><a href="#cb20-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Next, we can utilize the same input data, but create a new version of the plot using <code>ggplot</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a href="#cb20-1"></a>ggplot(ny_population, aes(x = reorder(NAME, value), y = value)) +</span>
-<span id="cb20-2"><a href="#cb20-2"></a>  geom_col(fill = "#56B4E9") +</span>
-<span id="cb20-3"><a href="#cb20-3"></a>  coord_flip() +</span>
-<span id="cb20-4"><a href="#cb20-4"></a>  scale_y_continuous(labels = scales::comma) + # Format y-axis with commas</span>
-<span id="cb20-5"><a href="#cb20-5"></a>  labs(</span>
-<span id="cb20-6"><a href="#cb20-6"></a>    title = "New York County Populations (2020 Decennial Census)",</span>
-<span id="cb20-7"><a href="#cb20-7"></a>    subtitle = "Source: U.S. Census Bureau",</span>
-<span id="cb20-8"><a href="#cb20-8"></a>    x = "County",</span>
-<span id="cb20-9"><a href="#cb20-9"></a>    y = "Total Population"</span>
-<span id="cb20-10"><a href="#cb20-10"></a>  ) +</span>
-<span id="cb20-11"><a href="#cb20-11"></a>  theme_classic() +</span>
-<span id="cb20-12"><a href="#cb20-12"></a>  theme(</span>
-<span id="cb20-13"><a href="#cb20-13"></a>    plot.title = element_text(face = "bold"),</span>
-<span id="cb20-14"><a href="#cb20-14"></a>    axis.text.y = element_text(size = 8)</span>
-<span id="cb20-15"><a href="#cb20-15"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1"><a href="#cb21-1"></a>ggplot(ny_population, aes(x = reorder(NAME, value), y = value)) +</span>
+<span id="cb21-2"><a href="#cb21-2"></a>  geom_col(fill = "#56B4E9") +</span>
+<span id="cb21-3"><a href="#cb21-3"></a>  coord_flip() +</span>
+<span id="cb21-4"><a href="#cb21-4"></a>  scale_y_continuous(labels = scales::comma) + # Format y-axis with commas</span>
+<span id="cb21-5"><a href="#cb21-5"></a>  labs(</span>
+<span id="cb21-6"><a href="#cb21-6"></a>    title = "New York County Populations (2020 Decennial Census)",</span>
+<span id="cb21-7"><a href="#cb21-7"></a>    subtitle = "Source: U.S. Census Bureau",</span>
+<span id="cb21-8"><a href="#cb21-8"></a>    x = "County",</span>
+<span id="cb21-9"><a href="#cb21-9"></a>    y = "Total Population"</span>
+<span id="cb21-10"><a href="#cb21-10"></a>  ) +</span>
+<span id="cb21-11"><a href="#cb21-11"></a>  theme_classic() +</span>
+<span id="cb21-12"><a href="#cb21-12"></a>  theme(</span>
+<span id="cb21-13"><a href="#cb21-13"></a>    plot.title = element_text(face = "bold"),</span>
+<span id="cb21-14"><a href="#cb21-14"></a>    axis.text.y = element_text(size = 8)</span>
+<span id="cb21-15"><a href="#cb21-15"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="step-7" class="level4">
 <h4 class="anchored" data-anchor-id="step-7">Step 7:</h4>
@@ -461,66 +479,66 @@ Tip
 </figure>
 </div>
 <p>First we define and name the columns is a character vector:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1"><a href="#cb21-1"></a>race_vars &lt;- c(</span>
-<span id="cb21-2"><a href="#cb21-2"></a>  Total = "P1_001N",</span>
-<span id="cb21-3"><a href="#cb21-3"></a>  White = "P1_003N",</span>
-<span id="cb21-4"><a href="#cb21-4"></a>  Black = "P1_004N",</span>
-<span id="cb21-5"><a href="#cb21-5"></a>  American_Indian = "P1_005N",</span>
-<span id="cb21-6"><a href="#cb21-6"></a>  Asian = "P1_006N",</span>
-<span id="cb21-7"><a href="#cb21-7"></a>  Pacific_Islander = "P1_007N",</span>
-<span id="cb21-8"><a href="#cb21-8"></a>  Other_Race = "P1_008N",</span>
-<span id="cb21-9"><a href="#cb21-9"></a>  Two_or_More_Races = "P1_009N"</span>
-<span id="cb21-10"><a href="#cb21-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb22-1"><a href="#cb22-1"></a>race_vars &lt;- c(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>  Total = "P1_001N",</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  White = "P1_003N",</span>
+<span id="cb22-4"><a href="#cb22-4"></a>  Black = "P1_004N",</span>
+<span id="cb22-5"><a href="#cb22-5"></a>  American_Indian = "P1_005N",</span>
+<span id="cb22-6"><a href="#cb22-6"></a>  Asian = "P1_006N",</span>
+<span id="cb22-7"><a href="#cb22-7"></a>  Pacific_Islander = "P1_007N",</span>
+<span id="cb22-8"><a href="#cb22-8"></a>  Other_Race = "P1_008N",</span>
+<span id="cb22-9"><a href="#cb22-9"></a>  Two_or_More_Races = "P1_009N"</span>
+<span id="cb22-10"><a href="#cb22-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Next we declare a new dataframe <code>race</code>. Note that we choose the <code>wide</code> output which is part/parcel of the tidyverse optimized structure:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb22-1"><a href="#cb22-1"></a>race &lt;- get_decennial(</span>
-<span id="cb22-2"><a href="#cb22-2"></a>  geography = "county",</span>
-<span id="cb22-3"><a href="#cb22-3"></a>  variables = race_vars,</span>
-<span id="cb22-4"><a href="#cb22-4"></a>  state = "NY",</span>
-<span id="cb22-5"><a href="#cb22-5"></a>  year = 2020,</span>
-<span id="cb22-6"><a href="#cb22-6"></a>  sumfile = "pl", # Specify the Redistricting Summary File</span>
-<span id="cb22-7"><a href="#cb22-7"></a>  output = "wide" # Get data in a wide format</span>
-<span id="cb22-8"><a href="#cb22-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb23-1"><a href="#cb23-1"></a>race &lt;- get_decennial(</span>
+<span id="cb23-2"><a href="#cb23-2"></a>  geography = "county",</span>
+<span id="cb23-3"><a href="#cb23-3"></a>  variables = race_vars,</span>
+<span id="cb23-4"><a href="#cb23-4"></a>  state = "NY",</span>
+<span id="cb23-5"><a href="#cb23-5"></a>  year = 2020,</span>
+<span id="cb23-6"><a href="#cb23-6"></a>  sumfile = "pl", # Specify the Redistricting Summary File</span>
+<span id="cb23-7"><a href="#cb23-7"></a>  output = "wide" # Get data in a wide format</span>
+<span id="cb23-8"><a href="#cb23-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now we filter down all NY state counties to just the 5 NYC boroughs using the <code>GEOID</code> specific to each borough:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb23-1"><a href="#cb23-1"></a>nyc_race &lt;- race %&gt;%</span>
-<span id="cb23-2"><a href="#cb23-2"></a>  filter(GEOID %in% c("36005","36047","36061","36081","36085"))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb24-1"><a href="#cb24-1"></a>nyc_race &lt;- race %&gt;%</span>
+<span id="cb24-2"><a href="#cb24-2"></a>  filter(GEOID %in% c("36005","36047","36061","36081","36085"))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The next code chunk does a fair amount of work by first calculating percentages for each race category; create a new naming variable for the boroughs for legibility in the final plot, also setting and ordering the race names to the factor format:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb24-1"><a href="#cb24-1"></a>nyc_race_pct &lt;- nyc_race %&gt;%</span>
-<span id="cb24-2"><a href="#cb24-2"></a>  # Select relevant columns and calculate the percentage for each race</span>
-<span id="cb24-3"><a href="#cb24-3"></a>  mutate(</span>
-<span id="cb24-4"><a href="#cb24-4"></a>    White_pct = White / Total,</span>
-<span id="cb24-5"><a href="#cb24-5"></a>    Black_pct = Black / Total,</span>
-<span id="cb24-6"><a href="#cb24-6"></a>    American_Indian_pct = American_Indian / Total,</span>
-<span id="cb24-7"><a href="#cb24-7"></a>    Asian_pct = Asian / Total,</span>
-<span id="cb24-8"><a href="#cb24-8"></a>    Pacific_Islander_pct = Pacific_Islander / Total,</span>
-<span id="cb24-9"><a href="#cb24-9"></a>    Other_Race_pct = Other_Race / Total,</span>
-<span id="cb24-10"><a href="#cb24-10"></a>    Two_or_More_Races_pct = Two_or_More_Races / Total</span>
-<span id="cb24-11"><a href="#cb24-11"></a>  ) %&gt;%</span>
-<span id="cb24-12"><a href="#cb24-12"></a>  # Select only the borough name and percentage columns</span>
-<span id="cb24-13"><a href="#cb24-13"></a>  select(NAME, ends_with("_pct")) %&gt;%</span>
-<span id="cb24-14"><a href="#cb24-14"></a>  # Reshape from wide to long format for plotting</span>
-<span id="cb24-15"><a href="#cb24-15"></a>  pivot_longer(</span>
-<span id="cb24-16"><a href="#cb24-16"></a>    cols = ends_with("_pct"),</span>
-<span id="cb24-17"><a href="#cb24-17"></a>    names_to = "Race_Category",</span>
-<span id="cb24-18"><a href="#cb24-18"></a>    values_to = "Percentage"</span>
-<span id="cb24-19"><a href="#cb24-19"></a>  ) %&gt;%</span>
-<span id="cb24-20"><a href="#cb24-20"></a>  # Rename NAME column to Borough and clean up the Race_Category names</span>
-<span id="cb24-21"><a href="#cb24-21"></a>  mutate(</span>
-<span id="cb24-22"><a href="#cb24-22"></a>    Borough = case_when(</span>
-<span id="cb24-23"><a href="#cb24-23"></a>      NAME == "Bronx County, New York" ~ "The Bronx",</span>
-<span id="cb24-24"><a href="#cb24-24"></a>      NAME == "Kings County, New York" ~ "Brooklyn",</span>
-<span id="cb24-25"><a href="#cb24-25"></a>      NAME == "New York County, New York" ~ "Manhattan",</span>
-<span id="cb24-26"><a href="#cb24-26"></a>      NAME == "Queens County, New York" ~ "Queens",</span>
-<span id="cb24-27"><a href="#cb24-27"></a>      NAME == "Richmond County, New York" ~ "Staten Island",</span>
-<span id="cb24-28"><a href="#cb24-28"></a>      TRUE ~ NAME</span>
-<span id="cb24-29"><a href="#cb24-29"></a>    ),</span>
-<span id="cb24-30"><a href="#cb24-30"></a>    Race_Category = str_replace(Race_Category, "_pct", "") %&gt;%</span>
-<span id="cb24-31"><a href="#cb24-31"></a>      str_replace_all("_", " ") %&gt;%</span>
-<span id="cb24-32"><a href="#cb24-32"></a>      # Reorder the levels of race categories</span>
-<span id="cb24-33"><a href="#cb24-33"></a>      factor(levels = c(</span>
-<span id="cb24-34"><a href="#cb24-34"></a>        "White", "Black", "Asian", "American Indian", "Pacific Islander",</span>
-<span id="cb24-35"><a href="#cb24-35"></a>        "Other Race", "Two or More Races"</span>
-<span id="cb24-36"><a href="#cb24-36"></a>      ))</span>
-<span id="cb24-37"><a href="#cb24-37"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb25-1"><a href="#cb25-1"></a>nyc_race_pct &lt;- nyc_race %&gt;%</span>
+<span id="cb25-2"><a href="#cb25-2"></a>  # Select relevant columns and calculate the percentage for each race</span>
+<span id="cb25-3"><a href="#cb25-3"></a>  mutate(</span>
+<span id="cb25-4"><a href="#cb25-4"></a>    White_pct = White / Total,</span>
+<span id="cb25-5"><a href="#cb25-5"></a>    Black_pct = Black / Total,</span>
+<span id="cb25-6"><a href="#cb25-6"></a>    American_Indian_pct = American_Indian / Total,</span>
+<span id="cb25-7"><a href="#cb25-7"></a>    Asian_pct = Asian / Total,</span>
+<span id="cb25-8"><a href="#cb25-8"></a>    Pacific_Islander_pct = Pacific_Islander / Total,</span>
+<span id="cb25-9"><a href="#cb25-9"></a>    Other_Race_pct = Other_Race / Total,</span>
+<span id="cb25-10"><a href="#cb25-10"></a>    Two_or_More_Races_pct = Two_or_More_Races / Total</span>
+<span id="cb25-11"><a href="#cb25-11"></a>  ) %&gt;%</span>
+<span id="cb25-12"><a href="#cb25-12"></a>  # Select only the borough name and percentage columns</span>
+<span id="cb25-13"><a href="#cb25-13"></a>  select(NAME, ends_with("_pct")) %&gt;%</span>
+<span id="cb25-14"><a href="#cb25-14"></a>  # Reshape from wide to long format for plotting</span>
+<span id="cb25-15"><a href="#cb25-15"></a>  pivot_longer(</span>
+<span id="cb25-16"><a href="#cb25-16"></a>    cols = ends_with("_pct"),</span>
+<span id="cb25-17"><a href="#cb25-17"></a>    names_to = "Race_Category",</span>
+<span id="cb25-18"><a href="#cb25-18"></a>    values_to = "Percentage"</span>
+<span id="cb25-19"><a href="#cb25-19"></a>  ) %&gt;%</span>
+<span id="cb25-20"><a href="#cb25-20"></a>  # Rename NAME column to Borough and clean up the Race_Category names</span>
+<span id="cb25-21"><a href="#cb25-21"></a>  mutate(</span>
+<span id="cb25-22"><a href="#cb25-22"></a>    Borough = case_when(</span>
+<span id="cb25-23"><a href="#cb25-23"></a>      NAME == "Bronx County, New York" ~ "The Bronx",</span>
+<span id="cb25-24"><a href="#cb25-24"></a>      NAME == "Kings County, New York" ~ "Brooklyn",</span>
+<span id="cb25-25"><a href="#cb25-25"></a>      NAME == "New York County, New York" ~ "Manhattan",</span>
+<span id="cb25-26"><a href="#cb25-26"></a>      NAME == "Queens County, New York" ~ "Queens",</span>
+<span id="cb25-27"><a href="#cb25-27"></a>      NAME == "Richmond County, New York" ~ "Staten Island",</span>
+<span id="cb25-28"><a href="#cb25-28"></a>      TRUE ~ NAME</span>
+<span id="cb25-29"><a href="#cb25-29"></a>    ),</span>
+<span id="cb25-30"><a href="#cb25-30"></a>    Race_Category = str_replace(Race_Category, "_pct", "") %&gt;%</span>
+<span id="cb25-31"><a href="#cb25-31"></a>      str_replace_all("_", " ") %&gt;%</span>
+<span id="cb25-32"><a href="#cb25-32"></a>      # Reorder the levels of race categories</span>
+<span id="cb25-33"><a href="#cb25-33"></a>      factor(levels = c(</span>
+<span id="cb25-34"><a href="#cb25-34"></a>        "White", "Black", "Asian", "American Indian", "Pacific Islander",</span>
+<span id="cb25-35"><a href="#cb25-35"></a>        "Other Race", "Two or More Races"</span>
+<span id="cb25-36"><a href="#cb25-36"></a>      ))</span>
+<span id="cb25-37"><a href="#cb25-37"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Before proceeding to the plot, we’ll review the resulting structure:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -529,22 +547,22 @@ Tip
 </figure>
 </div>
 <p>Next, the plot will be performed:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb25-1"><a href="#cb25-1"></a>ggplot(nyc_race_pct, aes(x = Borough, y = Percentage, fill = Race_Category)) +</span>
-<span id="cb25-2"><a href="#cb25-2"></a>  geom_bar(stat = "identity", position = "fill") +</span>
-<span id="cb25-3"><a href="#cb25-3"></a>  labs(</span>
-<span id="cb25-4"><a href="#cb25-4"></a>    title = "Racial Composition of NYC Boroughs (2020 Census)",</span>
-<span id="cb25-5"><a href="#cb25-5"></a>    x = "Borough",</span>
-<span id="cb25-6"><a href="#cb25-6"></a>    y = "Percentage",</span>
-<span id="cb25-7"><a href="#cb25-7"></a>    fill = "Race Category",</span>
-<span id="cb25-8"><a href="#cb25-8"></a>    caption = "Source: 2020 US Decennial Census, PL 94-171"</span>
-<span id="cb25-9"><a href="#cb25-9"></a>  ) +</span>
-<span id="cb25-10"><a href="#cb25-10"></a>  scale_y_continuous(labels = scales::percent) +</span>
-<span id="cb25-11"><a href="#cb25-11"></a>  theme_fivethirtyeight() + # Use a clean, readable theme</span>
-<span id="cb25-12"><a href="#cb25-12"></a>  theme(</span>
-<span id="cb25-13"><a href="#cb25-13"></a>    plot.title = element_text(hjust = 0.5, face = "bold"),</span>
-<span id="cb25-14"><a href="#cb25-14"></a>    axis.title.y = element_text(face = "bold"),</span>
-<span id="cb25-15"><a href="#cb25-15"></a>    legend.position = "right"</span>
-<span id="cb25-16"><a href="#cb25-16"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb26-1"><a href="#cb26-1"></a>ggplot(nyc_race_pct, aes(x = Borough, y = Percentage, fill = Race_Category)) +</span>
+<span id="cb26-2"><a href="#cb26-2"></a>  geom_bar(stat = "identity", position = "fill") +</span>
+<span id="cb26-3"><a href="#cb26-3"></a>  labs(</span>
+<span id="cb26-4"><a href="#cb26-4"></a>    title = "Racial Composition of NYC Boroughs (2020 Census)",</span>
+<span id="cb26-5"><a href="#cb26-5"></a>    x = "Borough",</span>
+<span id="cb26-6"><a href="#cb26-6"></a>    y = "Percentage",</span>
+<span id="cb26-7"><a href="#cb26-7"></a>    fill = "Race Category",</span>
+<span id="cb26-8"><a href="#cb26-8"></a>    caption = "Source: 2020 US Decennial Census, PL 94-171"</span>
+<span id="cb26-9"><a href="#cb26-9"></a>  ) +</span>
+<span id="cb26-10"><a href="#cb26-10"></a>  scale_y_continuous(labels = scales::percent) +</span>
+<span id="cb26-11"><a href="#cb26-11"></a>  theme_fivethirtyeight() + # Use a clean, readable theme</span>
+<span id="cb26-12"><a href="#cb26-12"></a>  theme(</span>
+<span id="cb26-13"><a href="#cb26-13"></a>    plot.title = element_text(hjust = 0.5, face = "bold"),</span>
+<span id="cb26-14"><a href="#cb26-14"></a>    axis.title.y = element_text(face = "bold"),</span>
+<span id="cb26-15"><a href="#cb26-15"></a>    legend.position = "right"</span>
+<span id="cb26-16"><a href="#cb26-16"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c3_lab_files/img/3-plot.png" class="img-fluid figure-img"></p>
@@ -552,8 +570,8 @@ Tip
 </figure>
 </div>
 <p>With main section of the <code>lab_3</code> complete, we can save any of the dataframes that have been developed for use at a later point. The following code shows both saving the reloading the NY county raw race data prior to wrangling and reshaping that dataframe.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb26-1"><a href="#cb26-1"></a>save(race, file = "results/race.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb27-1"><a href="#cb27-1"></a>load("results/race.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb27-1"><a href="#cb27-1"></a>save(race, file = "results/race.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb28-1"><a href="#cb28-1"></a>load("results/race.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="extra-section---housing-data-time-permitting" class="level2">
@@ -581,36 +599,36 @@ Tip
 <blockquote class="blockquote">
 <p>Converts data from long to wide format. It takes a column containing measurement types and a column containing values, and “pivots” them to create new columns for each measurement type, with the corresponding values filling those columns.</p>
 </blockquote>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb28-1"><a href="#cb28-1"></a>ny_housing &lt;- get_decennial(</span>
-<span id="cb28-2"><a href="#cb28-2"></a>  geography = "county",</span>
-<span id="cb28-3"><a href="#cb28-3"></a>  variables = c(</span>
-<span id="cb28-4"><a href="#cb28-4"></a>    occupied = "H1_002N",</span>
-<span id="cb28-5"><a href="#cb28-5"></a>    vacant   = "H1_003N"</span>
-<span id="cb28-6"><a href="#cb28-6"></a>  ),</span>
-<span id="cb28-7"><a href="#cb28-7"></a>  state = "NY",</span>
-<span id="cb28-8"><a href="#cb28-8"></a>  year = 2020,</span>
-<span id="cb28-9"><a href="#cb28-9"></a>  output = "wide")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb29-1"><a href="#cb29-1"></a>ny_housing &lt;- get_decennial(</span>
+<span id="cb29-2"><a href="#cb29-2"></a>  geography = "county",</span>
+<span id="cb29-3"><a href="#cb29-3"></a>  variables = c(</span>
+<span id="cb29-4"><a href="#cb29-4"></a>    occupied = "H1_002N",</span>
+<span id="cb29-5"><a href="#cb29-5"></a>    vacant   = "H1_003N"</span>
+<span id="cb29-6"><a href="#cb29-6"></a>  ),</span>
+<span id="cb29-7"><a href="#cb29-7"></a>  state = "NY",</span>
+<span id="cb29-8"><a href="#cb29-8"></a>  year = 2020,</span>
+<span id="cb29-9"><a href="#cb29-9"></a>  output = "wide")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Next, the data is reshaped to the <code>long</code> format prior to plotting:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb29-1"><a href="#cb29-1"></a>ny_housing_long &lt;- ny_housing %&gt;%</span>
-<span id="cb29-2"><a href="#cb29-2"></a>  pivot_longer(</span>
-<span id="cb29-3"><a href="#cb29-3"></a>    cols = c(occupied, vacant),</span>
-<span id="cb29-4"><a href="#cb29-4"></a>    names_to = "status",</span>
-<span id="cb29-5"><a href="#cb29-5"></a>    values_to = "count"</span>
-<span id="cb29-6"><a href="#cb29-6"></a>  ) %&gt;%</span>
-<span id="cb29-7"><a href="#cb29-7"></a>  group_by(NAME) %&gt;%</span>
-<span id="cb29-8"><a href="#cb29-8"></a>  mutate(percentage = count / sum(count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb30-1"><a href="#cb30-1"></a>ny_housing_long &lt;- ny_housing %&gt;%</span>
+<span id="cb30-2"><a href="#cb30-2"></a>  pivot_longer(</span>
+<span id="cb30-3"><a href="#cb30-3"></a>    cols = c(occupied, vacant),</span>
+<span id="cb30-4"><a href="#cb30-4"></a>    names_to = "status",</span>
+<span id="cb30-5"><a href="#cb30-5"></a>    values_to = "count"</span>
+<span id="cb30-6"><a href="#cb30-6"></a>  ) %&gt;%</span>
+<span id="cb30-7"><a href="#cb30-7"></a>  group_by(NAME) %&gt;%</span>
+<span id="cb30-8"><a href="#cb30-8"></a>  mutate(percentage = count / sum(count))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Finally, utilzing <code>ggplot</code>, with the <code>ggthemes</code> package to set the style to <code>theme_minimal()</code>:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb30-1"><a href="#cb30-1"></a>ggplot(ny_housing_long, aes(x = reorder(NAME, -count, sum), y = count, fill = status)) +</span>
-<span id="cb30-2"><a href="#cb30-2"></a>  geom_bar(stat = "identity", position = "stack") +</span>
-<span id="cb30-3"><a href="#cb30-3"></a>  labs(</span>
-<span id="cb30-4"><a href="#cb30-4"></a>    title = "Vacant vs. Occupied Housing Units in New York State Counties (2020)",</span>
-<span id="cb30-5"><a href="#cb30-5"></a>    x = "County",</span>
-<span id="cb30-6"><a href="#cb30-6"></a>    y = "Number of Units",</span>
-<span id="cb30-7"><a href="#cb30-7"></a>    fill = "Housing Status"</span>
-<span id="cb30-8"><a href="#cb30-8"></a>  ) +</span>
-<span id="cb30-9"><a href="#cb30-9"></a>  scale_fill_manual(values = c("occupied" = "steelblue", "vacant" = "orange")) +</span>
-<span id="cb30-10"><a href="#cb30-10"></a>  theme_minimal() +</span>
-<span id="cb30-11"><a href="#cb30-11"></a>  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +  scale_y_continuous(labels = scales::comma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb31-1"><a href="#cb31-1"></a>ggplot(ny_housing_long, aes(x = reorder(NAME, -count, sum), y = count, fill = status)) +</span>
+<span id="cb31-2"><a href="#cb31-2"></a>  geom_bar(stat = "identity", position = "stack") +</span>
+<span id="cb31-3"><a href="#cb31-3"></a>  labs(</span>
+<span id="cb31-4"><a href="#cb31-4"></a>    title = "Vacant vs. Occupied Housing Units in New York State Counties (2020)",</span>
+<span id="cb31-5"><a href="#cb31-5"></a>    x = "County",</span>
+<span id="cb31-6"><a href="#cb31-6"></a>    y = "Number of Units",</span>
+<span id="cb31-7"><a href="#cb31-7"></a>    fill = "Housing Status"</span>
+<span id="cb31-8"><a href="#cb31-8"></a>  ) +</span>
+<span id="cb31-9"><a href="#cb31-9"></a>  scale_fill_manual(values = c("occupied" = "steelblue", "vacant" = "orange")) +</span>
+<span id="cb31-10"><a href="#cb31-10"></a>  theme_minimal() +</span>
+<span id="cb31-11"><a href="#cb31-11"></a>  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +  scale_y_continuous(labels = scales::comma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="concluding-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>

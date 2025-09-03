@@ -1,6 +1,6 @@
 #class 3 lab 3 script: working with US Census Decennial 2020 Data
 
-#install necessary lab 3 packagse in singular format
+#install necessary lab 3 packages in singular format
 install.packages("tidyverse")
 install.packages("tidycensus")
 install.packages("ggthemes")
@@ -13,18 +13,20 @@ library(tidyverse)
 library(ggthemes)
 
 #install your census API key, and set to TRUE
-
 census_api_key("YOUR KEY GOES HERE", install = TRUE)
 
 # Load variables for the 2020 PL file
 pl_variables <- load_variables(2020, "pl")
 # Load variables for the 2020 DHC file
 dhc_variables <- load_variables(2020, "dhc")
+#view the variable tables
 view(pl_variables)
 view(dhc_variables)
 
+#exception: if backup data is utilized load w/ file path determined by setwd()
+load("ny_housing.RData"); load("ny_population.RData"); load("pop_data.RData"); load("race.RData"); load("urban_rural.RData")
 
-#exploration 1 state population example
+#exploration 1: state population
 pop_data <- get_decennial(geography = "state",
                           variables = "P1_001N",
                           year = 2020,
@@ -40,8 +42,7 @@ pop_data %>%
   coord_flip() +
   labs(title="Population by State, 2020")
 
-
-#exploration 2 urban vs rural 
+#exploration 2: urban vs rural 
 urban_rural <- get_decennial(
   geography = "us",
   variables = c("P2_002N","P2_003N"),
@@ -59,7 +60,7 @@ urban_rural %>%
   labs(title = "Rural vs Urban Population (2020)", x = NULL, y = "Population") +
   theme_minimal() + scale_y_continuous(labels = scales::comma)
 
-#plot 1 base R
+#exploration 3: base R population plot + refined ggplot
 #get decennial Census data for total population (variable P1_001N) for NY counties
 #specify the year (e.g., 2020) and state (NY)
 ny_population <- get_decennial(
@@ -70,6 +71,9 @@ ny_population <- get_decennial(
   sumfile = "pl",
   geometry = FALSE #no need for spatial data for a bar chart
 )
+
+#view head of result
+head(ny_population)
 
 # Clean up county names (remove "County, New York")
 ny_population$NAME <- gsub(" County, New York", "", ny_population$NAME)
@@ -90,9 +94,6 @@ barplot(
   cex.names = 0.7 # Adjust label size if needed
 )
 
-# Examine the structure of the retrieved data
-head(ny_population)
-
 # A more polished version of the bar char, this time with ggplot
 ggplot(ny_population, aes(x = reorder(NAME, value), y = value)) +
   geom_col(fill = "#56B4E9") +
@@ -111,28 +112,15 @@ ggplot(ny_population, aes(x = reorder(NAME, value), y = value)) +
   )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#plot 3
-# Define the county FIPS codes for NYC 5 boroughs
+#exploration 4: race composition for NYC counties
+# GEOIDs for NYC counties
 #"36005", # Bronx
 #"36047", # Kings (Brooklyn)
 #"36061", # New York (Manhattan)
 #"36081", # Queens
 #"36085"  # Richmond (Staten Island)
 
-
+#declare race total population + categories
 race_vars <- c(
   Total = "P1_001N",
   White = "P1_003N",
@@ -144,6 +132,7 @@ race_vars <- c(
   Two_or_More_Races = "P1_009N"
 )
 
+#get decennial data using race variable declaration
 race <- get_decennial(
   geography = "county",
   variables = race_vars,
@@ -153,14 +142,13 @@ race <- get_decennial(
   output = "wide" # Get data in a wide format
 )
 
-
+#subset the data to just 5 NYC boroughs
 nyc_race <- race %>%
   filter(GEOID %in% c("36005","36047","36061","36081","36085"))
 
 
-# Reshape the data and calculate percentages
+# Reshape the data to longer format + calculate percentages
 nyc_race_pct <- nyc_race %>%
-  # Select relevant columns and calculate the percentage for each race
   mutate(
     White_pct = White / Total,
     Black_pct = Black / Total,
@@ -200,8 +188,7 @@ nyc_race_pct <- nyc_race %>%
 #review head result
 head(nyc_race_pct)
 
-
-# Create the stacked bar chart
+# Create the stacked bar chart with ggplot
 ggplot(nyc_race_pct, aes(x = Borough, y = Percentage, fill = Race_Category)) +
   geom_bar(stat = "identity", position = "fill") +
   labs(
@@ -219,9 +206,6 @@ ggplot(nyc_race_pct, aes(x = Borough, y = Percentage, fill = Race_Category)) +
     legend.position = "right"
   )
 
-#save the race dataframe prior to wrangling
-save(race, file = "results/race.RData")
-     
 #extra credit - time permitting
 
 #call the housing data
@@ -234,6 +218,9 @@ ny_housing <- get_decennial(
   state = "NY",
   year = 2020,
   output = "wide")
+
+#review head result
+head(ny_housing)
 
 #reshape the results to long format
 ny_housing_long <- ny_housing %>%
@@ -258,5 +245,6 @@ ggplot(ny_housing_long, aes(x = reorder(NAME, -count, sum), y = count, fill = st
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +  scale_y_continuous(labels = scales::comma)
 
-
+#save dataframes for later usage
+save(ny_housing, file = "ny_housing.RData"); save(ny_population, file = "ny_population.RData"); save(pop_data, file = "pop_data.RData"); save(race, file = "race.RData"); save(urban_rural, file = "urban_rural.RData")
 

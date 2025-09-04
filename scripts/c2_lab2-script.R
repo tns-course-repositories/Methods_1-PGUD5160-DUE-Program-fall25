@@ -7,7 +7,7 @@ list.files()
 #shows contents of the scripts directory - assumption is that lab2.R is current loaded in the scripts subdirectory
 list.files("scripts")
 # show all contents and their file paths
-> list.files("~/Desktop/lab_2", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)
+list.files("~/Desktop/lab_2", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)
 #import csv as data frame to Global Environment
 arrestNYC <- read.csv("data/NYPD_Arrest_Data__Year_to_Date__20250818.csv") 
 # report structure of the dataset
@@ -105,13 +105,6 @@ plot(NULL, xlim = c(min_lon, max_lon), ylim = c(min_lat, max_lat),
 # add points to the plot and style the points
 points(arrestNYC_mapping_no_zero$Longitude, arrestNYC_mapping_no_zero$Latitude, pch = 3, cex = 0.08)
 
+#save the cleaned dataset prior to exiting the console; can be utilized as start point for assignment_2
+save(arrestNYC, file = "results/arrestNYC.RData")
 
-
-# for rmd
-in console:
-  
-  save(arrestNYC, file = "results/arrestNYC.RData")
-
-in r markdown:
-  
-  load("~/Desktop/lab_2/results/arrestNYC.RData")

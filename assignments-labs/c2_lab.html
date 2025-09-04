@@ -324,7 +324,7 @@ Tip
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c2_lab_files/img/eda-1a.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><em>Structure of the Arrest Data</em></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><em>Structure of Arrest Data</em></figcaption><p></p>
 </figure>
 </div>
 <p>We can also run <code>summary()</code> which will give us a similar profile view of the dataset, and importantly for integer and number variables types, we receive a short statistical profile. In our case here, there are no integer or number variables that benefit from a statistical profile as this dataset is decidedly categorical; that is, the intake procedure of the dataset is designed to capture established categories of each arrest.</p>
@@ -338,7 +338,7 @@ Tip
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c2_lab_files/img/eda-2.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><em>Missing Values returned &amp; highlighted</em></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><em>Missing Values returned + highlighted</em></figcaption><p></p>
 </figure>
 </div>
 <p>We have a choice at this point. We can throw out these observations altogether; we can recode the missing values or we can apply a statistically derived value to ‘pad’ in a new value. Again, we will cover this issue in more depth as we move along in the course. For now, we can simply leave as is as this is a very small component of the dataset. In our analysis we may indeed look at the <em>Offence Description</em> column, and we can either keep the missing values for this analysis, or we could indeed remove them for this particular analysis. But by and large, these missing values are not going to impact our EDA analysis workflow for this particular week.</p>
@@ -367,7 +367,7 @@ Tip
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c2_lab_files/img/eda-3.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><em>Corrected Date variable type</em></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><em>Corrected Date variable format</em></figcaption><p></p>
 </figure>
 </div>
 <p>Next, we will address the many columns that should be factor types that are currently character types. However, other columns that are character types can also be transformed to factors in our case as well, making the code a bit easier to apply as a list, as opposed to one-by-one variables. The variables we are interested in are as follows:</p>
@@ -385,7 +385,7 @@ Tip
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="c2_lab_files/img/eda-4.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><em>Corrected Character &gt; Factor variables</em></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><em>Corrected Character &gt; Factor Variables</em></figcaption><p></p>
 </figure>
 </div>
 <p>With data cleaning done, we can move along to EDA visualization. First, we will save our results into the <code>results</code> subdirectory, and then read it back into our working session. We will then have two versions of the data: the original <code>.csv</code> and our cleaned version as a <code>.RData</code> object saved in the <code>results</code> subdirectory,</p>

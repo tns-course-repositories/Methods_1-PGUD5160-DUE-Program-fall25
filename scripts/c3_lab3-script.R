@@ -23,6 +23,9 @@ dhc_variables <- load_variables(2020, "dhc")
 view(pl_variables)
 view(dhc_variables)
 
+#exception: if local data is utilized, and/or local file paths need to be known
+list.files("~/Desktop/lab_3", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)
+
 #exception: if backup data is utilized load w/ file path determined by setwd()
 load("ny_housing.RData"); load("ny_population.RData"); load("pop_data.RData"); load("race.RData"); load("urban_rural.RData")
 

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-09-03">
+
+<title>Class 3 Assignment: Working with US Census Decennial 2020 Data at the Neighborhood Level.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c3_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c3_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c3_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c3_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c3_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c3_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c3_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c3_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c3_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c3_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c3_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-3-class-3-materials" id="toc-week-3-class-3-materials" class="nav-link" data-scroll-target="#week-3-class-3-materials">Week 3 Class 3 Materials:</a></li>
+  <li><a href="#week-3-class-3-reading" id="toc-week-3-class-3-reading" class="nav-link" data-scroll-target="#week-3-class-3-reading">Week 3 Class 3 Reading:</a></li>
+  <li><a href="#class-3-assignment" id="toc-class-3-assignment" class="nav-link" data-scroll-target="#class-3-assignment">Class 3 Assignment:</a>
+  <ul class="collapse">
+  <li><a href="#step-3" id="toc-step-3" class="nav-link" data-scroll-target="#step-3">Step 3:</a></li>
+  <li><a href="#step-4" id="toc-step-4" class="nav-link" data-scroll-target="#step-4">Step 4:</a></li>
+  <li><a href="#step-5" id="toc-step-5" class="nav-link" data-scroll-target="#step-5">Step 5:</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 3 Assignment: Working with US Census Decennial 2020 Data at the Neighborhood Level.</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 3, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this third week’s assignment, we will utilize the framework from <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c3_lab">Class 3 lab</a> steps to develop an R Markdown report that features a comparative analysis of the racial composition of two NYC neighborhoods. Follow the sequence of steps below to first orient to this week’s content: lecture, materials and weekly reading(s). Once complete, move along to creating your R Markdown deliverable, making sure to upload the assignment deliverable, due Thursday, September 18th, 2025 at 11:59pm.</p>
+</section>
+<section id="week-3-class-3-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-3-class-3-materials">Week 3 Class 3 Materials:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c3_agenda">Class 3 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c3_lab">Class 3 lab</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c3_lab3-script.R">Class 3 lab script</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_3.Rmd">Class 3 Assignment .Rmd ‘starter file’</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c3_assignment3-script.R">Class 3 Assignment R Script</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.3/index.html">Class 3 Lecture Slides</a></li>
+</ul>
+</section>
+<section id="week-3-class-3-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-3-class-3-reading">Week 3 Class 3 Reading:</h2>
+<ul>
+<li><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/Nelson-COUNTING_CHANGE_ENSURING_AN_INCLUSIVE_CENSUS_FOR_COMMUNITIES_OF_COLOR.pdf">Nelson, Janai. “Counting Change: Ensuring an Inclusive Census for Communities of Color.” Columbia Law Review, vol.&nbsp;119, no. 5, 2019, pp.&nbsp;1399–1454.</a></li>
+</ul>
+<p>This selected journal article reading situates the US Decennial Census 2020 in historical, critical and political terms, reinforcing a myriad of reasons why a fair and transparent census taking is invaluable to modern society. The 10 quiz questions will cover the concepts covered in the article.</p>
+<p>At 7am Friday, September 19th, the third weekly quiz will open in Canvas. Utilize the posted <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c4_agenda">Class 4 Agenda</a> to gain the quiz access code which will be posted towards the beginning of the agenda. Expect 10 questions in total that cover the reading above.</p>
+</section>
+<section id="class-3-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="class-3-assignment">Class 3 Assignment:</h2>
+<section id="step-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1">Step 1:</h4>
+<p>Similar to how we started our <code>lab_3</code> project directory (this is a repeat of the week 2 setup), we will first simply <code>copy/paste</code> the <code>lab_3</code> directory at the desktop and name the new copied directory <code>assignment_3</code>. However, unlike week 2, we will not reuse the lab data; as part of the assignment, we will conduct analysis at the census tract level, not county leve.</p>
+<p>Next, create a new R project, but this time instead of creating a <em>New Directory</em>, utilize an <em>Existing Directory</em> and point it to the just copied <code>assignment_3</code> folder:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c3_assignment_files/img/existing-directory-a.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Choose Existing Directory</em></figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c3_assignment_files/img/existing-directory.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Point to Existing Directory</em></figcaption><p></p>
+</figure>
+</div>
+<p>Run the standard <code>getwd()</code> before beginning assignment 3, ensuring you are within the newly created <code>assignment_3</code> project directory.</p>
+<p>Like the week 2 assignment, we will be adapting and delivering a R Markdown File as the <code>assignment_3</code> deliverable. For quick reference, here is the R Markdown Cheat Sheet options for customizing syntax in your deliverable:</p>
+<ul>
+<li><p>R Markdown Cheat Sheet: <em>Help &gt; Posit Cheatsheets &gt; R Markdown Cheat Sheet</em></p></li>
+<li><p><a href="https://rstudio.github.io/cheatsheets/html/rmarkdown.html">R Markdown Cheat Sheet Online</a></p></li>
+</ul>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>From within your <code>assignment_3</code> project, navigate to the docs folder. This is the location in which you will first download the example R Markdown file (<code>.rmd</code>), and open it anew in your project. Alternatively, you can create your own R Markdown file, but the download version has some formatting set up that can be a helpful start point (as was the case for <code>assignment_2</code>).</p>
+<p>To open an existing R Markdown file:</p>
+<p><em>File &gt; Open File &gt; assignment_3 &gt; docs &gt; assignment_3.Rmd</em></p>
+<p>To create your own R Markdown file:</p>
+<p><em>File &gt; New File &gt; R Markdown</em></p>
+<ul>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_3.Rmd"><code>assignment_3.Rmd</code> ‘starter file’</a></li>
+</ul>
+<p>Next, loading, working with and saving data in the Console is <em>NOT</em> the same as loading, displaying and plotting data in an <code>.Rmd</code> file. Keep in mind that the Console is the iterative, working environment, whereas <code>.Rmd</code> is designed for publishing and sharing your analysis results.</p>
+<p>So, the first step <em>following</em> the completion of accessing and plotting neighborhood census tract data is to first load that data that has been cleaned in the <code>assignment_3</code> steps explicitly within the <code>.Rmd</code> environment.</p>
+<p>We load the data as follows from <em>within</em> the <code>.Rmd</code> document. Utilize the green <em>run</em> button to the far right of the code block to execute the code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>load("~/Desktop/assignment_3/results/LES_race_data_evaluated.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, you will find a copy of the race composition plot for the Lower East Side (LES) census tracts in the <code>.Rmd</code>. Per the assignment steps, you will also create a comparison profile for another NYC neighborhood by adapting the GEOID variables to the new neighborhood and plotting the results for the comparison neighborhood. In the steps below, the primary LES census tracts are developed step by step.</p>
+</section>
+<section id="step-3" class="level3">
+<h3 class="anchored" data-anchor-id="step-3">Step 3:</h3>
+<p>To get started on this week’s assignment, we will utilize the race composition workflow that was done in <code>lab_3</code>, but adapt it to neighborhood level census tracts in NYC. We will conduct the analysis first for the Lower East Side Neighborhood Tabulation Area (NTA). Once complete, the workflow is adapted to your choice of a comparison neighborhood. Essentially you will be repeating the LES plot, but for your chosen comparative NTA.</p>
+<p>Before proceeding, make sure to load the <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c3_assignment3-script.R">Class 3 Assignment R Script</a> into your working session. Make sure to load in your required libraries at the top of the scrip, and if needed you can reset your API key, although its unlikely you would need to do this as we set the key to <code>install = TRUE</code> for ongoing usage in your R installation.</p>
+<p>As you finalize your code and bring it into your <code>.Rmd</code> submission document, all components - the libraries, the data and the plotting code - need to exist in the <code>.Rmd</code> environment as it operates separate of your Console environment. The <code>.Rmd</code> file will have the necessary libraries and the code example for LES supplied, but you will need to supply both the adapted code and data for the comparison NTA.</p>
+<p>In order to determine how New York City designates a neighborhood boundary, we utilize the Neighborhood Tabulation Area (NTA) specifications. The ‘equivalency’ file gives a listing of the US Census tract components that compose each unique neighborhood. We declare these tracts in our code, and then call these specific tracts from the US Census Decennial 2020 endpoint with the <code>tidycensus</code> package.</p>
+<p>The equivalency files can be accessed <a href="https://data.cityofnewyork.us/City-Government/2020-Census-Tracts-to-2020-NTAs-and-CDTAs-Equivale/hm78-6dwm/about_data">HERE</a>. From this endpoint you would download the data as a <code>.csv</code> file.</p>
+<p>A backup, compressed version is located at the following location:</p>
+<ul>
+<li><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv.zip">Compressed <code>.csv</code> Equivalency Data</a></li>
+</ul>
+<p>Regardless the option you use, make sure it is uncompressed and placed into your data subdirectory:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>~/Desktop/assignment_3/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can then load this into your R session and then view the dataframe easily:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>NTA_CT &lt;- read.csv("~/Desktop/assignment_3/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>View(NTA_CT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A very helpful features of <code>View()</code> is the search function in the upper-right of the interface. Here you can type ‘lower’ and that is going to highlight all instances of ‘lower’ in the table, including ‘Lower East Side’. This is helpful as we want to find an copy just those equivalent census tracts for the <em>Lower East Side</em> for the visualization of the first neighborhood before the comparison neighborhood.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c3_assignment_files/img/search-tool.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Search Tool</em></figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c3_assignment_files/img/search-tool-result.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Search Tool Result highlighting Lower East Side <code>NTAName</code></em></figcaption><p></p>
+</figure>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are both <code>NTAName</code> and <code>CDTAName</code> aggregations, the second of which is more inclusive of larger areas. For our purposes in this assignment, we will stick to the more exclusive <code>NTAName</code> equivalency to census tracts. Note also that the current GEOID is listed in scientific notion which is not helpful for our purposes. We suppress this with <code>options(scipen = 999)</code></p>
+</div>
+</div>
+<p>Run scientific notation suppression and view the table again:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>options(scipen = 999)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now we can simply create a single vector from the table for the GEOIDs that match the <code>NTAName</code> ‘Lower East Side’:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>les_GEOID_num &lt;- NTA_CT$GEOID[NTA_CT$NTAName == "Lower East Side"]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Importantly, GEOIDs with <code>tidycensus</code> should be in the character format, so we will now convert them to character format to match the GEOID format that is returned from the <code>tidycensus</code> call:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a>les_GEOID_chr &lt;- as.character(les_GEOID_num)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can now print this character vector of your neighborhood GEOIDs for viewing so you can check before proceeding that you have your GEOIDs correct:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>print(les_GEOID_chr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we declare the race variables that are needed from the US Decennial Census 2020 file:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a>race_vars &lt;- c(</span>
+<span id="cb9-2"><a href="#cb9-2"></a>  Total = "P1_001N",</span>
+<span id="cb9-3"><a href="#cb9-3"></a>  White = "P1_003N",</span>
+<span id="cb9-4"><a href="#cb9-4"></a>  Black = "P1_004N",</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  American_Indian = "P1_005N",</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  Asian = "P1_006N",</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  Pacific_Islander = "P1_007N",</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  Other_Race = "P1_008N",</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  Two_or_More_Races = "P1_009N"</span>
+<span id="cb9-10"><a href="#cb9-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This declaration is then pulled into the <code>tidycensus</code> API call:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>race_data &lt;- get_decennial(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  geography = "tract",</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  variables = race_vars, #Specify race variables from previous step</span>
+<span id="cb10-4"><a href="#cb10-4"></a>  state = "NY",</span>
+<span id="cb10-5"><a href="#cb10-5"></a>  year = 2020,</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  sumfile = "pl", # Specify the Redistricting Summary File</span>
+<span id="cb10-7"><a href="#cb10-7"></a>  output = "wide" # Get data in a wide format</span>
+<span id="cb10-8"><a href="#cb10-8"></a>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we use the <code>%&gt;%</code> operator to filter all the census tracts in <code>race_data</code> to just those that match the character vector in <code>les_GEOID_chr</code>. We declare this match selection as <code>LES_race_data</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href="#cb11-1"></a>LES_race_data &lt;- race_data %&gt;% filter(GEOID %in% les_GEOID_chr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Before plotting, we can clean up the verbose naming of the census tracts:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="#cb12-1"></a>LES_race_data &lt;- LES_race_data %&gt;%</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  mutate(</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    NAME = str_extract(NAME, "Census Tract [0-9.]+")</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we create the fully cleaned dataframe in the ‘long format’; this is what will be passed to the plot and its also the dataframe that needs to be saved for reloading into the assignment <code>.Rmd</code> document:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a href="#cb13-1"></a>LES_race_data_evaluated &lt;- LES_race_data %&gt;%</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  mutate(</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    White_pct              = White / Total,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    Black_pct              = Black / Total,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>    American_Indian_pct    = American_Indian / Total,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    Asian_pct              = Asian / Total,</span>
+<span id="cb13-7"><a href="#cb13-7"></a>    Pacific_Islander_pct   = Pacific_Islander / Total,</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    Other_Race_pct         = Other_Race / Total,</span>
+<span id="cb13-9"><a href="#cb13-9"></a>    Two_or_More_Races_pct  = Two_or_More_Races / Total</span>
+<span id="cb13-10"><a href="#cb13-10"></a>  ) %&gt;%</span>
+<span id="cb13-11"><a href="#cb13-11"></a>  # Keep original NAME and percentage columns</span>
+<span id="cb13-12"><a href="#cb13-12"></a>  select(NAME, ends_with("_pct")) %&gt;%</span>
+<span id="cb13-13"><a href="#cb13-13"></a>  # Reshape from wide to long format for plotting</span>
+<span id="cb13-14"><a href="#cb13-14"></a>  pivot_longer(</span>
+<span id="cb13-15"><a href="#cb13-15"></a>    cols = ends_with("_pct"),</span>
+<span id="cb13-16"><a href="#cb13-16"></a>    names_to = "Race_Category",</span>
+<span id="cb13-17"><a href="#cb13-17"></a>    values_to = "Percentage"</span>
+<span id="cb13-18"><a href="#cb13-18"></a>  ) %&gt;%</span>
+<span id="cb13-19"><a href="#cb13-19"></a>  # Clean up Race_Category only</span>
+<span id="cb13-20"><a href="#cb13-20"></a>  mutate(</span>
+<span id="cb13-21"><a href="#cb13-21"></a>    Race_Category = str_replace(Race_Category, "_pct", "") %&gt;%</span>
+<span id="cb13-22"><a href="#cb13-22"></a>      str_replace_all("_", " ") %&gt;%</span>
+<span id="cb13-23"><a href="#cb13-23"></a>      factor(levels = c(</span>
+<span id="cb13-24"><a href="#cb13-24"></a>        "White", "Black", "Asian", "American Indian", "Pacific Islander",</span>
+<span id="cb13-25"><a href="#cb13-25"></a>        "Other Race", "Two or More Races"</span>
+<span id="cb13-26"><a href="#cb13-26"></a>      ))</span>
+<span id="cb13-27"><a href="#cb13-27"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-4" class="level3">
+<h3 class="anchored" data-anchor-id="step-4">Step 4:</h3>
+<p>In this final stage, we will develop the final visualization for the LES NTA, however its <strong>critical</strong> to now save your cleaned data first as a good practice, but most importantly so that you can <code>load</code> it from within your assignment <code>.Rmd</code>. You will also need to do this again for your comparison NTA, making sure to rename it something other than <code>LES</code>. Here we save it to the <code>results</code> subdirectory naming it <code>LES_race_data_evaluated</code> in the <code>.RData</code> extension:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>save(LES_race_data_evaluated, file = "~/Desktop/assignment_3/results/LES_race_data_evaluated.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we indeed plot the dataframe for the race composition of each census tract in the NTA (using LES, and then again the NTA of your choice). Make sure when you plot the comparison NTA that you change the <code>title</code> to reflect the new NTA, not LES.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a href="#cb15-1"></a>ggplot(LES_race_data_evaluated, aes(x = NAME, y = Percentage, fill = Race_Category)) +</span>
+<span id="cb15-2"><a href="#cb15-2"></a>  geom_bar(stat = "identity", position = "fill") +</span>
+<span id="cb15-3"><a href="#cb15-3"></a>  labs(</span>
+<span id="cb15-4"><a href="#cb15-4"></a>    title = "Racial Composition of Lower East Side Neighborhood (NTA) Census Tracts",</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    x = "Census Tract",</span>
+<span id="cb15-6"><a href="#cb15-6"></a>    y = "Percentage",</span>
+<span id="cb15-7"><a href="#cb15-7"></a>    fill = "Race Category",</span>
+<span id="cb15-8"><a href="#cb15-8"></a>    caption = "Source: 2020 US Decennial Census, PL 94-171"</span>
+<span id="cb15-9"><a href="#cb15-9"></a>  ) +</span>
+<span id="cb15-10"><a href="#cb15-10"></a>  scale_y_continuous(labels = scales::percent) +</span>
+<span id="cb15-11"><a href="#cb15-11"></a>  theme_fivethirtyeight() + # Use a clean, readable theme</span>
+<span id="cb15-12"><a href="#cb15-12"></a>  theme(</span>
+<span id="cb15-13"><a href="#cb15-13"></a>    plot.title = element_text(hjust = 0.5, face = "bold"),</span>
+<span id="cb15-14"><a href="#cb15-14"></a>    axis.title.y = element_text(face = "bold"),</span>
+<span id="cb15-15"><a href="#cb15-15"></a>    legend.position = "right",</span>
+<span id="cb15-16"><a href="#cb15-16"></a>    axis.text.x  = element_text(angle = 45, hjust = 1)</span>
+<span id="cb15-17"><a href="#cb15-17"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c3_assignment_files/img/plot.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>plot result for LES</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="step-5" class="level3">
+<h3 class="anchored" data-anchor-id="step-5">Step 5:</h3>
+<p>In the development of your assignment 3 <code>.Rmd</code>, make sure to change your YAML header to your output type, author and title. In addition to the primary NTA plot for the LES, you will pick a secondary NTA and adapt the steps in the assignment script to the new NTA. Make sure to save the new NTA dataframe so that you can load it also into your <code>.Rmd</code>.</p>
+<p>For your contextual writing and observations to include about the comparative nature of the two analysis NTAs, consider the following prompts to help develop your report:</p>
+<ul>
+<li>Does both the LES NTA and your chosen NTA appear as you would expect?</li>
+<li>What surprised you the most in NTA plots?<br>
+</li>
+<li>Are there significant differences between the two NTAs or are they similar, or at least similar for one or particular races?</li>
+</ul>
+<p>The assignment 3 submission is due to Canvas on Thursday, September 18th, 2025 at 11:59pm. The format is either a <code>.html</code> or <code>.pdf</code> document generated from your <code>Rmd</code> document. The pdf output is preferred; the <code>.html</code> output only if you are unable to get latex up and working on your machine. You will not be penalized for an <code>.html</code> format whatsoever - both will be accepted.</p>
+<p>Note that when you knit your output, the <code>.Rmd</code> should not be removed. However, the only submission document for this week’s assignment - as was the case for assignment 2 - is either the <code>.pdf</code> or the <code>.html</code>.</p>
+<p>The Assignment 3 R Markdown deliverable is due to Canvas on Thursday, September 18th, 2025 at 11:59pm.</p>
+<section id="references" class="level4">
+<h4 class="anchored" data-anchor-id="references">References:</h4>
+<ul>
+<li><a href="https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation">NTAs in NYC</a></li>
+<li><a href="https://data.cityofnewyork.us/City-Government/2020-Census-Tracts-to-2020-NTAs-and-CDTAs-Equivale/hm78-6dwm/about_data">NTA equivalency about page</a></li>
+<li><a href="https://cran.r-project.org/web/packages/magrittr/index.html">The Forward-Pipe Operator for R</a></li>
+</ul>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c3_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

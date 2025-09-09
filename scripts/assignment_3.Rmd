@@ -19,24 +19,75 @@ This is body text.
 
 When you click the **Knit** button at the top a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
 
-You can embed R code chunks as follows. First we load the arrest data, then plot a variable via the barplot approach.
+Remember to first load your needed libraries.
 
 ```{r}
-#load the arrest data into the .Rmd document before proceeding to any plot development
-load("~/Desktop/assignment_2/results/arrestNYC.RData")
+#load needed libraries.
+library(tidycensus)
+library(tidyverse)
+library(ggthemes)
 ```
 
+Second, we load the LES race data, then plot the LES census tract profile.
+
 ```{r}
-arrest_counts_boro <- table(arrestNYC$ARREST_BORO)
-barplot(arrest_counts_boro,
-        main = "Arrest in NYC by Arrest Borough (Jan-June 2025)",
-        xlab = "Borough",
-        ylab = "Count",
-)
+#load the Lower East Side race data that was cleaned/saved from the assignment_3 script.
+load("~/Desktop/lab_3/results/LES_race_data_evaluated.RData")
+```
+
+
+```{r race_composition_plot, echo=FALSE, fig.width=15, fig.height=8, fig.align="center", out.width="100%"}
+#note the figure dimensions set prior to plotting in .Rmd
+ggplot(LES_race_data_evaluated, aes(x = NAME, y = Percentage, fill = Race_Category)) +
+  geom_bar(stat = "identity", position = "fill") +
+  labs(
+    title = "Racial Composition of Lower East Side Neighborhood (NTA) Census Tracts",
+    x = "Census Tract",
+    y = "Percentage",
+    fill = "Race Category",
+    caption = "Source: 2020 US Decennial Census, PL 94-171"
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_fivethirtyeight() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title.y = element_text(face = "bold"),
+    legend.position = "right",
+    axis.text.x  = element_text(angle = 45, hjust = 1, vjust = 1)
+  )
+```
+
+Third, we load the saved comparison NTA race data, replacing the example here for LES:
+
+```{r}
+#load the comparison race data that was cleaned/saved from the assignment_3 script; adapt the code chunk from current LES data.
+load("~/Desktop/lab_3/results/LES_race_data_evaluated.RData")
+```
+
+Fourth, we load the comparison NTA race data, then plot the comparison census tract profile.  To follow is the code chunk for LES repeated; make sure to revise the code chunk accordingly for your comparison NTA.
+
+```{r race_composition_plot_comparison, echo=FALSE, fig.width=15, fig.height=8, fig.align="center", out.width="100%"}
+#note the figure dimensions set prior to plotting in .Rmd
+ggplot(LES_race_data_evaluated, aes(x = NAME, y = Percentage, fill = Race_Category)) +
+  geom_bar(stat = "identity", position = "fill") +
+  labs(
+    title = "Racial Composition of Comparison (NTA) Census Tracts",
+    x = "Census Tract",
+    y = "Percentage",
+    fill = "Race Category",
+    caption = "Source: 2020 US Decennial Census, PL 94-171"
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_fivethirtyeight() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.title.y = element_text(face = "bold"),
+    legend.position = "right",
+    axis.text.x  = element_text(angle = 45, hjust = 1, vjust = 1)
+  )
 ```
 
 Note that at the top for knitr options, echo is set to TRUE; this will result in the code chunks being printed as well as the executed output.  For your assignment, you can choose which you prefer: if set to FALSE, only the code chunk executed action will result without the code itself printing into the document.
-
 
 Review the cheatsheet for `.Rmd` for all the things that you can do with this type of R output.  Here are some examples that you might want to include in your assignment 2 deliverable:
 

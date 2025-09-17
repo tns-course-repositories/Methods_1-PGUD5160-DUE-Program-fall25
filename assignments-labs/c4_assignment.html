@@ -351,7 +351,25 @@ Note
 <p>So, the first step <em>following</em> the completion of accessing and plotting either the Poverty Rate or Rent Burden Rate for your chosen PUMAs and comparator geographies is to first load that data that has been cleaned in the <code>assignment_4</code> steps explicitly within the <code>.Rmd</code> environment.</p>
 <p>We load the data as follows from <em>within</em> the <code>.Rmd</code> document. Utilize the green <em>run</em> button to the far right of the code block to execute the code:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href="#cb11-1"></a>load("~/Desktop/assignment_4/results/compare_tbl.RData")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Next, you need to copy from either option 1 or option 2 scripts those sections that input <code>compare_tbl</code>, transform that table and plot first the comparison plot then the comparison table. The code lines for the transformation, plotting and charting occurs from lines #142 - #152 in the Poverty Rate script; and from lines #212 - #271 in the Rent Burden Script. A placeholder code chunk location will be located after the lode code chunk in the <code>.Rmd</code>.</p>
+<p>Next, you need to copy from either option 1 or option 2 scripts those sections that input <code>compare_tbl</code>, transform that table and plot first the comparison plot then the comparison table. There are three components for each option:</p>
+<ul>
+<li>load the <em>settings</em> for the comparison plot and chart
+<ul>
+<li>for option 1, paste here <code>lines #14 - #36</code> from the Poverty Rate script.</li>
+<li>for option 2, paste here <code>lines #13 - #45</code> from the Rent Burden script</li>
+</ul></li>
+<li>Load the code listing for the comparison plot
+<ul>
+<li>for option 1, paste here <code>lines #142 - #168</code> from the Poverty Rate script.</li>
+<li>for option 2, paste here <code>lines #210 - #233</code> from the Rent Burden script.</li>
+</ul></li>
+<li>Load the code listing for the comparison chart
+<ul>
+<li>#for option 1, paste here <code>lines #170 - #205</code> from the Poverty Rate script.</li>
+<li>#for option 2, paste here <code>lines #235 - #272</code> from the Rent Burden script.</li>
+</ul></li>
+</ul>
+<p>A placeholder code chunk for each of these sections is located in the starter <code>.Rmd</code>.</p>
 <p>Make sure to load in your required libraries at the top of the script, and if needed you can reset your API key, although its unlikely you would need to do this as we set the key to <code>install = TRUE</code> for ongoing usage in your R installation.</p>
 <p>As you finalize your code and bring it into your <code>.Rmd</code> submission document, all components - the libraries, the data and the plotting code - need to exist in the <code>.Rmd</code> environment as it operates separate of your Console environment.</p>
 <p>For your contextual writing and observations consider the following prompts:</p>
@@ -361,8 +379,21 @@ Note
 </li>
 <li>Is there significant differences between the PUMA NYC geographies and their typical comparisons at NYC all boroughs, NY State and National levels?</li>
 </ul>
-<p>The assignment 4 submission is due to Canvas on Thursday, September 25th, 2025 at 11:59pm. The format is either a <code>.html</code> or <code>.pdf</code> document generated from your <code>Rmd</code> document. The pdf output is preferred.</p>
-<p>Note that when you knit your output, the <code>.Rmd</code> should not be removed. However, the only submission document for this week’s assignment - as was the case for assignment 2 - is either the <code>.pdf</code> or the <code>.html</code>.</p>
+<p>The assignment 4 submission is due to Canvas on Thursday, September 25th, 2025 at 11:59pm. The format is the <code>.html</code> document format generated from your <code>Rmd</code> document.</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>gt</code> tables don’t render all that well without revisions to the <code>.Rmd</code> file when printing to <code>PDF</code>. So this week, we’ll output to <code>.html</code> alone and the <code>gt</code> comparison table should print well.</p>
+</div>
+</div>
+<p>Note that when you knit your output, the <code>.Rmd</code> should not be removed; that is, keep it in your assignment folder in addition to the final <code>.html</code> submission.</p>
 <p>The Assignment 4 R Markdown deliverable is due to Canvas on Thursday, September 25th, 2025 at 11:59pm.</p>
 <section id="references" class="level4">
 <h4 class="anchored" data-anchor-id="references">References:</h4>

@@ -1,0 +1,79 @@
+---
+title: "assignment_4 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This is a Title/Header
+### This is a Title/Header but smaller
+#### This is a Title/Header but smaller
+
+This is body text.
+
+When you click the **Knit** button at the top a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
+
+Remember to first load your needed libraries.
+
+```{r}
+#load needed libraries.
+library(tidycensus)
+library(tidyverse)
+library(gt)
+```
+
+Second, make sure to load the either option 1 Poverty Rate table or option 2 Rent Burden table.  In both cases the file is named `compare_tbl` and it is saved in the `results` folder:
+
+```{r}
+#load the option 1 or option2 data frame that was cleaned/saved from the assignment_4 script.
+load("~/Desktop/assignment_4/results/compare_tbl.RData")
+```
+
+```{r}
+#load the settings for the comparison plot and chart
+#for option 1, paste here lines #14 - #36 from the Poverty Rate script.
+#for option 2, paste here lines #13 - 50 from the Rent Burden script.
+
+
+
+```
+
+
+```{r echo=FALSE, fig.width=12, fig.height=8, fig.align="center", out.width="100%"}
+#revise the code listing for the comparison plot
+#for option 1, paste here lines #142 - #168 from the Poverty Rate script.
+#for option 2, paste here lines #210 - #233 from the Rent Burden script.
+
+```
+
+
+```{r echo=FALSE, fig.width=25, fig.height=15, fig.align="left", out.width="100%"}
+
+#revise the code listing for the comparison chart
+#for option 1, paste here lines #170 - #205 from the Poverty Rate script.
+#for option 2, paste here lines #235 - #272 from the Rent Burden script
+
+```
+
+
+## Findings Section:
+
+Your findings writeup should be placed here.
+
+
+
+
+
+
+
+
+
+
+
+

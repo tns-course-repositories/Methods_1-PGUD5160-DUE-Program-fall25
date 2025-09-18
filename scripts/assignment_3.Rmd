@@ -32,7 +32,7 @@ Second, we load the LES race data, then plot the LES census tract profile.
 
 ```{r}
 #load the Lower East Side race data that was cleaned/saved from the assignment_3 script.
-load("~/Desktop/lab_3/results/LES_race_data_evaluated.RData")
+load("~/Desktop/assignment_3/results/LES_race_data_evaluated.RData")
 ```
 
 
@@ -61,7 +61,7 @@ Third, we load the saved comparison NTA race data, replacing the example here fo
 
 ```{r}
 #load the comparison race data that was cleaned/saved from the assignment_3 script; adapt the code chunk from current LES data.
-load("~/Desktop/lab_3/results/LES_race_data_evaluated.RData")
+load("~/Desktop/assignment_3/results/LES_race_data_evaluated.RData")
 ```
 
 Fourth, we load the comparison NTA race data, then plot the comparison census tract profile.  To follow is the code chunk for LES repeated; make sure to revise the code chunk accordingly for your comparison NTA.

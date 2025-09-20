@@ -8,8 +8,11 @@ library(gt)
 options(scipen = 999)
 options(tigris_use_cache = TRUE, tigris_class = "sf")
 
+# census key only necessary if you have not install = TRUE in past sessions
+# if you need to install a new key, you can use overwrite = TRUE
+
 # census_api_key("YOUR_KEY_HERE", install = TRUE, overwrite = TRUE)
-census_api_key("c7fabeaf76669175f650314dc60a8bce6ff47478")
+
 
 # ---- Settings ----
 acs_year   <- 2023

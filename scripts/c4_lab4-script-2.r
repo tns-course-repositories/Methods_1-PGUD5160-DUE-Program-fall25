@@ -4,6 +4,14 @@ library(tidyverse)
 library(tidycensus)
 library(sf)
 
+# census key only necessary if you have not install = TRUE in past sessions
+# if you need to install a new key, you can use overwrite = TRUE
+
+# census_api_key("YOUR_KEY_HERE", install = TRUE, overwrite = TRUE)
+
+
+
+
 options(scipen = 999)
 # (Optional but helpful: tidycensus uses tigris under the hood and respects these options)
 options(tigris_use_cache = TRUE, tigris_class = "sf")

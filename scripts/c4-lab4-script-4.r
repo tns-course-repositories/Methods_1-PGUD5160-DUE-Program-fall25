@@ -13,7 +13,11 @@ library(gt)
 options(scipen = 999)
 options(tigris_use_cache = TRUE, tigris_class = "sf")
 
-#census_api_key("YOUR_KEY_HERE", install = TRUE, overwrite = TRUE)
+# census key only necessary if you have not install = TRUE in past sessions
+# if you need to install a new key, you can use overwrite = TRUE
+
+# census_api_key("YOUR_KEY_HERE", install = TRUE, overwrite = TRUE)
+
 
 # PUMA code 3604103 access codes here: https://www2.census.gov/geo/maps/DC2020/PUMA/st36_ny/Catalog_PUMAmaps_st36.pdf
 

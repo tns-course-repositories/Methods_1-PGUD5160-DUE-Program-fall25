@@ -7,6 +7,14 @@ library(tidycensus)
 options(scipen = 999)
 options(tigris_use_cache = TRUE, tigris_class = "sf")
 
+# census key only necessary if you have not install = TRUE in past sessions
+# if you need to install a new key, you can use overwrite = TRUE
+
+# census_api_key("YOUR_KEY_HERE", install = TRUE, overwrite = TRUE)
+
+
+
+
 # --- Your 2020 tract list (MN03 filter as before) ---
 CD_CT <- read.csv("~/Desktop/lab_4/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv")
 tracts_2020 <- as.character(CD_CT$GEOID[CD_CT$CDTACode == "MN03"]) |>

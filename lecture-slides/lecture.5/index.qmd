@@ -1,0 +1,347 @@
+---
+title: "Class 5 Lecture | Choropleth (Thematic) Mapping "
+subtitle: "Fall 2025 | Instructor: Stephen Metts | [PGUD 5160 - CRN 2247](https://courses.newschool.edu/courses/PGUD5160/)"
+format:
+  revealjs: 
+    slide-number: true
+    theme: [index_files/custom.scss]
+    touch: true
+    incremental: true   
+    echo: true
+resources:
+  - demo.pdf
+---
+
+## Choropleth Mapping Introduction
+
+- A choropleth map is a type of thematic map in which areas are <u>shaded or patterned</u> according to a data variable. The variable is categorized into intervals, with each interval represented by a colour, and the map filled accordingly. Colour progression is used to represent the differences, often blending from dark to light or one colour to another. The choropleth map provides an easy way to show how a measurement varies across a geographic area, or the level of variability within a region.
+
+::: footer
+Source:[UNHCR Datviz](https://dataviz.unhcr.org/chart-types/geospatial/#:~:text=A%20choropleth%20map%20is%20a,of%20variability%20within%20a%20region.)
+:::
+
+## Choropleth Mapping Introduction
+
+ Choropleth techniques entail measurement or categorization *across geography*:
+
+![](index_files/img/6.png){.absolute top="275" left="140" width="800"}
+
+::: footer
+Source:[Choropleth Definition](https://en.wikipedia.org/wiki/Choropleth_map)
+:::
+
+
+## Choropleth Mapping Introduction
+
+### Elements of Thematic Mapping
+
+![](index_files/img/master-choropleth1.png){.absolute top="150" left="120" width="900"}
+
+
+## Choropleth Mapping Introduction
+
+### Elements of Thematic Mapping
+
+![](index_files/img/master-choropleth2.png){.absolute top="150" left="120" width="900"}
+
+
+## Choropleth Mapping Introduction
+
+### Elements of Thematic Mapping
+
+![](index_files/img/master-choropleth3.png){.absolute top="150" left="120" width="900"}
+
+
+## Choropleth Mapping Introduction
+
+### Elements of Thematic Mapping
+
+![](index_files/img/master-choropleth.png){.absolute top="150" left="120" width="900"}
+
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping
+
+Thematic mapping often entails predetermined geographies
+
+![](index_files/img/11.png){.absolute top="220" left="170" width="700"}
+
+::: footer
+Source:[USA Counties](https://commons.wikimedia.org/wiki/File:Usa_counties_large.svg)
+:::
+
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping
+
+Thematic mapping often entails predetermined geographies
+
+![](index_files/img/12.png){.absolute top="220" left="170" width="700"}
+
+::: footer
+Source:[Census 2000](https://www.census.gov/population/www/cen2000/censusatlas/pdf/13_Income-and-Poverty.pdf)
+:::
+
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping
+
+Disclosure of measurement + classification (Legend) 
+
+![](index_files/img/13.png){.absolute top="280" left="300" width="450"}
+
+::: footer
+Source:[Census 2000](https://www.census.gov/population/www/cen2000/censusatlas/pdf/13_Income-and-Poverty.pdf)
+:::
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping
+
+Stable variable theme (Median Household Income); geometric variability via US Census hierarchy
+
+![](index_files/img/14.png){.absolute top="250" left="250" width="575"}
+
+::: footer
+Source:[Census 2000](https://www.census.gov/population/www/cen2000/censusatlas/pdf/13_Income-and-Poverty.pdf)
+:::
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping
+
+Stable variable theme (Median Household Income); geometric variability via US Census hierarchy
+
+![](index_files/img/15.png){.absolute top="300" left="280" width="450"}
+
+::: footer
+Source:[Census 2000](https://www.census.gov/population/www/cen2000/censusatlas/pdf/13_Income-and-Poverty.pdf)
+:::
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping - Hierarchy = Aggregation
+
+![](index_files/img/census-geo.png){.absolute top="250" left="300" width="500"}
+
+::: footer
+Source:[ESRI](https://learn.arcgis.com/en/related-concepts/united-states-census-geography.htm)
+:::
+
+
+## Choropleth Mapping Introduction
+
+### Geometry of Thematic Mapping - 'Spine' vs 'Off-Spine'
+
+- 'Spine' geographies nest perfectly within each other, from blocks up to the nation.
+- 'Off-Spine' geographies often have higher MOE.
+
+![](index_files/img/spine.png){.absolute top="400" left="700" width="400"}
+
+::: footer
+Source:[CTData Collaborative](https://www.ctdata.org/blog/understanding-census-geography)
+:::
+
+
+## Choropleth Mapping Design
+
+### Challenges 
+
+::: {.incremental}
+- Fallacies of Scale
+- MAUP
+- Politicians + MAUP
+:::
+
+## Choropleth Mapping Design
+
+### Fallacies of Scale 
+
+Increasing Aggregation
+
+![](index_files/img/24.png){.absolute top="220" left="260" width="500"}
+
+::: footer
+Source:[Aggregation](http://slideplayer.com/slide/2353468/)
+:::
+
+## Choropleth Mapping Design
+
+### Fallacies of Scale 
+
+Ecological Fallacy Definition
+
+![](index_files/img/26.png){.absolute top="270" left="130" width="800"}
+
+::: footer
+Source:[Aggregation](http://slideplayer.com/slide/2353468/)
+:::
+
+## Choropleth Mapping Design
+
+### Fallacies of Scale 
+
+Ecological Fallacy Diagram
+
+![](index_files/img/27.png){.absolute top="240" left="250" width="550"}
+
+::: footer
+Source:[Ecological Fallacy](https://en.wikipedia.org/wiki/Ecological_fallacy)
+:::
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP)
+
+![](index_files/img/29.png){.absolute top="280" left="200" width="700"}
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP)
+
+- Scale and Zone Effects
+
+![](index_files/img/30.png){.absolute top="260" left="550" width="400"}
+
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP)
+
+- The state's error was introduced because Flint ZIP codes do not align well with the city of Flint or its water system.
+- Both scale and zone effects at issue.
+
+![](index_files/img/31.png){.absolute top="270" left="650" width="320"}
+
+::: footer
+Source:[phys.org](https://phys.org/news/2016-09-codes-masked-problem-flint.html#jCp)
+:::
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP + Politics)
+
+MA Governor Elbridge Gerry + Salamander - 1812
+
+![](index_files/img/32.png){.absolute top="275" left="300" width="430"}
+
+::: footer
+Source:[Gerrymandering](https://en.wikipedia.org/wiki/Gerrymandering)
+:::
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP + Politics)
+
+Gerrymandering is based on Zone Effect
+
+![](index_files/img/34.png){.absolute top="275" left="290" width="460"}
+
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP + Politics)
+
+Gerrymandering is based on Zone Effect
+
+![](index_files/img/35.png){.absolute top="275" left="290" width="440"}
+
+
+## Choropleth Mapping Design
+
+### Modifiable Areal Unit Problem (MAUP + Politics)
+
+Compactness of Shape: compare area to length of edges (isoperimetry)
+
+![](index_files/img/36.png){.absolute top="400" left="190" width="660"}
+
+::: footer
+Source:[When Drawing a Line is Hard](https://medium.com/equal-future/when-drawing-a-line-is-hard-8d92d30c9044)
+:::
+
+
+## Choropleth Mapping Methods - Classification
+
+'Pre-map' Histogram - detect 'shape' of the data variable to be mapped:
+
+
+![](index_files/img/histogram.png){.absolute top="250" left="300" width="500"}
+
+
+
+::: footer
+Source:[SERC](https://serc.carleton.edu/mathyouneed/geomajors/histograms/index.html)
+:::
+
+## Choropleth Mapping Methods - Classification
+
+Histogram Shapes:
+
+
+![](index_files/img/histogram-shapes.png){.absolute top="300" left="270" width="500"}
+
+
+::: footer
+Source:[SERC](https://serc.carleton.edu/mathyouneed/geomajors/histograms/index.html)
+:::
+
+## Choropleth Mapping Methods - Classification
+
+- **Linear** (Equal interval or rather equal-sized numerical bins). Suitable for 'normal' distributions.
+- **Quantile** (bins of equal number - 4, 5 or 10). Suitable for 'skewed' distributions.
+
+## Choropleth Mapping Methods - Classification
+
+- **Natural Breaks** (bins are relatively narrow; differences between bins are prioritized). Suitable for many distributions.
+- **Standard Deviation**(bins are organized above, then below, a mid-point, typically mean). Suitable for 'normal' distributions.
+
+
+## Choropleth Mapping Methods - Classification Examples
+
+![](index_files/img/equal_interval.png){.absolute top="130" left="130" width="900"}
+
+
+## Choropleth Mapping Methods - Classification Examples
+
+![](index_files/img/quartiles.png){.absolute top="130" left="130" width="900"}
+
+
+## Choropleth Mapping Methods - Classification Examples
+
+![](index_files/img/natural_breaks.png){.absolute top="130" left="130" width="900"}
+
+## Choropleth Mapping Methods - Classification Examples
+
+![](index_files/img/STAND.png){.absolute top="130" left="130" width="900"}
+
+## Choropleth Mapping Methods - Color Theory
+
+- **Sequential** palettes for low→high.
+- **Diverging** palettes for deviations from a meaningful center.
+- **Qualitative/Categorical** palettes for distinct groups or categories.
+
+## Choropleth Mapping Methods - Color Theory
+
+![](index_files/img/colors.png){.absolute top="300" left="100" width="900"}
+
+::: footer
+Source:[atlas.co](https://atlas.co/blog/get-better-at-using-color-palettes-with-choropleth-maps/)
+:::
+
+
+## Choropleth Mapping Methods - Color Theory
+
+![](index_files/img/44.png){.absolute top="175" left="150" width="700"}
+
+## Choropleth Mapping Methods - R Packages
+
+- **sf**: spatial data frames
+- **tidyverse**: wrangling & plotting
+- **tidycensus**: ACS/Census access (with or without geometry)
+- **classInt**: data classification
+- **viridis** / **RColorBrewer** / **scico**: palettes
+
+

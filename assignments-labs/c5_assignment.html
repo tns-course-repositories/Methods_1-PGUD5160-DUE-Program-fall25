@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-09-24">
+
+<title>Class 5 Assignment: Choropleth Mapping with NYC Census Tracts.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c5_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c5_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c5_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c5_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c5_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c5_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c5_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c5_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c5_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c5_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c5_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-5-class-5-materials" id="toc-week-5-class-5-materials" class="nav-link" data-scroll-target="#week-5-class-5-materials">Week 5 Class 5 Materials:</a></li>
+  <li><a href="#week-5-class-5-reading" id="toc-week-5-class-5-reading" class="nav-link" data-scroll-target="#week-5-class-5-reading">Week 5 Class 5 Reading:</a></li>
+  <li><a href="#class-5-assignment" id="toc-class-5-assignment" class="nav-link" data-scroll-target="#class-5-assignment">Class 5 Assignment:</a></li>
+  <li><a href="#class-5-assignment---develop-.rmd-submission" id="toc-class-5-assignment---develop-.rmd-submission" class="nav-link" data-scroll-target="#class-5-assignment---develop-.rmd-submission">Class 5 Assignment - Develop <code>.Rmd</code> Submission</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 5 Assignment: Choropleth Mapping with NYC Census Tracts.</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 24, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this fifth week’s assignment, we will utilize some of the scripting framework of <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_lab">Class 5 lab</a> to develop an R Markdown report that features a comparative analysis across two ACS variables within one NYC Community District at the US Census Tract geographic level.</p>
+<p>Follow the sequence of steps below to first orient to this week’s content: lecture, materials and weekly reading(s). Once complete, move along to first processing script #1 and script #2, then develop the R Markdown deliverable. The assignment deliverable is due Thursday, October 2nd, 2025 at 11:59pm.</p>
+</section>
+<section id="week-5-class-5-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-5-class-5-materials">Week 5 Class 5 Materials:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c5_agenda">Class 5 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_lab">Class 5 lab</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_assignment">Class 5 Assignment - This Document</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c4-assignment5-script-1.r">Class 5 Assignment Script #1 - Median Income Rate</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c4-assignment5-script-2.r">Class 5 Assignment Script #2 - % Owner Occupied</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_5.Rmd">Class 5 Assignment .Rmd ‘starter file’</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.5/index.html">Class 5 Lecture Slides</a></li>
+</ul>
+</section>
+<section id="week-5-class-5-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-5-class-5-reading">Week 5 Class 5 Reading:</h2>
+<p>The following online guide article from Axis Maps covers the basics of choropleth mapping - <a href="https://www.axismaps.com/guide/choropleth">Axis Maps Choropleth Guide</a>. Next week’s quiz 5 will focus on the content of this guide article, with 5 multiple choice questions, and 5 True or False questions.</p>
+<ul>
+<li><a href="https://www.axismaps.com/guide/choropleth">Axis Maps Choropleth Guide</a></li>
+</ul>
+<p>At 7am Friday, October 3rd, the fifth weekly quiz will open in Canvas. Utilize the posted <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c6_agenda">Class 6 Agenda</a> to gain the quiz access code which will be posted towards the beginning of the agenda. Expect 10 questions in total that cover the reading above.</p>
+</section>
+<section id="class-5-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="class-5-assignment">Class 5 Assignment:</h2>
+<section id="step-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1">Step 1:</h4>
+<p>Similar to how we started our <code>assignment_5</code> project directory (this is a repeat of the previous week setups), we will first simply <code>copy/paste</code> the <code>lab_5</code> directory at the desktop and name the new copied directory <code>assignment_5</code>. Remove all the data and results from <code>assignment_5</code> that came from the copy of <code>lab_5</code>; we will start fresh in this assignment with the two script options to pull the necessary census data and transform it to the data frame that will will need for our data analysis and visualization.</p>
+<p>Create a new R project; utilize an <em>Existing Directory</em> and point it to the just copied <code>assignment_5</code> folder:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c5_assignment_files/img/existing-directory-a.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Choose Existing Directory</em></figcaption><p></p>
+</figure>
+</div>
+<p>Run the standard <code>getwd()</code> before beginning <code>assignment_5</code>, ensuring you are within the newly created <code>assignment_5</code> project directory.</p>
+<p>Also, utilize the <code>list.files()</code> function to show <em>all</em> data paths and documents;</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>list.files("~/Desktop/assignment_5", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Like previous assignments, we will again be adapting and delivering a R Markdown File as the <code>assignment_5</code> deliverable.</p>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>To start working on <code>assignment_5</code>, download the assignment script #1 and #2 and place them in the <code>/scripts</code> subdirectory:</p>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-1.r">Class 5 Assignment scrip #1</a></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-2.r">Class 5 Assignment script #2</a></p></li>
+</ul>
+<p>In the first script, like <code>lab_5</code>, the target variable is as follows:</p>
+<p><code>"B19013_001"  # Median household income (inflation-adjusted $)</code></p>
+<blockquote class="blockquote">
+<p>B19013: This is the table ID for “Median Household Income in the Past 12 Months (in [data year] Inflation-Adjusted Dollars)”.</p>
+</blockquote>
+<p>In the second script, like <code>lab_5</code>, the target variable is as follows:</p>
+<p><code>"B25032_001"  # total occupied units</code> <code>"B25032_002"  # owner-occupied TOTAL</code></p>
+<blockquote class="blockquote">
+<p>B25032: This is the table ID for “Tenure by Units in Structure”; Owner-Occupied Units are those that are also <em>not</em> Renter-Occupied/</p>
+</blockquote>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember that <code>.r</code> scripts run in the Console environment are different than <code>.Rmd</code> code chunks which require both the data and libraries to be loaded explicitly in the <code>.Rmd</code> document. Make sure to first run the scripts, produce the data, save the data, then reload the data into your final <code>.Rmd</code> document <em>after</em> working through the two assignment scripts.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>Start with <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-1.r">Class 5 Assignment scrip #1</a>.</p>
+<p>First load in the required libraries; these should already be installed from the <code>lab_5</code> session. Next, set the path to the equivalency file that we have been using. Note that you may need to change the name of the <code>.csv</code> file in order for it to read into your session:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>csv_path &lt;- "~/Desktop/assignment_5/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv"</span>
+<span id="cb2-2"><a href="#cb2-2"></a>CD_CT &lt;- read.csv(csv_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you need to download a new copy of the equivalency file, you can access it here:</p>
+<ul>
+<li><a href="https://data.cityofnewyork.us/api/views/hm78-6dwm/rows.csv?accessType=DOWNLOAD">Equivalency CSV download</a></li>
+</ul>
+<p>A backup copy is located as follows named <code>2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv</code>. This version needs to be uncompressed before using in your scripts:</p>
+<ul>
+<li><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv.zip">Equivalency CSV backup download</a></li>
+</ul>
+<p>Next, you will need to <strong>REPLACE</strong> the current <code>CDTACode == "MN03"</code> with the community district of your choice for this assignment. For instance, <code>BK01</code> would be used for <code>Williamsburg-Greenpoint (CD 1 Equivalent)</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>tracts_id &lt;- as.character(CD_CT$GEOID[CD_CT$CDTACode == "REPLACE THE CD REFERENCE CODE HERE"]) |&gt;</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  stringr::str_pad(11, pad = "0")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Work through the script sequentially from the <code>tidycensus</code> pull, processing the <code>NA</code> flags, producing and plotting the series of three maps. Evaluate the the three map classification options to determine which one best fits your chosen community district.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>assignment_5</code> script #1 and #2 are similar to those of <code>lab_5</code> in that <code>MN03</code> is the example target geography. Make sure that you indeed change reference to <code>MN03</code> to your respective NYC community district code so that your final maps are not <code>MN03</code> but rater your chosen CD code. You need to do this early in the script, and also in the final <code>ggplot</code> title.</p>
+</div>
+</div>
+</section>
+<section id="step-4" class="level4">
+<h4 class="anchored" data-anchor-id="step-4">Step 4:</h4>
+<p>Following your choice of classification method (Equal Interval, Quantile or Natural Breaks) for your chosen community district, save and export your <code>ggplot</code> object. Per the script, this will be one of the following:</p>
+<ul>
+<li><code>map_equal_MI</code></li>
+<li><code>map_quant_MI</code></li>
+<li><code>map_jenks_MI</code></li>
+</ul>
+<p>In past assignments, we have been saving data object <em>prior</em> to visualization. Here we will save the plot itself as an object, allowing us to read it into the <code>.Rmd</code> deliverable <em>after</em> processing the data within the script itself.</p>
+<p>The following code snippet (also located at the end of script #1) saves and exports to the <code>/results</code> subdirectory the first <code>map_equal_MI</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>saveRDS(map_equal_MI, file = "~/Desktop/assignment_5/results/map_equal_MI.rds")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-5" class="level4">
+<h4 class="anchored" data-anchor-id="step-5">Step 5:</h4>
+<p>Script #1 can now be closed, and script #2 can be loaded into the working session:</p>
+<p>Start with <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-2.r">Class 5 Assignment scrip #2</a>.</p>
+<p>As script #1 resulted in the load of the equivalency file, once script #2 is loaded, the only adjustment that needs to take place is the choice and placement of the replacement community district. Again, we are using <code>MN03</code> as the example placeholder in both scripts; these need to be replaced with a single, consistent community district across both scripts #1 and #2.</p>
+<p>Work through the sequence of script #2, resulting in the three map classification methods. However, in script #2, it makes sense to stick with the method that was chosen in script #1. This isn’t mandatory, but it makes sense for consistency unless there is a specific reason to break the consistent method approach.</p>
+<p>The following code snippet (also located at the end of script #2) saves and exports to the <code>/results</code> subdirectory the first <code>map_equal_OO</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>saveRDS(map_equal_OO, file = "~/Desktop/assignment_5/results/map_equal_OO.rds")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the end, you should have two new <code>.rds</code> files located in the <code>/results</code> subdirectory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c5_assignment_files/img/rds.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>required <code>.rds</code> prior to working in assignment_5 <code>.Rmd</code></em></figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="class-5-assignment---develop-.rmd-submission" class="level2">
+<h2 class="anchored" data-anchor-id="class-5-assignment---develop-.rmd-submission">Class 5 Assignment - Develop <code>.Rmd</code> Submission</h2>
+<p>From within your <code>assignment_5</code> project, navigate to the docs folder. This is the location in which you will first download the example R Markdown file (<code>.Rmd</code>), and open it anew in your project. Alternatively, you can create your own R Markdown file, but the download version has some formatting set up that can be a helpful start point (as was the case for previous assignment starter <code>.Rmd</code> files).</p>
+<p>To open an existing R Markdown file:</p>
+<p><em>File &gt; Open File &gt; assignment_5 &gt; docs &gt; assignment_5.Rmd</em></p>
+<p>To create your own R Markdown file:</p>
+<p><em>File &gt; New File &gt; R Markdown</em></p>
+<ul>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_5.Rmd"><code>assignment_5.Rmd</code> ‘starter file’</a></li>
+</ul>
+<p>Next, loading, working with and saving data in the Console is <em>NOT</em> the same as loading, displaying and plotting data in an <code>.Rmd</code> file. Keep in mind that the Console is the iterative, working environment, whereas <code>.Rmd</code> is designed for publishing and sharing your analysis results.</p>
+<p>So, the first step <em>following</em> the completion of accessing, transformation, plotting and saving both the median income and owner-occupied variable instances is to load necessary libraries and saved <code>.rds</code> objects <em>within</em> the <code>.Rmd</code> environment.</p>
+<p>We load the data as follows from <em>within</em> the <code>.Rmd</code> document. Utilize the green <em>run</em> button to the far right of the code block to execute the code:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a># Load the saved ggplot object</span>
+<span id="cb6-2"><a href="#cb6-2"></a>map_equal_MI &lt;- readRDS("~/Desktop/assignment_5/results/map_equal_MI.rds")</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a># Display the loaded plot</span>
+<span id="cb6-5"><a href="#cb6-5"></a>print(map_equal_MI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a># Load the saved ggplot object</span>
+<span id="cb7-2"><a href="#cb7-2"></a>map_equal_OO &lt;- readRDS("~/Desktop/assignment_5/results/map_equal_OO.rds")</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a># Display the loaded plot</span>
+<span id="cb7-5"><a href="#cb7-5"></a>print(map_equal_OO)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A placeholder code chunk for each of these sections is located in the starter <code>.Rmd</code>.</p>
+<p>Make sure to load in your required libraries at the top of the script, and if needed you can reset your API key, although its unlikely you would need to do this as we set the key to <code>install = TRUE</code> for ongoing usage in your R installation.</p>
+<p>As you finalize your code and bring it into your <code>.Rmd</code> submission document, all components - the libraries, the data object and the plotting code - need to exist in the <code>.Rmd</code> environment as it operates separate of your Console environment.</p>
+<p>For your contextual writing and observations consider the following prompts:</p>
+<ul>
+<li>What classification method did you use for your chosen community district; and what was the primary reason(s) of its choice over the other two methods available?</li>
+<li>Did you find a strong, weak or neutral visible correlative relationship between median income and owner-occupied units?<br>
+</li>
+<li>Based on further research or personal experience, can you contextualize your findings to the actual built environment in your chosen community district?<br>
+</li>
+<li>What factor(s) could be driving both the high and low median income tracts; and further, the pattern in the owner-occupied rates across the tracts?</li>
+</ul>
+<p>The assignment 5 submission is due to Canvas on Thursday, October 2nd, 2025 at 11:59pm. The format can be either the <code>.html</code> document format generated from your <code>Rmd</code> document, or the <code>PDF</code> format.</p>
+<p>Note that when you knit your output, the <code>.Rmd</code> should not be removed; that is, keep it in your assignment folder in addition to the final <code>.html</code> or <code>.pdf</code> submission.</p>
+<p>The Assignment 5 R Markdown deliverable is due to Canvas on Thursday, October 2nd, 2025 at 11:59pm.</p>
+<section id="references" class="level4">
+<h4 class="anchored" data-anchor-id="references">References:</h4>
+<ul>
+<li><a href="https://www.nyc.gov/content/planning/pages/resources/datasets/community-district-tabulation">NYC Planning Community District Tabulation Areas (CDTAs)</a></li>
+<li><a href="https://m-mburu.github.io/datacamp/us_census/us_census.html">Census data in r with tidycensus</a></li>
+<li><a href="https://walker-data.com/census-r/mapping-census-data-with-r.html">Mapping Census data with R</a></li>
+<li><a href="https://map-rfun.library.duke.edu/02_choropleth.html">Duke University - Mapping in R</a></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c5_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

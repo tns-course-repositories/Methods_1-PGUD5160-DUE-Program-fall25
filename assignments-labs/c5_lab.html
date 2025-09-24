@@ -114,6 +114,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5" id="toc-step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5" class="nav-link" data-scroll-target="#step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5">Step 1: Project Management in RStudio for <code>lab_5</code> (also applicable for <code>assignment_5</code>)</a></li>
+  <li><a href="#equivalency-file" id="toc-equivalency-file" class="nav-link" data-scroll-target="#equivalency-file">Equivalency File:</a></li>
   <li><a href="#script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey" id="toc-script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey" class="nav-link" data-scroll-target="#script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey">Script 1: Choropleth Mapping for NYS Counties - Median Income - 2023 5-Year Survey</a></li>
   <li><a href="#script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey" id="toc-script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey" class="nav-link" data-scroll-target="#script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey">Script 2: Geometry Mapping for Census Block Groups (CBGs) in Manhattan CD03 - 2023 5-Year Survey</a></li>
   <li><a href="#script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey" id="toc-script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey" class="nav-link" data-scroll-target="#script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey">Script 3: Choropleth Mapping for Census Tracts (CTs) in Manhattan CD03 - Median Income - 2023 5-Year Survey</a></li>
@@ -214,7 +215,7 @@ Note
 </div>
 </div>
 <ul>
-<li>You can access <strong>all</strong> 4 scripts at bottom of lab and download all into <code>scripts/</code>.</li>
+<li>You can access <strong>all</strong> 4 scripts at bottom of lab and download all into <code>/scripts</code>.</li>
 </ul>
 </section>
 <section id="step-3" class="level4">
@@ -233,6 +234,18 @@ Note
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a># Terminal (macOS, Homebrew)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>brew install gdal proj geos pkg-config</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
+<section id="equivalency-file" class="level2">
+<h2 class="anchored" data-anchor-id="equivalency-file">Equivalency File:</h2>
+<p>As utilized in past labs and assignments, we will need to determine both census tracts and census block groups <em>inside</em> NYC Community Districts. To do so, we utilize the following equivalency <code>.csv</code>:</p>
+<p>If you need to download a new copy of the equivalency file, you can access it here:</p>
+<ul>
+<li><a href="https://data.cityofnewyork.us/api/views/hm78-6dwm/rows.csv?accessType=DOWNLOAD">Equivalency CSV download</a></li>
+</ul>
+<p>A backup copy is located as follows named <code>2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv</code>. This version needs to be uncompressed before using in your scripts:</p>
+<ul>
+<li><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv.zip">Equivalency CSV backup download</a></li>
+</ul>
 </section>
 <section id="script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey" class="level2">
 <h2 class="anchored" data-anchor-id="script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey">Script 1: Choropleth Mapping for NYS Counties - Median Income - 2023 5-Year Survey</h2>

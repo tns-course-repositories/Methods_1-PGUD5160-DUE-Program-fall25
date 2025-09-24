@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-09-24">
+
+<title>Class 5 Lab: Choropleth Mapping with American Community Survey (ACS) Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c5_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c5_lab_files/libs/quarto-html/quarto.js"></script>
+<script src="c5_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c5_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c5_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c5_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c5_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c5_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c5_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c5_lab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c5_lab_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5" id="toc-step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5" class="nav-link" data-scroll-target="#step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5">Step 1: Project Management in RStudio for <code>lab_5</code> (also applicable for <code>assignment_5</code>)</a></li>
+  <li><a href="#script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey" id="toc-script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey" class="nav-link" data-scroll-target="#script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey">Script 1: Choropleth Mapping for NYS Counties - Median Income - 2023 5-Year Survey</a></li>
+  <li><a href="#script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey" id="toc-script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey" class="nav-link" data-scroll-target="#script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey">Script 2: Geometry Mapping for Census Block Groups (CBGs) in Manhattan CD03 - 2023 5-Year Survey</a></li>
+  <li><a href="#script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey" id="toc-script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey" class="nav-link" data-scroll-target="#script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey">Script 3: Choropleth Mapping for Census Tracts (CTs) in Manhattan CD03 - Median Income - 2023 5-Year Survey</a></li>
+  <li><a href="#script-4-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---owner-occupied---2023-5-year-survey" id="toc-script-4-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---owner-occupied---2023-5-year-survey" class="nav-link" data-scroll-target="#script-4-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---owner-occupied---2023-5-year-survey">Script 4: Choropleth Mapping for Census Tracts (CTs) in Manhattan CD03 - % Owner Occupied - 2023 5-Year Survey</a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
+  <li><a href="#scripts-backup-data" id="toc-scripts-backup-data" class="nav-link" data-scroll-target="#scripts-backup-data">Scripts &amp; Backup Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 5 Lab: Choropleth Mapping with American Community Survey (ACS) Data</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 24, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this fifth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_5</code>) then move along to accessing US Census data - specifically estimates from the American Community Survey (ACS), followed by thematically mapping both the geometry and data from ACS. This lab can and should be used in conjunction with this week’s assignment 5 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_assignment">Assignment 5</a>.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>Last week we utilized a Census API Key located <a href="https://api.census.gov/data/key_signup.html">HERE</a> to first <code>Request a KEY</code>, secure that key and then propagate it into the <code>tidycensus</code> pulls that we did for both the lab and assignment. We will utilize the same key this week. Remember if you have set the <code>census_api_key("YOUR KEY GOES HERE", install = TRUE)</code> indeed to <code>TRUE</code>, your key should persist into future sessions. In other words, you don’t have to call the key if your <code>tidycensus</code> pulls <em>don’t</em> throw errors asking for an API key.</p>
+<p>Like week 4, generally we will be utilizing the following ACS 5-year Estimate for the latest period available which is 2023. The next 5-year estimate will be issued as follows:</p>
+<blockquote class="blockquote">
+<p>The ACS 5-year survey in 2025 will include the new 2020-2024 ACS 5-year Estimates, released in December 2025.</p>
+</blockquote>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>library(tidycensus)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>vars &lt;- load_variables(2023, "acs5", cache = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_5-also-applicable-for-assignment_5">Step 1: Project Management in RStudio for <code>lab_5</code> (also applicable for <code>assignment_5</code>)</h2>
+<p>As we have done for previous labs, we will create a <code>lab_5</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c5_lab_files/img/directory.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Lab 5 Directory + Subdirectory Structure</em></figcaption><p></p>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>lab_5.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>list.files("~/Desktop/lab_5", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_5</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_5</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>lab_5</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This lab, like the course generally, utilizes macOS file path conventions. Windows users may need to adjust for this difference between their OS conventions and macOS. Traditionally, Windows utilizes the opposite ‘backward’ slash convention as well as naming explicitly the drive location: Windows: <code>C:\Users\username\Desktop\lab_5</code> Linux/macOS: <code>/Users/username/Desktop/lab_5</code></p>
+</div>
+</div>
+<ul>
+<li>You can access <strong>all</strong> 4 scripts at bottom of lab and download all into <code>scripts/</code>.</li>
+</ul>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>For this week’s lab, we will need <code>tidycensus</code>, <code>tidyverse</code>, <code>sf</code> and the <code>gt</code> package. As we have already loaded <code>tidycensus</code> and <code>tidyverse</code> from <code>lab3</code> and <code>lab4</code>, we really only need to install <code>sf</code> and <code>classInt</code> and <code>RColorBrewer</code> and <code>tigris</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>install.packages("tidyverse")</span>
+<span id="cb4-2"><a href="#cb4-2"></a>install.packages("tidycensus")</span>
+<span id="cb4-3"><a href="#cb4-3"></a>install.packages("sf")</span>
+<span id="cb4-4"><a href="#cb4-4"></a>install.packages("classInt")</span>
+<span id="cb4-5"><a href="#cb4-5"></a>install.packages("RColorBrewer")</span>
+<span id="cb4-6"><a href="#cb4-6"></a>install.packages("ggplot2")</span>
+<span id="cb4-7"><a href="#cb4-7"></a>install.packages("tigris")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>or</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>install.packages(c("tidyverse","tidycensus","sf","classInt","RColorBrewer","ggplot2","tigris"))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If <code>sf</code> fails to install - this can happen on a macOS - open the terminal and run:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a># Terminal (macOS, Homebrew)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>brew install gdal proj geos pkg-config</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey" class="level2">
+<h2 class="anchored" data-anchor-id="script-1-choropleth-mapping-for-nys-counties---median-income---2023-5-year-survey">Script 1: Choropleth Mapping for NYS Counties - Median Income - 2023 5-Year Survey</h2>
+<section id="step-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1">Step 1:</h4>
+<p>Make sure <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-1.r">Class 5 Lab 5 R Script #1</a> is open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-1.r</em></p>
+<p>In this first script, we will map <code>Median household income (2023 inflation-adjusted $) Variable "B19013_001"</code> for New York State Counties. We will first plot the variable histogram so we can see the shape of the data which can help inform which classification method might be the best fit for the data.</p>
+<p>Once the <code>tidycensus</code> pull is made and the histogram is produced, we will review the the handling of <code>NA</code> in the script. While NY State counties are highly aggregated and likely to have a stable variable recording <em>without</em> <code>NA</code> observations, in more local geographies like census tracts and census block groups this isn’t necessarily the case. Remember, the smaller the total population, the chances for significant MOE increase, as well as the chances that the observation is so unstable that the census is not publishing it for that particular geography. There are several possible reasons, the most common:</p>
+<blockquote class="blockquote">
+<p>Insufficient data: An estimate or margin of error may not be available for an observation due to an insufficient number of sample cases in that geographic area.</p>
+</blockquote>
+<p>Next, we move onto the actual mapping component of the script. We create the maps, set the bins and then allow three versions to print:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2"></a># ---- Build the three maps ----</span>
+<span id="cb7-3"><a href="#cb7-3"></a>map_equal &lt;- make_map(ny_binned, "bin_equal", "Classification: Equal Interval")</span>
+<span id="cb7-4"><a href="#cb7-4"></a>map_quant &lt;- make_map(ny_binned, "bin_quant", "Classification: Quantile")</span>
+<span id="cb7-5"><a href="#cb7-5"></a>map_jenks &lt;- make_map(ny_binned, "bin_jenks", "Classification: Jenks (Natural Breaks)")</span>
+<span id="cb7-6"><a href="#cb7-6"></a></span>
+<span id="cb7-7"><a href="#cb7-7"></a># ---- Print maps ----</span>
+<span id="cb7-8"><a href="#cb7-8"></a>print(map_equal)</span>
+<span id="cb7-9"><a href="#cb7-9"></a>print(map_quant)</span>
+<span id="cb7-10"><a href="#cb7-10"></a>print(map_jenks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey" class="level2">
+<h2 class="anchored" data-anchor-id="script-2-geometry-mapping-for-census-block-groups-cbgs-in-manhattan-cd03---2023-5-year-survey">Script 2: Geometry Mapping for Census Block Groups (CBGs) in Manhattan CD03 - 2023 5-Year Survey</h2>
+<section id="step-1-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-1">Step 1:</h4>
+<p>Make sure <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-2.r">Class 5 Lab 5 R Script #2</a> is open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-2.r</em></p>
+<p>Make sure to read in the equivalency table correctly:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>CD_CT &lt;- read.csv("~/Desktop/lab_5/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we make a <code>tracts_id</code> object picking up the <code>CDTACode</code> that is Manhattan CD 03:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a>`tracts_id &lt;- as.character(CD_CT$GEOID[CD_CT$CDTACode == "MN03"]) |&gt; stringr::str_pad(11, pad = "0")`</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the <code>tidycensus</code> pull, we set the geography to <code>geography   = "block group"</code> which will return the census block groups that we will then filter with the <code>tracts_id</code> object.</p>
+<p>Like our previous script, we also flag any <code>NA</code> observations; this will be important for local geographies like census tracts and census block groups.</p>
+<p>In the first plot, we just map the census block groups within the <code>CD03</code>; in the second, we map the proportionate share of total population of <code>CD03</code> that is contained <em>within</em> each census block group. Note that the <code>%</code> tends to concentrate in the interior of the <code>CD03</code> while the geographies along the eastern and southeastern edges are <code>0%</code>.</p>
+<p>While our script notifies us that there are no block groups containing <code>NA</code>, if we look at our object <code>acs_bg_sel</code> - the census block groups within <code>CD03</code> - we can see that there are 13 block observations with Zero population. This often happens is census geographies at abut water or infrastructure features that don’t typically feature households and populations. We need to be aware of these ‘low and no’ population geographies as they can impact choropleth mapping classification methods.</p>
+</section>
+</section>
+<section id="script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey" class="level2">
+<h2 class="anchored" data-anchor-id="script-3-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---median-income---2023-5-year-survey">Script 3: Choropleth Mapping for Census Tracts (CTs) in Manhattan CD03 - Median Income - 2023 5-Year Survey</h2>
+<section id="step-1-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-2">Step 1:</h4>
+<p>Make sure <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-3.r">Class 5 Lab 5 R Script #3</a> is open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-3.r</em></p>
+<p>Make sure to read in the equivalency table correctly; alternatively, keep the table from the previous script in your working session:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>CD_CT &lt;- read.csv("~/Desktop/lab_5/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>While script #2 utilized census block groups, here we will aggregate one step up to census tracts to control for the potential for significant <code>NA</code> and <code>Zero</code> observation returns. Our theme and geography is as follows:</p>
+<p><code>Tracts (MN03) — Median Household Income, ACS 2019–2023</code></p>
+<p>In our script #3, we do flag <code>NA</code> census tract returns, both in the map plot and as an object that is printed at the end of the script.</p>
+<p>In order to produce our three map classification versions we use the following code chunk:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href="#cb11-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2"></a># ---- Build and print the three maps in sequence ----</span>
+<span id="cb11-3"><a href="#cb11-3"></a>map_equal &lt;- make_map(tract_binned, "bin_equal", "Classification: Equal Interval (5 bins)")</span>
+<span id="cb11-4"><a href="#cb11-4"></a>map_quant &lt;- make_map(tract_binned, "bin_quant", "Classification: Quantile (5 bins)")</span>
+<span id="cb11-5"><a href="#cb11-5"></a>map_jenks &lt;- make_map(tract_binned, "bin_jenks", "Classification: Jenks (Natural Breaks; 5 bins)")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the returned object <code>na_only_tracts</code> we see that we have two census tracts that do not contain data. We also set those off to a neutral gray color in our choropleth map, setting these geographies off in the legend.</p>
+<p>Note that we are returning a very significant range of income values from <code>20,876</code> all the way to <code>166,447</code>. While there is no ‘incorrect’ classification method, we can argue that the Quantile approach captures the concentration of both the very high and very low values as binned classes, whereas Equal Interval and Jenks shows the geographic pattern of the higher values vs the lower values in meaningful ways.</p>
+</section>
+</section>
+<section id="script-4-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---owner-occupied---2023-5-year-survey" class="level2">
+<h2 class="anchored" data-anchor-id="script-4-choropleth-mapping-for-census-tracts-cts-in-manhattan-cd03---owner-occupied---2023-5-year-survey">Script 4: Choropleth Mapping for Census Tracts (CTs) in Manhattan CD03 - % Owner Occupied - 2023 5-Year Survey</h2>
+<section id="step-1-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-3">Step 1:</h4>
+<p>Make sure <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-4.r">Class 5 Lab 5 R Script #4</a> is open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-4.r</em></p>
+<p>Make sure to read in the equivalency table correctly; alternatively, keep the table from the previous script in your working session:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="#cb12-1"></a>CD_CT &lt;- read.csv("~/Desktop/lab_5/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this script #4, we replace the <code>Tracts (MN03) — Median Household Income, ACS 2019–2023</code> with <code>Tracts (MN03) — % Owner-Occupied Housing Units (ACS 2019–2023, B25032</code>. We keep the geography consistent - census tracts in <code>CD03</code>, but we do indeed replace income with the <code>%</code> of the total of housing units which are Owner-Occupied. We can test the hypothesis that higher income tracts also contain higher <code>%</code> of Owner-Occupied units.</p>
+<p>Using the same classification methods, we can see that your result, at least for <code>CD03</code> is significantly different than the presumption that higher income tracts correspond directly with higher <code>%</code> of Owner-Occupied units. This is due in large part to the uniqueness of housing development in this geography in NYC. Here we can see very high Owner-Occupied rates at/near Cooperative Village to the east; and conversely, very low rates (which translates as very high Renter-Occupied rates) northward at/near Alphabet City.</p>
+</section>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p>In this fifth demonstration lab, we reviewed both census block group and tract geographies, and how to map them for ACS variables using choropleth, thematic mapping approaches and classification methods. We also flagged <code>NA</code> observations, but did allow for for zero <code>0</code> values to pass through to our final mapping.</p>
+<p>In this week’s <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_assignment">Assignment 5</a>, script #3 and #4 will be utilized for your own choice of community district in NYC.</p>
+<p>Access this lab as needed for review and preparation for <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_assignment">Assignment 5</a>.</p>
+</section>
+<section id="scripts-backup-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-backup-data">Scripts &amp; Backup Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-1.r">Class 5 Lab 5 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-1.r</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-1.r">Class 5 Lab 5 R Script #2</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-2.r</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-1.r">Class 5 Lab 5 R Script #3</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-3.r</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-1.r">Class 5 Lab 5 R Script #4</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_4&gt;scripts&gt;c5_lab5-script-4.r</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_5_backup-data.zip">Class 5 Lab 5 Backup Data - as needed</a></p></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://catalog.data.gov/dataset/2020-census-tracts-to-2020-ntas-and-cdtas-equivalency">NYC Equivalency Table Description and Location</a></li>
+<li><a href="https://r-graph-gallery.com/38-rcolorbrewers-palettes.html">RColorBrewer</a></li>
+<li><a href="https://walker-data.com/tidycensus/">tidycensus usage</a></li>
+<li><a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html">ggplot2 cheatsheet</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c5_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

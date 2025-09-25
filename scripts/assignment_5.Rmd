@@ -1,0 +1,60 @@
+---
+title: "assignment_5 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# If you need/want to make a page break in PDF output, you can use the following code snippet:
+
+\newpage
+
+# This is the section following the `\newpage` page break for PDF.
+
+Remember, typically first load your needed libraries. This week the processing was done in the assignment script; thus we can actually skip loading libraries.
+
+Second, make sure to position your median income plot followed by your owner-occupied plot. Notice that `echo=FALSE` is set as a parameter to hide the code chunk printing in the final document which gives a cleaner look:
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load the saved ggplot object
+map_equal_MI_plot <- readRDS("~/Desktop/assignment_5/results/map_equal_MI.rds")
+
+# Display the loaded plot
+print(map_equal_MI_plot)
+```
+
+
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load the saved ggplot object
+map_equal_OO_plot <- readRDS("~/Desktop/assignment_5/results/map_equal_OO.rds")
+
+# Display the loaded plot
+print(map_equal_OO_plot)
+```
+
+```{r echo=FALSE, fig.width=25, fig.height=15, fig.align="left", out.width="100%"}
+```
+
+
+## Findings Section:
+
+Your findings writeup should be placed here.
+
+
+
+
+
+
+
+
+
+
+
+

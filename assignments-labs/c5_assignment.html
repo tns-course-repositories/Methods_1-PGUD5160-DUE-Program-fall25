@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-24">
+<meta name="dcterms.date" content="2025-09-29">
 
 <title>Class 5 Assignment: Choropleth Mapping with NYC Census Tracts.</title>
 <style>
@@ -135,7 +135,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 24, 2025</p>
+      <p class="date">September 29, 2025</p>
     </div>
   </div>
   
@@ -156,8 +156,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c5_agenda">Class 5 Agenda</a></li>
 <li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_lab">Class 5 lab</a></li>
 <li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c5_assignment">Class 5 Assignment - This Document</a></li>
-<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c4-assignment5-script-1.r">Class 5 Assignment Script #1 - Median Income Rate</a></li>
-<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c4-assignment5-script-2.r">Class 5 Assignment Script #2 - % Owner Occupied</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_assignment5-script-1.r">Class 5 Assignment Script #1 - Median Income Rate</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_assignment5-script-2.r">Class 5 Assignment Script #2 - % Owner Occupied</a></li>
 <li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_5.Rmd">Class 5 Assignment .Rmd ‘starter file’</a></li>
 <li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.5/index.html">Class 5 Lecture Slides</a></li>
 </ul>
@@ -191,8 +191,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
 <p>To start working on <code>assignment_5</code>, download the assignment script #1 and #2 and place them in the <code>/scripts</code> subdirectory:</p>
 <ul>
-<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-1.r">Class 5 Assignment scrip #1</a></p></li>
-<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-2.r">Class 5 Assignment script #2</a></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_assignment5-script-1.r">Class 5 Assignment scrip #1</a></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_assignment5-script-2.r">Class 5 Assignment script #2</a></p></li>
 </ul>
 <p>In the first script, like <code>lab_5</code>, the target variable is as follows:</p>
 <p><code>"B19013_001"  # Median household income (inflation-adjusted $)</code></p>
@@ -220,7 +220,7 @@ Note
 </section>
 <section id="step-3" class="level4">
 <h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
-<p>Start with <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-1.r">Class 5 Assignment scrip #1</a>.</p>
+<p>Start with <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_assignment5-script-1.r">Class 5 Assignment scrip #1</a>.</p>
 <p>First load in the required libraries; these should already be installed from the <code>lab_5</code> session. Next, set the path to the equivalency file that we have been using. Note that you may need to change the name of the <code>.csv</code> file in order for it to read into your session:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>csv_path &lt;- "~/Desktop/assignment_5/data/2020_Census_Tracts_to_2020_NTAs_and_CDTAs_Equivalency_20250903.csv"</span>
 <span id="cb2-2"><a href="#cb2-2"></a>CD_CT &lt;- read.csv(csv_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -265,7 +265,7 @@ note
 <section id="step-5" class="level4">
 <h4 class="anchored" data-anchor-id="step-5">Step 5:</h4>
 <p>Script #1 can now be closed, and script #2 can be loaded into the working session:</p>
-<p>Start with <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5-assignment5-script-2.r">Class 5 Assignment scrip #2</a>.</p>
+<p>Start with <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_assignment5-script-2.r">Class 5 Assignment scrip #2</a>.</p>
 <p>As script #1 resulted in the load of the equivalency file, once script #2 is loaded, the only adjustment that needs to take place is the choice and placement of the replacement community district. Again, we are using <code>MN03</code> as the example placeholder in both scripts; these need to be replaced with a single, consistent community district across both scripts #1 and #2.</p>
 <p>Work through the sequence of script #2, resulting in the three map classification methods. However, in script #2, it makes sense to stick with the method that was chosen in script #1. This isn’t mandatory, but it makes sense for consistency unless there is a specific reason to break the consistent method approach.</p>
 <p>The following code snippet (also located at the end of script #2) saves and exports to the <code>/results</code> subdirectory the first <code>map_equal_OO</code>:</p>

@@ -1,0 +1,71 @@
+---
+title: "assignment_6 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# If you need/want to make a page break in PDF output, you can use the following code snippet:
+
+\newpage
+
+# This is the section following the `\newpage` page break for PDF.
+
+Remember, typically first load your needed libraries. This week the processing was done in the assignment script; thus we only need to load the `gt` library in order to render the frequency table correctly:
+
+```{r, echo=FALSE}
+library(gt)
+```
+
+Second, make sure to position your frequency table followed by your land use PUMA plot. Notice that `echo=FALSE` is set as a parameter to hide the code chunk printing in the final document which gives a cleaner look.
+
+
+## Frequency Table for Land Uses in Chosen PUMA:
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load the frequency table
+freq_tbl <- readRDS("~/Desktop/assignment_6/results/freq_tbl.rds")
+
+#make necessary changes to the labeling in gt table for chosen PUMA
+freq_tbl |>
+   gt(rowname_col = "LandUse_code") |>
+   tab_header(title = md("**PUMA 4103 — Parcels by Land Use (PLUTO)**")) |>
+   cols_label(
+     label = "Category",
+     n = "Count",
+    percent = "Percent"
+   )
+
+```
+
+## Land Use Plot:
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load the saved ggplot object
+landuse_plot <- readRDS("~/Desktop/assignment_6/results/landuse_plot.rds")
+
+# Display the loaded plot
+print(landuse_plot)
+```
+
+## Findings Section:
+
+Your findings writeup should be placed here.
+
+
+
+
+
+
+
+
+
+
+
+

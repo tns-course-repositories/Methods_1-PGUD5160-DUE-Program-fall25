@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-09-30">
+
+<title>Class 6 Lab: R as a GIS | working with the sf package</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c6_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c6_lab_files/libs/quarto-html/quarto.js"></script>
+<script src="c6_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c6_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c6_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c6_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c6_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c6_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c6_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c6_lab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c6_lab_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#step-1-project-management-in-rstudio-for-lab_6-also-applicable-for-assignment_6" id="toc-step-1-project-management-in-rstudio-for-lab_6-also-applicable-for-assignment_6" class="nav-link" data-scroll-target="#step-1-project-management-in-rstudio-for-lab_6-also-applicable-for-assignment_6">Step 1: Project Management in RStudio for <code>lab_6</code> (also applicable for <code>assignment_6</code>)</a></li>
+  <li><a href="#lab-demonstration-1---mapping-latitude-longitude-points-nyc-311-data-with-the-sf-package" id="toc-lab-demonstration-1---mapping-latitude-longitude-points-nyc-311-data-with-the-sf-package" class="nav-link" data-scroll-target="#lab-demonstration-1---mapping-latitude-longitude-points-nyc-311-data-with-the-sf-package">Lab Demonstration #1 - Mapping Latitude &amp; Longitude points (NYC 311 data) with the <code>sf</code> package:</a></li>
+  <li><a href="#lab-demonstration-2---crs-comparison-mapping-for-nys-with-the-sf-package" id="toc-lab-demonstration-2---crs-comparison-mapping-for-nys-with-the-sf-package" class="nav-link" data-scroll-target="#lab-demonstration-2---crs-comparison-mapping-for-nys-with-the-sf-package">Lab Demonstration #2 - CRS Comparison Mapping for NYS with the <code>sf</code> package:</a></li>
+  <li><a href="#lab-demonstration-3---puma-preview-map-with-the-sf-package" id="toc-lab-demonstration-3---puma-preview-map-with-the-sf-package" class="nav-link" data-scroll-target="#lab-demonstration-3---puma-preview-map-with-the-sf-package">Lab Demonstration #3 - PUMA Preview Map with the <code>sf</code> package:</a></li>
+  <li><a href="#lab-demonstration-4---land-use-zoning-mapping-in-nyc-with-the-sf-package" id="toc-lab-demonstration-4---land-use-zoning-mapping-in-nyc-with-the-sf-package" class="nav-link" data-scroll-target="#lab-demonstration-4---land-use-zoning-mapping-in-nyc-with-the-sf-package">Lab Demonstration #4 - Land Use (zoning) Mapping in NYC with the <code>sf</code> package:</a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
+  <li><a href="#scripts-backup-data" id="toc-scripts-backup-data" class="nav-link" data-scroll-target="#scripts-backup-data">Scripts &amp; Backup Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 6 Lab: R as a GIS | working with the <code>sf</code> package</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 30, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this sixth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_6</code>) then move along to working with the <code>sf</code> package for vector features. This lab can and should be used in conjunction with this week’s assignment 6 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c6_assignment">Assignment 6</a>.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>In this week’s lab, we will first create a spatial object from 311 NYC data (Street Flooding Complaints) to demonstrate the basic syntax and functions of the <code>sf</code> package to read and map spatial features. Along the way, we will cover CRSs in R. Next, we will map New York State across two CRSs to demonstrate in more depth how the <code>sf</code> package handles coordinate systems.</p>
+<p>In the third instance, we will move along to working with the NYC Parcel base known as <a href="https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change">MapPLUTO</a>. We will utilize the PUMA geography that we have become accustomed to through past labs and assignments to ‘select’ from the parcel base just those parcels that are within a PUMA selection. In this way, we significantly decrease the master MapPLUTO dataset to a manageable size, creating a custom geography ready for further exploration and analysis at a neighborhood level.</p>
+<p>The <a href="https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change">MapPLUTO</a> <code>.shp</code> download appears as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-mp.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>MapPLUTO clipped shoreline version</em></figcaption><p></p>
+</figure>
+</div>
+<p>The <a href="https://www.nyc.gov/content/planning/pages/resources/datasets/public-use-microdata-areas">NYC PUMAs</a> <code>.shp</code> download appears as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-puma.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>PUMA 2020 version for NYC</em></figcaption><p></p>
+</figure>
+</div>
+<p>For <code>lab_6</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_data-subdirectory.zip">Data Download LINK</a></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s scripts. Further, change the name from <code>lab_6_data-subdirectory</code> to simply <code>data</code> and place it into your <code>lab_6</code> directory.</p>
+</div>
+</div>
+</section>
+<section id="step-1-project-management-in-rstudio-for-lab_6-also-applicable-for-assignment_6" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_6-also-applicable-for-assignment_6">Step 1: Project Management in RStudio for <code>lab_6</code> (also applicable for <code>assignment_6</code>)</h2>
+<p>As we have done for previous labs, we will create a <code>lab_6</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-directory.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Lab 6 Directory + Subdirectory Structure</em></figcaption><p></p>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>lab_6.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>list.files("~/Desktop/lab_6", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_6</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_6</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>lab_6</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="lab-demonstration-1---mapping-latitude-longitude-points-nyc-311-data-with-the-sf-package" class="level2">
+<h2 class="anchored" data-anchor-id="lab-demonstration-1---mapping-latitude-longitude-points-nyc-311-data-with-the-sf-package">Lab Demonstration #1 - Mapping Latitude &amp; Longitude points (NYC 311 data) with the <code>sf</code> package:</h2>
+<p>For this first demonstration, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_data-subdirectory.zip">data subdirectory download</a>.</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c6_lab6-script-1.r">Lab Script #1 - Mapping Latitude &amp; Longitude points</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_5&gt;scripts&gt;c6_lab6-script-1.r</em></p>
+<p>In the first step we read in the <code>.csv</code> data. If we review the <code>.csv</code> we’ll see that two columns exist for both Latitude and Longitude for each 311 NYC observation for street flooding.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-lat-lon.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Latitude &amp; Longitude Columns in the <code>.csv</code> dataset</em></figcaption><p></p>
+</figure>
+</div>
+<p>Next, we convert these two columns into actual map points in using the <code>sf</code> package:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>pts_wgs84 &lt;- st_as_sf(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  pts_raw,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  coords = c("Longitude", "Latitude"),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  crs    = 4326,</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  remove = FALSE</span>
+<span id="cb3-6"><a href="#cb3-6"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we reproject the points from <code>crs = 4326</code> to <code>crs = 2263</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>pts_2263 &lt;- st_transform(pts_wgs84, 2263)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For context, we will also add the NYC borough boundaries which is a polygon geometry. Importantly, we are not reading in a <code>.csv</code> with locational data (latitude and longitude); rather, we use the <code>sf</code> package function <code>st_read</code> to create an <code>sf</code> object from the <code>.shp</code> format:</p>
+<blockquote class="blockquote">
+<p><code>st_read</code> can read a wide range of spatial data formats, including shapefiles (.shp), GeoJSON (.geojson), KML (.kml), and data from spatial databases like PostGIS.</p>
+</blockquote>
+<p>Finally, we move to <code>ggplot</code> and plot (or rather map) the points atop the borough boundaries:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-map-pts.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>311 Flooding Points Mapped</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="lab-demonstration-2---crs-comparison-mapping-for-nys-with-the-sf-package" class="level2">
+<h2 class="anchored" data-anchor-id="lab-demonstration-2---crs-comparison-mapping-for-nys-with-the-sf-package">Lab Demonstration #2 - CRS Comparison Mapping for NYS with the <code>sf</code> package:</h2>
+<p>For this second demonstration, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_data-subdirectory.zip">data subdirectory download</a>:</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c6_lab6-script-2.r">Lab Script #2 - CRS Comparison Mapping for NYS</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_5&gt;scripts&gt;c6_lab6-script-2.r</em></p>
+<p>To start, install then load the <code>patchwork</code> library which allows for multiple plots positioning within the same <code>ggplot</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>install.packages("patchwork")</span>
+<span id="cb5-2"><a href="#cb5-2"></a>library(patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Using <code>tidycensus</code>, we will pull the geometry for NYS. Next, we make a second version using the CRS <code>EPSG:3261</code> which is the <code>UTM Zone 18 North</code> which is typical for NYS data.</p>
+<p>Next we create a buffer for the centroid of New York State, and allow for a second version in <code>EPSG:4326</code>. We then create to <code>ggplot</code> plot maps - one on CRS <code>4326</code> and the other on CRS <code>32618</code>.</p>
+<p>We will then discuss the results, giving attention to the way that the <code>sf</code> package handles the transformations; why one map CRS might be more appropriate than the other, and finally visually compare the results side-by-side:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-comparison.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>NYS + buffered centroid Mapped across two <code>sf</code> package CRSs</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="lab-demonstration-3---puma-preview-map-with-the-sf-package" class="level2">
+<h2 class="anchored" data-anchor-id="lab-demonstration-3---puma-preview-map-with-the-sf-package">Lab Demonstration #3 - PUMA Preview Map with the <code>sf</code> package:</h2>
+<p>For this third demonstration, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_data-subdirectory.zip">data subdirectory download</a>:</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c6_lab6-script-3.r">Lab Script #3 - PUMA Preview Map for NYC</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_5&gt;scripts&gt;c6_lab6-script-3.r</em></p>
+<p>To start, we will read in the <code>nypuma2020.shp</code>, transforming to an <code>sf</code> object. We will quickly inspect it, then plot the results.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-puma-map.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>NYC 2020 PUMA Map</em></figcaption><p></p>
+</figure>
+</div>
+<p>In <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c6_assignment">Assignment 6</a>, you will need to make a determination for which PUMA you want to use for your map project at the PUMA geography. In addition to the resulting map, you can utilize the following PDF to find your chosen PUMA with <code>GEOID</code> linked to its text descriptor. Make sure to note that in the <code>GEOID</code> it is only the last 4 digits that are utilized in the <code>nypuma2020.shp</code> as these are only for NYC and the state signifier <code>36</code> is redundant.</p>
+<ul>
+<li><a href="https://www2.census.gov/geo/maps/DC2020/PUMA/st36_ny/Catalog_PUMAmaps_st36.pdf">Census 2020 Census Listing for NY State PUMAs</a></li>
+</ul>
+</section>
+<section id="lab-demonstration-4---land-use-zoning-mapping-in-nyc-with-the-sf-package" class="level2">
+<h2 class="anchored" data-anchor-id="lab-demonstration-4---land-use-zoning-mapping-in-nyc-with-the-sf-package">Lab Demonstration #4 - Land Use (zoning) Mapping in NYC with the <code>sf</code> package:</h2>
+<p>For this fourth demonstration, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_data-subdirectory.zip">data subdirectory download</a>:</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c6_lab6-script-4.r">Lab Script #4 - PUMA Preview Map for NYC</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_5&gt;scripts&gt;c6_lab6-script-4.r</em></p>
+<p>This fourth demonstration will used as the basis for <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c6_assignment">Assignment 6</a>. In the script, we will utilized PUMA <code>4103</code> which translates as the target community district that we have been using in previous labs - the Lower East Side, Chinatown CD.</p>
+<p>First, we load the necessary libraries, adding in the <code>stringr</code> library:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>install.packages("stringr")</span>
+<span id="cb6-2"><a href="#cb6-2"></a>library(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next we load in the NYC PUMAs and the NYC MapPLUTO Landuse parcel dataset.</p>
+<ul>
+<li><a href="https://www2.census.gov/geo/maps/DC2020/PUMA/st36_ny/Catalog_PUMAmaps_st36.pdf">Census 2020 Census Listing for NY State PUMAs</a></li>
+<li><a href="https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change">NYC MapPLUTO</a></li>
+</ul>
+<blockquote class="blockquote">
+<p>MapPLUTO merges PLUTO tax lot data with tax lot features from the Department of Finance’s Digital Tax Map (DTM) and is available as shoreline clipped and water included. It contains extensive land use and geographic data at the tax lot level in ESRI shapefile and File Geodatabase formats.</p>
+</blockquote>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>the MapPLUTO dataset is a significant memory load; we should expect up to several minutes of load time. The total size of the file as read into R is large with 856694 observations across a total of 95 variables.</p>
+</div>
+</div>
+<p>With such a large size, we need to subset the MapPLUTO data to a smaller geography. For this lab we will use PUMA 4103; for your assignment, chose your own PUMA and set accordingly in the assignment script:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a># ---- Select target PUMA (4103) ----</span>
+<span id="cb7-2"><a href="#cb7-2"></a>puma_4103 &lt;- pumas %&gt;% filter(PUMA == 4103)</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a># ---- (Speed) Crop PLUTO to PUMA bbox BEFORE spatial filter ----</span>
+<span id="cb7-5"><a href="#cb7-5"></a>pluto_crop &lt;- st_crop(pluto, st_bbox(puma_4103))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we utilize the <code>sf</code> package to find those parcels that <code>intersect</code> with the chosen PUMA:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>pluto_4103 &lt;- st_filter(pluto_crop, puma_4103, .predicate = st_intersects) %&gt;%</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  filter(!st_is_empty(geometry))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As we move along to the <code>ggplot</code> component of the workflow, we first map just the parcels that <code>intersect</code> with PUMA 4103. Next we create a vector for the color space used by NYC Planning for Land Use in the MapPLUTO file. We also create at labels vector that equates the Land Use codes to their respective categorical, named values. Using <code>tidyverse</code>, we then force the raw numbers to factors with a length of two digits.</p>
+<p>Before the final mapping, we create a frequency table and print it to the Console. Next, we load and utilize the <code>gt</code> library that we have used in past labs and assignments so that we can print a nicely formatted version of the table.</p>
+<p>Finally, we set a map print extent <code>bb &lt;- st_bbox(puma_4103)</code> and then move to the final step of the <code>ggplot</code> Land Use Map:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c6_lab_files/img/6-pluto-map.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Final Land Use Map for Target PUMA 4103</em></figcaption><p></p>
+</figure>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the above map we see several parcels that are seemingly ‘outside’ PUMA 4103. Using the <code>intersect</code> function, any parcel that indeed <code>intersects</code> with the target PUMA is then selected. Another function <code>crop</code> is more exclusive and will clip the resulting parcels to the actual boundary of the target PUMA. Next week we’ll cover more functions of the <code>sf</code> package.</p>
+</div>
+</div>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p>In this sixth demonstration lab, we introduced the <code>sf</code> package, a primary R package used for GIS operations. Similar to last week, this week’s <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c6_assignment">Assignment 6</a>, script #3 and #4 will be the basis for the two assignment scripts used for your own chosen PUMA in NYC.</p>
+<p>Access this lab as needed for review and preparation for <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c6_assignment">Assignment 6</a>.</p>
+</section>
+<section id="scripts-backup-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-backup-data">Scripts &amp; Backup Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c6_lab6-script-1.r">Class 6 Lab 6 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_6&gt;scripts&gt;c6_lab6-script-1.r</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-2.r">Class 5 Lab 5 R Script #2</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_6&gt;scripts&gt;c6_lab6-script-2.r</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-3.r">Class 5 Lab 5 R Script #3</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_6&gt;scripts&gt;c6_lab6-script-3.r</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c5_lab5-script-4.r">Class 5 Lab 5 R Script #4</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_6&gt;scripts&gt;c6_lab6-script-4.r</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_data-subdirectory.zip">Data Subdirectory Download</a></p></li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In script #2, a census pull is made for New York State geometry. In script #4, MapPLUTO - a very large file - is cropped to the PUMA boundary. If either or both of these processes fail, a backup of the census pull and cropped data is available in the following link. <code>load("ny_4326.Rdata")</code> and <code>load("pluto_crop.Rdata")</code> can be used once the data is placed into the <code>lab_6</code> directory.</p>
+</div>
+</div>
+<ul>
+<li><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_6_backup-data.zip">Class 6 Lab 6 Backup Data Objects - as needed</a></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change">NYC MapPLUTO</a></li>
+<li><a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9/about_data">311 NYC Dataset</a></li>
+<li><a href="https://r-spatial.github.io/sf/"><code>sf</code> Package Overview</a></li>
+<li><a href="https://www2.census.gov/geo/maps/DC2020/PUMA/st36_ny/Catalog_PUMAmaps_st36.pdf">US Census PUMA Listing - NYS</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c6_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

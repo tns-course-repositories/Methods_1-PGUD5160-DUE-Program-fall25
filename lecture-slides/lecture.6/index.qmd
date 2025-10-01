@@ -1,0 +1,327 @@
+---
+title: "Class 6 Lecture | R as a GIS + Spatial Objects"
+subtitle: "Fall 2025 | Instructor: Stephen Metts | [PGUD 5160 - CRN 2247](https://courses.newschool.edu/courses/PGUD5160/)"
+format:
+  revealjs: 
+    slide-number: true
+    theme: [index_files/custom.scss]
+    touch: true
+    incremental: true   
+    echo: true
+resources:
+  - demo.pdf
+---
+
+## GIS Definition
+
+> A **Geographic Information System (GIS)** is a computer system designed to capture, store, manage, analyze, and display geographically referenced information:
+
+-  <u>Geographically referenced information</u> is data linked to specific locations on Earth's surface.</u>
+
+- Two primary models are used to capture, organize, analyze and display <u>spatial data</u>: **Vector** & **Raster**
+
+
+## GIS Definition
+
+Vector vs Raster:
+
+![](index_files/img/Raster-VS-Vector-1.png){.absolute top="205" left="140" width="750"}
+
+
+## GIS Definition 
+
+Overlay:
+
+![](index_files/img/gis-overlay.png){.absolute top="145" left="260" width="450"}
+
+
+
+## GIS Definition 
+
+Geometry vs Attributes:
+
+![](index_files/img/geo-attributes.png){.absolute top="240" left="100" width="800"}
+
+
+## GIS Definition
+
+Recap:
+
+- Geographic Context: Every piece of spatial data is tied to a real-world location, such as a street address, coordinates, or a specific area.
+
+## GIS Definition
+
+Recap:
+
+- Vector vs. Raster:
+  - Vector Data: Uses discrete geometric elements (points, lines, polygons) to represent specific features like roads, buildings, or property boundaries. 
+  - Raster Data: Uses a grid of cells (pixels), with each cell holding a value that represents a phenomenon over a continuous area, like elevation, temperature, or a satellite image.
+
+
+## GIS Definition
+
+Recap:
+
+- Attribute Data: Spatial data often includes attribute data, which provides descriptive information about a feature, such as the name of a street, a planning zone or a land use code. 
+
+
+## Spatial Data
+
+Geometry (Vector):
+
+- Discrete geometric locations
+- x,y locations are vertices
+- Organization of vertices = structure: points, lines, polygons
+
+::: footer
+Source:[NEON](https://nceas.github.io/oss-lessons/spatial-data-gis-law/1-mon-spatial-data-intro.html)
+:::
+
+## Spatial Data
+
+Coordinate Space:
+
+![](index_files/img/cs.png){.absolute top="150" left="275" width="500"}
+
+
+## Spatial Data
+
+Geometry (Vector):
+
+![](index_files/img/vector-structure.png){.absolute top="150" left="275" width="500"}
+
+::: footer
+Source:[NEON](https://nceas.github.io/oss-lessons/spatial-data-gis-law/1-mon-spatial-data-intro.html)
+:::
+
+
+## Spatial Data
+
+Geometry (Vector):
+
+The spatial extent of a vector dataset is determined by the min and max x,y location of ALL OF THE SPATIAL OBJECTS stored in the dataset.  Often referred to as a 'bounding box':
+
+![](index_files/img/vector-structure2.png){.absolute top="350" left="195" width="650"}
+
+::: footer
+Source:[NEON](https://nceas.github.io/oss-lessons/spatial-data-gis-law/1-mon-spatial-data-intro.html)
+:::
+
+
+## Spatial Data
+
+OGC Simple Features standard:
+
+> The OGC Simple Features standard defines how geographic features (like points, lines, and polygons) are represented and accessed in a consistent, interoperable way, serving as a foundation for modern GIS applications. 
+
+
+![](index_files/img/sf_arch.png){.absolute top="375" left="195" width="700"}
+
+::: footer
+Source:[Simple Features Architecture Document Download](https://portal.ogc.org/files/?artifact_id=25355)
+:::
+
+## Spatial Data
+
+Typical Geometry types found in `R` (specifically `sf` package):
+
+
+![](index_files/img/geo-types.png){.absolute top="170" left="140" width="800"}
+
+
+
+::: footer
+Source:[sf vignettes](https://cran.r-project.org/web/packages/sf/vignettes/sf1.html)
+:::
+
+## Spatial Data
+
+`sf` Package in R:
+
+> The `sf` package in R provides a framework for working with simple features, which are a standardized way to represent and analyze spatial vector data (points, lines, polygons). It offers a modern and efficient approach to geospatial data handling in R, often used in conjunction with tidyverse packages like `ggplot2` and `dplyr`.
+
+## Spatial Data
+
+CRS handling in `SF`:
+
+>The `sf` package in R provides robust functionality for handling Coordinate Reference Systems (CRSs) in spatial data. A CRS defines how geographic coordinates relate to real-world locations and is crucial for accurate spatial analysis and visualization.
+
+
+```{{r}}
+    # Get CRS
+    current_crs <- st_crs(my_sf_object)
+
+    # Set CRS (if not already defined or incorrectly defined)
+    my_sf_object <- st_set_crs(my_sf_object, 4326) # Using EPSG code
+```
+
+
+## Spatial Data
+
+What CRSs are common to NYC?
+
+![](index_files/img/CRS1.png){.absolute top="175" left="175" width="700"}
+
+::: footer
+Source:[Spatial Reference dot org](https://spatialreference.org/ref/?page=2&search=new%20york)
+:::
+
+## Spatial Data
+
+What CRSs are common to NYC?
+
+![](index_files/img/CRS2.png){.absolute top="155" left="195" width="550"}
+
+::: footer
+Source:[Spatial Reference dot org](https://spatialreference.org/ref/?page=2&search=new%20york)
+:::
+
+
+## Spatial Data
+
+>For mapping New York City, the common Coordinate Reference Systems (CRS) are `NAD83 / New York Long Island (EPSG:2263)` for engineering and mapping, alongside `WGS 84 (EPSG:4326)` and `Web Mercator (EPSG:3857)` for web mapping and GPS data. 
+
+## Spatial Data
+
+How doe `SF` handle CRSs?
+
+>The `sf` package in R does not provide a fixed, exhaustive list of available Coordinate Reference Systems (CRS) in the way a package might list specific functions. Instead, `sf` leverages the underlying `GDAL` and `PROJ` libraries, which support a vast and dynamic array of CRSs.
+
+**EPSG Codes**: The most common and recommended method is using EPSG codes, which are numerical identifiers for well-known CRSs (e.g., EPSG:4326 for WGS84 latitude/longitude).
+
+## Spatial Data
+
+Geocentric vs Planar CRSs:
+
+- A **geocentric CRS** uses a 3D Cartesian coordinate system with its origin at the center of the Earth to represent locations in space. 
+
+- A **planar CRS**, also known as a projected CRS, is a 2D coordinate system that uses a mathematical projection to flatten the Earth's curved surface onto a flat plane. 
+
+
+## Spatial Data
+
+What does a spatial object look like in `R`?
+
+![](index_files/img/sf_header.png){.absolute top="200" left="50" width="900"}
+
+::: footer
+Source:[r-spatial dot org](https://r-spatial.org/book/)
+:::
+
+## Spatial Data
+
+Spatial data 'in the wild' before becoming an `sf` object
+
+The `shapefile`:
+
+![](index_files/img/wild1.png){.absolute top="240" left="100" width="900"}
+
+
+## Spatial Data
+
+Spatial data 'in the wild' before becoming an `sf` object
+
+The `shapefile`:
+
+![](index_files/img/wild2.png){.absolute top="275" left="150" width="900"}
+
+
+::: footer
+Source:[Shapefile Definition](https://en.wikipedia.org/wiki/Shapefile)
+:::
+
+
+## Spatial Data
+
+Spatial data 'in the wild' before becoming an `sf` object
+
+`GeoJSON`:
+
+![](index_files/img/wild3.png){.absolute top="200" left="350" width="500"}
+
+::: footer
+Source:[GeoJSON Definition](https://en.wikipedia.org/wiki/GeoJSON)
+:::
+
+
+## Spatial Data
+
+Spatial data 'in the wild' before becoming an `sf` object
+
+`GeoJSON`:
+
+![](index_files/img/wild4.png){.absolute top="220" left="100" width="800"}
+
+::: footer
+Source:[geojson.io](https://geojson.io/#map=11.12/40.6364/-74.3245)
+:::
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow1.png){.absolute top="200" left="50" width="900"}
+
+::: footer
+Source:[MapPLUTO](https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks/about_data)
+:::
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow2.png){.absolute top="275" left="75" width="900"}
+
+::: footer
+Source:[MapPLUTO](https://data.cityofnewyork.us/City-Government/Primary-Land-Use-Tax-Lot-Output-PLUTO-/64uk-42ks/about_data)
+:::
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow3.png){.absolute top="275" left="75" width="900"}
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow4.png){.absolute top="275" left="75" width="900"}
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow5.png){.absolute top="150" left="150" width="700"}
+
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow6.png){.absolute top="200" left="200" width="600"}
+
+
+## `sf` load & EDA workflow example
+
+Data for NYC Parcels
+
+![](index_files/img/mp-workflow7.png){.absolute top="200" left="220" width="700"}
+
+
+
+
+
+
+
+
+
+
+
+

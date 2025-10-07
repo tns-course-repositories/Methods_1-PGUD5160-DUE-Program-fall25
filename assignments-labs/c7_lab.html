@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-07">
+
+<title>Class 7 Lab: Spatial Overlay Techniques with the sf Package</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c7_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c7_lab_files/libs/quarto-html/quarto.js"></script>
+<script src="c7_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c7_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c7_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c7_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c7_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c7_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c7_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c7_lab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c7_lab_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#step-1-project-management-in-rstudio-for-lab_7-also-applicable-for-assignment_7" id="toc-step-1-project-management-in-rstudio-for-lab_7-also-applicable-for-assignment_7" class="nav-link" data-scroll-target="#step-1-project-management-in-rstudio-for-lab_7-also-applicable-for-assignment_7">Step 1: Project Management in RStudio for <code>lab_7</code> (also applicable for <code>assignment_7</code>)</a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
+  <li><a href="#scripts-backup-data" id="toc-scripts-backup-data" class="nav-link" data-scroll-target="#scripts-backup-data">Scripts &amp; Backup Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 7 Lab: Spatial Overlay Techniques with the <code>sf</code> Package</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 7, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this seventh demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_7</code>) then move along to working with the <code>sf</code> package for vector features. This lab can and should be used in conjunction with this week’s assignment 7 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c7_assignment">Assignment 7</a>.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>In this week’s lab, we will transform several data sources from disparate sources/agencies (OpenStreeMap vs.&nbsp;NYC vs.&nbsp;Federal Agency) operating at different scales ranging from global to city. This is a typical constraint: data that is designed for different purposes, at different scales. An early goal is to then create a project area that will be valid given these differences.</p>
+<p>To start, we will utilize <a href="https://overpass-turbo.eu/">OpenStreetMap’s (OSM) Overpass Turbo</a> feature to query the OSM dataset for ATM locations in the general NYC Area.</p>
+<p>Second, we will access NYC Planning Features - the <a href="https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/borough-boundaries/nybb_25c.zip">New York City Borough Boundary clipped to Shoreline</a></p>
+<p>Third, we will access the <a href="https://www.cdfifund.gov/opportunity-zones">US Tresury Opportunity Zone features</a>.</p>
+<blockquote class="blockquote">
+<p>U.S. Treasury Opportunity Zones are economically distressed areas designated to attract long-term private investment through tax incentives. Established under the Tax Cuts and Jobs Act of 2017, the program encourages investors to reinvest capital gains into these designated zones to spur economic development and create jobs in low-income communities.</p>
+</blockquote>
+<p>With these three data resources, we will first organize them within <code>R</code>, specifically with <code>sf</code> and <code>tidyverse</code>. Our goal will be to first map ATM locations from OSM, and then spatially analyze the relationship of the locations to both ‘inside’ NYC Opportunity Zones and ‘outside’ NYC Opportunity Zones. Through comparison, we determine if the coverage and rate are similar or significantly different given the ‘inside’ vs ‘outside’ predicates Opportunity Zone areas in NYC.</p>
+<p>This lab comes will important caveats:</p>
+<ol type="1">
+<li>As we are using open-source, ‘non-agency’ data from OSM, we cannot assume this dataset is complete nor authoritative.</li>
+</ol>
+<blockquote class="blockquote">
+<p>It can be difficult to get a complete picture of all ATM locations from official government data alone, but financial services providers and analytics firms compile comprehensive datasets that are updated frequently. The main challenges are that many ATMs are independently owned and operate outside of a bank’s official branch network.</p>
+</blockquote>
+<ol start="2" type="1">
+<li>We cannot fully correlate the location of ATMs to Opportunity Zones as spatial priorities and reasoning across the two features are significantly different. In the case of ATMs, their siting is highly correlated with infrastructure features, commercial corridors and existing facilities ranging from large big box locations to small businesses and small stores. Opportunity zones are determined primarily by demographics collected by the US Census; and further, their boundaries are determined in fact by census tracts. So we should be wary of overstating any spatial relationship or correlation. We can, however, validly map and test a simple assumption:</li>
+</ol>
+<blockquote class="blockquote">
+<p>Opportunity Zones are designed to spur economic investment in geographies that fall under the large umbrella of ‘underserved’. We might ask the question given our data constraints: “are the locations and rates of ATMs <em>inside</em> Opportunity Zones similar or significantly different than those locations and rates <em>outside</em> Opportunity Zones.</p>
+</blockquote>
+<p>While we run the risk of a <a href="https://en.wikipedia.org/wiki/Spurious_relationship">spurious correlation</a>, the methods that we will use will be a good primer for spatial overlay analyses typical of the <code>sf</code> package.</p>
+<p>The following data sources are already organized in the substitution <code>data</code> folder:</p>
+<p>The <a href="https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/borough-boundaries/nybb_25c.zip">NYC Borough Boundary clipped to shoreline version</a> <code>.shp</code> download appears as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>NYC Borough Boundary clipped to shoreline version</em></figcaption><p></p>
+</figure>
+</div>
+<p>The OSM Overpass Turbo query for ATMs in the NYC Region:</p>
+<ul>
+<li><a href="https://overpass-turbo.eu/s/2d6x">Link to Structured Query for ATMs NYC region</a></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>OSM Overpass Turbo query for ATMs</em></figcaption><p></p>
+</figure>
+</div>
+<p>The <a href="https://www.cdfifund.gov/opportunity-zones">US Tresury Opportunity Zone Resources Site</a>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>US Tresury Opportunity Zone Resources Site</em></figcaption><p></p>
+</figure>
+</div>
+<ul>
+<li><a href="https://www.cdfifund.gov/system/files/documents/opportunity-zones=8764.-9-10-2019.zip">Direct Link to Opportunity Zone Shapefiles</a></li>
+</ul>
+<p>For <code>lab_7</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_7_data-subdirectory.zip">Data Download LINK</a></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_7_data-subdirectory</code> to simply <code>data</code> and place it into your <code>lab_7</code> directory.</p>
+</div>
+</div>
+</section>
+<section id="step-1-project-management-in-rstudio-for-lab_7-also-applicable-for-assignment_7" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_7-also-applicable-for-assignment_7">Step 1: Project Management in RStudio for <code>lab_7</code> (also applicable for <code>assignment_7</code>)</h2>
+<p>As we have done for previous labs, we will create a <code>lab_7</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-4.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Lab 7 Directory + Subdirectory Structure</em></figcaption><p></p>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>lab_7.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>list.files("~/Desktop/lab_7", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_7</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_7</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>lab_7</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>For this week’s lab, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_7_data-subdirectory.zip">data subdirectory download</a>.</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c7_lab7-script-1.r">Class 7 lab script</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_7&gt;scripts&gt;c7_lab7-script-1.r</em></p>
+<p>To start, <code>tidyverse</code> and <code>sf</code> packages we’ve installed in past labs and assignments. However, we are introducing a new package <code>tmap</code> which allows for interactive mapping - a nice feature to have to explore our data results.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>install.packages("tmap")</span>
+<span id="cb3-2"><a href="#cb3-2"></a>library(tmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we read in the OSM data export for ATMs in the NYC region. We’ll then make a quick plot map to make sure our points are indeed plotting to the NYC region; we’ll follow this with a quick <code>tmap</code> interactive version of the ATM points.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-5.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>ATM Points Plotted</em></figcaption><p></p>
+</figure>
+</div>
+<p>Our next feature is the NYC borough boundaries that comes from NYC Planning. We read this feature in as a <code>.shp</code>, converting it to a <code>sf</code> object. As we simply want the outer edge - or rather extent of the boroughs - we use a spatial overlay technique to <code>dissolve</code> all the features within the object to just one object, i.e.&nbsp;the ‘outer edge’ of the five boroughs in polygon format. We term this object <code>nyc_union</code> as we are using the <code>st_union()</code> function to do this dissolve:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>nyc_union &lt;- boroughs_valid |&gt;</span>
+<span id="cb4-2"><a href="#cb4-2"></a>  summarise(geometry = st_union(geometry), .groups = "drop")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When the dissolve is complete, we plot the result which should appear as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-6.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>NYC Borough Dissolved</em></figcaption><p></p>
+</figure>
+</div>
+<p>Moving along, we now read in the US Tresury Opportunity Zones as <code>.shp</code>; once complete we also use <code>sf</code> to <code>dissolve</code> all individual polygons into just one polygon representing all Opportunity Zone territory within NYS. We can also plot the results as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-7.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Opportunity Zones NYS Dissolved</em></figcaption><p></p>
+</figure>
+</div>
+<p>In review of our three plots, we can see that we have been using a <code>subtitle</code> function to read out the current CRS in the plots. As such, we can see that all three features reside within <em>three different</em> CRSs - <code>WGS84 &gt; NAD83/NY Long Island &gt; WGS84/Psuedo-Mercator</code>.Soon to follow, we will need to ensure that all overlay data is in the same CRS. We will choose the local CRS (EPSG: 2263) as our analysis CRS.</p>
+</section>
+<section id="step-4" class="level4">
+<h4 class="anchored" data-anchor-id="step-4">Step 4:</h4>
+<p>Since our analysis extent is NYC, we want to develop a geometric condition where we have ‘inside’ Opportunity Zones and ‘outside’ Opportunity Zones; and further, we want this to be just within the 5 borough boundary - not the larger NYS extent of the current Opportunity Zone object. We use several <code>sf</code> overlay functions to do this process:</p>
+<ul>
+<li><code>st_intersection()</code></li>
+<li><code>st_difference()</code></li>
+<li><code>st_collection_extract()</code></li>
+<li><code>st_make_valid()</code></li>
+<li><code>st_set_precision()</code></li>
+</ul>
+<p>Once complete, we should resolve to the following feature partitioned to an ‘outside’ and an ‘inside’ Opportunity Zones all within the boundary of NYC 5 boroughs. This is the ‘analysis frame’ by which we will evaluate the ATM locations. As the ATM locations are mapped atop the new ‘inside’ vs ‘outside’ partitions, we want to know how many and where those ATM locations occur based on this ‘inside’ vs ‘outside’ categorical distinction. Our plot result before proceeding should appear as follows:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-8.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Opportunity Zones Partioned to ‘outside’ vs ‘inside’</em></figcaption><p></p>
+</figure>
+</div>
+<p>While the spatial operation to count the ATM points within each of the partitions is relatively straightforward, in order to get an areal rate we need to create new geometry attributes in the spatial object. Since we know that this featue is already in a CRS with US Foot units, any area will first return as <code>ft^2</code> . We utilize the <code>st_area(geometry)</code> function, naming the new object <code>borough_partition_area</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>borough_partition_area &lt;- borough_partition %&gt;%</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  mutate(</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    area_ft2 = as.numeric(st_area(geometry)),     # st_area returns units; coerce to numeric ft^2</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    sq_mile  = area_ft2 / FEET_PER_SQ_MILE          # total square miles per partition</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, we have to match the CRS of the ATM points to the underlining <code>borough_partition_area</code> in order to correctly complete the overlay operation:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a># ---- Reproject ATM points to 2263 ---</span>
+<span id="cb6-2"><a href="#cb6-2"></a>points_sf_2263 &lt;- points_sf %&gt;%</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  st_make_valid() %&gt;%</span>
+<span id="cb6-4"><a href="#cb6-4"></a>  st_transform(2263)</span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a># Inspect CRS</span>
+<span id="cb6-7"><a href="#cb6-7"></a>message("CRS: ", st_crs(points_sf_2263)$input %||% st_crs(points_sf_2263)$wkt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Moving onto the spatial overlay function known as a spatial join, we employ the following, and name the result <code>NUMPOINTS</code>:</p>
+<ul>
+<li><code>st_join()</code> with the argument <code>join = st_within</code></li>
+</ul>
+<p>Next, we deploy the operation <code>left_join</code> to incorporate the <code>NUMPOINTS</code> to the spatial object <code>borough_partition_area</code> and then compute the rate for each partition.</p>
+<p>Once complete, we can print our results to the Console using function <code>glimse()</code>:</p>
+<p><img src="c7_lab_files/img/7-9.png" class="img-fluid" alt="Outside vs Inside Count + Sq Miles + Rate"> This result tells us what we wanted to know. Further we can plot the results first using <code>ggplot</code>; and then to follow, using <code>tmap</code> to explore the points atop the partitions in greater detail:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_lab_files/img/7-10.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em><code>ggplot</code> map of ATM locations atop Oppportunity Zone Partitions</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p>In this seventh demonstration lab, we explored further the <code>sf</code> package and its overlay spatial functions. In <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c7_assignment">Assignment 7</a> we will utilize some of same/similar approaches to both spatial and non-spatial objects.</p>
+</section>
+<section id="scripts-backup-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-backup-data">Scripts &amp; Backup Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c7_lab7-script-1.r">Class 7 Lab 7 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_7&gt;scripts&gt;c7_lab7-script-1.r</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_7_data-subdirectory.zip">Data Subdirectory Download</a></p></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://www.nyc.gov/content/planning/pages/resources/datasets/borough-boundaries">NYC Borough Boundaries</a></li>
+<li><a href="https://www.cdfifund.gov/opportunity-zones">Opportunity Zones</a></li>
+<li><a href="https://wiki.openstreetmap.org/wiki/Map_features">OSM Overpass Turbo Features Listing</a></li>
+<li><a href="https://r-spatial.github.io/sf/"><code>sf</code> Package Overview</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c7_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

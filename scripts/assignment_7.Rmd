@@ -1,0 +1,78 @@
+---
+title: "assignment_7 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# If you need/want to make a page break in PDF output, you can use the following code snippet:
+
+\newpage
+
+# This is the section following the `\newpage` page break for PDF.
+
+Remember, typically first load your needed libraries. This week the processing was done in the assignment script; thus we don't necessarily need to load specific libraries for processing in this `.Rmd` example.
+
+Incorporate your plot objects as needed to frame your observations about the NYC Permits Data. Notice that `echo=FALSE` is set as a parameter to hide the code chunk printing in the final document which gives a cleaner look.
+
+## Example of Permit Plot from ggplot:
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load plot rds
+gg_permit_plot <- readRDS("~/Desktop/assignment_7/results/gg_permit_plot.rds")
+
+# Print plot
+print(gg_permit_plot)
+```
+
+## Example of PUMAs median income + number of permits from ggplot:
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load plot rds
+gg_pumas_plot <- readRDS("~/Desktop/assignment_7/results/gg_pumas_plot.rds")
+
+# Print plot
+print(gg_pumas_plot)
+```
+
+
+## Example of PUMAs scatterplot of median income + number of permits from ggplot:
+
+```{r, fig.width=10, fig.height=7, echo=FALSE}
+# Load plot rds
+gg_corr_plot <- readRDS("~/Desktop/assignment_7/results/gg_corr_plot.rds")
+
+# Print plot
+print(gg_corr_plot)
+```
+
+
+## Example of an `.png` file saved as `tmap_example.png` in the `/results` subdirectory:
+
+```{r, out.width="100%", fig.align="center", echo=FALSE}
+
+knitr::include_graphics("~/Desktop/assignment_7/results/tmap_example.png")
+
+```
+
+## Findings Section:
+
+Your findings writeup should be placed here.
+
+
+
+
+
+
+
+
+
+
+
+

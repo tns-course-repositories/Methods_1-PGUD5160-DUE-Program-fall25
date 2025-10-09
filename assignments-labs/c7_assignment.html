@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-09">
+
+<title>Class 7 Assignment: Spatial &amp; Non-Spatial Operations in R | Building Permits Analysis in NYC.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c7_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c7_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c7_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c7_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c7_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c7_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c7_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c7_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c7_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c7_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c7_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-7-class-7-materials" id="toc-week-7-class-7-materials" class="nav-link" data-scroll-target="#week-7-class-7-materials">Week 7 Class 7 Materials:</a></li>
+  <li><a href="#week-7-class-7-reading" id="toc-week-7-class-7-reading" class="nav-link" data-scroll-target="#week-7-class-7-reading">Week 7 Class 7 Reading:</a></li>
+  <li><a href="#class-7-assignment" id="toc-class-7-assignment" class="nav-link" data-scroll-target="#class-7-assignment">Class 7 Assignment:</a></li>
+  <li><a href="#class-7-assignment---develop-.rmd-submission" id="toc-class-7-assignment---develop-.rmd-submission" class="nav-link" data-scroll-target="#class-7-assignment---develop-.rmd-submission">Class 7 Assignment - Develop <code>.Rmd</code> Submission</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 7 Assignment: Spatial &amp; Non-Spatial Operations in R | Building Permits Analysis in NYC.</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 9, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this seventh week’s assignment, we will utilize the scripting framework of the <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c7_assignment7-script-1.r">Class 7 Assignment Script</a> to develop an R Markdown report that first spatially aligns NYC Department of Buildings (DOB) to building locations; proportionally maps ‘duplicating’ permits and finally correlates permit activity to median incomes reported at the NYC PUMA geographic units.</p>
+<p>Follow the sequence of steps below to first orient to this week’s content: lecture, materials and weekly reading(s). Once complete, move along to first processing script #1 (only 1 script this week), then develop the R Markdown deliverable. The assignment deliverable is due Thursday, October 17th, 2025 at 11:59pm.</p>
+</section>
+<section id="week-7-class-7-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-7-class-7-materials">Week 7 Class 7 Materials:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c7_agenda">Class 7 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c7_lab">Class 7 lab</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c7_assignment">Class 7 Assignment - This Document</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c7_assignment7-script-1.r">Class 7 Assignment Script #1</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_7.Rmd">Class 7 Assignment .Rmd ‘starter file’</a></li>
+<li><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/join_qa_cheatsheet.pdf">Class 7 Join Check List Sheet</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.7/index.html">Class 7 Lecture Slides</a></li>
+</ul>
+</section>
+<section id="week-7-class-7-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-7-class-7-reading">Week 7 Class 7 Reading:</h2>
+<p>Next week’s quiz 7 will feature 5 multiple choice questions, and 5 True or False questions on the following online, accessible article:</p>
+<ul>
+<li><a href="https://takerootjustice.org/wp-content/uploads/2022/01/Unfinished-Business-at-the-Department-of-Buildings-1-2.pdf">Unfinished Business at the Department of Buildings</a></li>
+</ul>
+<p>This week’s assignment uses both spatial and non-spatial operations to read, transform, organize, analyze and map NYC Department of Buildings Permits tied to the building footprints (or rather ‘center’ of the buildings via the polygon ‘centroid’). While the assignment itself is highly technical, there are larger issues in the data - how it is collected, how it is distributed to the public and importantly how individual landlords and contractors operate <em>within</em> a very complex permitting process. This week’s reading is a critical lens on some of the contextual issues worth consideration - particularly what happens at the building level once construction begins. Pay attention to the following concepts and themes from the reading:</p>
+<ul>
+<li>Posting and notice practices</li>
+<li>Construction as harassment</li>
+<li>Tenant Protection Plans</li>
+<li>Job Number and permit detail transparency</li>
+</ul>
+<p>At 7am Friday, October 17th, the seventh weekly quiz will open in Canvas. Utilize the posted <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c8_agenda">Class 8 Agenda</a> to gain the quiz access code which will be posted towards the beginning of the agenda. Expect 10 questions in total that cover the reading above.</p>
+</section>
+<section id="class-7-assignment" class="level2">
+<h2 class="anchored" data-anchor-id="class-7-assignment">Class 7 Assignment:</h2>
+<section id="step-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1">Step 1:</h4>
+<p>For this week’s assignment, we will set up a working directory afresh and download the ‘starter data’ into the <code>/data</code> directory.</p>
+<p>The ‘starter data’ includes the following:</p>
+<ul>
+<li><p><a href="https://data.cityofnewyork.us/Housing-Development/DOB-NOW-Build-Job-Application-Filings/w9ak-ipjd/about_data">DOB Permits in ‘Approved’ Status for 2025-to-date</a></p></li>
+<li><p><a href="https://www.nyc.gov/content/planning/pages/resources/datasets/building-evaluation-subgrade">The Building Elevation and Subgrade dataset</a></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/c7_assignment_data-permits_geometry.zip">Starter Data Compressed Subdirectory Download</a></p></li>
+</ul>
+<p>Create a new R project; utilize an <em>Existing Directory</em> and point it to the structured <code>assignment_7</code> folder that you create:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/existing-directory-a.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Choose Existing Directory</em></figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Class 7 Assignment Directory Structure w/ downloaded starter data</em></figcaption><p></p>
+</figure>
+</div>
+<p>Run the standard <code>getwd()</code> before beginning <code>assignment_7</code>, ensuring you are within the newly created <code>assignment_7</code> project directory.</p>
+<p>Also, utilize the <code>list.files()</code> function to show <em>all</em> data paths and documents;</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>list.files("~/Desktop/assignment_7", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Like previous assignments, we will again be adapting and delivering a R Markdown File as the <code>assignment_7</code> deliverable.</p>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>To start working on <code>assignment_7</code>, download the assignment script #1 and place into the <code>/scripts</code> subdirectory:</p>
+<ul>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c7_assignment7-script-1.r">Class 7 Assignment scrip #1</a></li>
+</ul>
+<p>Once the necessary data is organized and the assignment script is loaded, we will first read in the DOB permits <code>.csv</code> and the buildings centroids shapefile. The DOB permits in its raw form is a very large dataset; in order to speed processing and also produce a meaningful analysis period, the data has been subset to just those permits that have an approved filing status as of 01/01/25. In other words, we are working with ‘to-date’ data in the past year.</p>
+<p>NYC also maintains a buildings footprint dataset for every building in the city. Note that this is not the MapPLUTO file; buildings themselves sit atop the MapPLUTO files. As there are so many building footprints across the 5 boroughs, we revert to the ‘center’ point - the centroid - which is easier on memory and will allow us to map the permits in a meaningful way.</p>
+<p>Once we are able to map our building permits, we will also map the data against the Median Income ACS variable we have used in past classes; and follow this mapping with a correlative plot to see the relationship between median income and permits. We will use the PUMA geographic unit for these analyses products later in the assignment.</p>
+<ul>
+<li>Read in both permits and building centroids:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a># ---- Read in DOB Permits by Issued Date (&gt;= 2025-01-01 + NYC Building Centroids ----</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>permits_path &lt;- "~/Desktop/assignment_7/data/DOB_permits_2025-2-date.csv"</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>building_centroids &lt;- st_read("~/Desktop/assignment_7/data/bes_20230301/bes_20230301.shp")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>Next, we need to standardize the <code>bin</code> column for both the permits data and the building centroids data. We need to do this in anticipation of the first ‘non-spatial’ table join between the permits and the building points. The <code>bin</code> number is described as follows:</p>
+<ul>
+<li>Key Aspects of a NYC Building Identification Number (BIN):
+<ul>
+<li><strong>Purpose</strong>: BINs are used to uniquely identify each building in New York City for tracking building-related data, permits, violations, and applications.</li>
+<li><strong>Format</strong>: It is a seven-digit number where the first digit represents the borough code.</li>
+<li><strong>Uniqueness</strong>: Each BIN is unique to a specific building and permanent, except to correct assignment errors.</li>
+<li><strong>Discovery</strong>: You can find a building’s BIN on its certificate of occupancy; you can also find it online via several DOB permit endpoints.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2"></a># --- 2) Standardize BIN columns/types on both datasets ---</span>
+<span id="cb3-3"><a href="#cb3-3"></a># building_centroids is an sf POINT with numeric column 'bin'</span>
+<span id="cb3-4"><a href="#cb3-4"></a>cent_sf &lt;- building_centroids %&gt;%</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  mutate(bin = as.integer(bin)) %&gt;%      # coerce numeric → integer</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  filter(!is.na(bin)) %&gt;%</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  group_by(bin) %&gt;% slice(1) %&gt;% ungroup()   # ensure 1 centroid per BIN</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a># --- standardize BIN in permits (create a clean 'bin' column without rename) ---</span>
+<span id="cb3-10"><a href="#cb3-10"></a>nm  &lt;- names(permits_tbl); nml &lt;- tolower(nm)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>bin_idx &lt;- which(nm == "Bin" | nml == "bin")[1]</span>
+<span id="cb3-12"><a href="#cb3-12"></a>stopifnot(!is.na(bin_idx))</span>
+<span id="cb3-13"><a href="#cb3-13"></a>permits_tbl$bin &lt;- as.integer(permits_tbl[[nm[bin_idx]]])</span>
+<span id="cb3-14"><a href="#cb3-14"></a>permits_tbl &lt;- permits_tbl %&gt;% filter(!is.na(bin))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-4" class="level4">
+<h4 class="anchored" data-anchor-id="step-4">Step 4:</h4>
+<p>This step is very important; here we actually join the permits data to the buildings point geometry:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2"></a># --- ONE-TO-MANY join ---</span>
+<span id="cb4-3"><a href="#cb4-3"></a>permits_centroids_sf &lt;- dplyr::inner_join(cent_sf, permits_tbl, by = "bin")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here we are creating a new object <code>permits_centroids_sf</code> using the <code>inner_join</code> function on the <code>bin</code> variable that exists in both the permits and the building points:</p>
+<blockquote class="blockquote">
+<p>In R, an inner join is a type of data merging operation that combines two data frames based on common values in a specified key column (or columns). It returns a new data frame containing only the rows where there is a match in the key column(s) in both of the original data frames.</p>
+</blockquote>
+<p>Further we are performing a ‘one-to-many’ version of the join:</p>
+<blockquote class="blockquote">
+<p>An inner join in R can and frequently does produce a one-to-many join. When a row in one data frame matches multiple rows in the other data frame, the inner_join() function returns all possible combinations of the matches.</p>
+</blockquote>
+<p>Once we create the join, we run a few QA prints to ensure that the join has happened and what are the <code>count</code> results of the join. Based on the QA results, we see that we lose about 15% of the original permits in the join process. This can happen for a variety of reasons:</p>
+<ul>
+<li>permits rows: 129,285</li>
+<li>joined rows: 110,357</li>
+<li>18,928 permits (≈14.6%) have a Bin not present in the centroid layer, and thus they are dropped.</li>
+</ul>
+<p>Potential Reasons:</p>
+<ul>
+<li>Missing/placeholder BINs in permits (NA, 0).</li>
+<li>Temporary/retired BINs (often 2nd digit 8 or 9) that aren’t in the centroid vintage.</li>
+<li>Coverage/vintage mismatch: the BES centroid file predates some buildings in DOB NOW (new buildings, recent conversions).</li>
+<li>Non-building permits: some work types use a BIN that isn’t represented in the “building centroids” product.</li>
+<li>Type/format quirks: a few BINs read as doubles/strings with weird characters.</li>
+</ul>
+<p>With the loss acknowledged (and acceptable as we are trying to get a city-wide pattern understanding, not neighborhood-specific ‘deep-dive’), we can move along counting permits within buildings as many individual buildings indeed contain many permits. We can do this through the <code>count()</code> function.</p>
+<p>Once complete, we will have an object named <code>multi_centroids_sf</code> that we pass to both <code>ggplot</code> and <code>tmap</code> for the mapping of the permits using a proportional symbol approach.</p>
+</section>
+<section id="step-5" class="level4">
+<h4 class="anchored" data-anchor-id="step-5">Step 5:</h4>
+<p>Moving along to the initial mapping, we can use <code>ggplot</code> to get an overall understanding of the concentration of building permits. Not suprisingly, a bulk of activity takes place in mid-town Manhattan. However, we can also see cluster in other locations throughout the greater NYC region.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>ggplot building permits plot</em></figcaption><p></p>
+</figure>
+</div>
+<p>Next, with the interactivity of <code>tmap</code>, we can explore in greater detail the various cluster and even individual buildings across the region. We can click on mapped points and gain access to the variables held in the <code>multi_centroids_sf</code> object - the linked permits to building centroids object that we have created upstream in the script.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>tmap building permits interactive plot</em></figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-4.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>tmap building permits interactive plot -detail</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="step-6" class="level4">
+<h4 class="anchored" data-anchor-id="step-6">Step 6:</h4>
+<p>Next we will return to choropleth mapping with <code>tidycensus</code> to get a comparative variable to better understand the spatial pattern of the permits data. We can assume that where there is economic incentive and activity, that is where redevelopment and development activity will also occur. We need to keep in mind that your permits data is very rich in terms of the type of permits, their purposes and their dollar amounts. Some permits are relatively minor whereas others are multi-year endeavors in the millions of dollars. But at the scale at which we are mapping - the greater NYC region - we can do a first pass to see the overall pattern of economic activity and permits.</p>
+<p>As we have in the past, we’ll utilize the Median Income variable via a <code>tidycensus</code> pull. Arguably we could develop a series of variables or even a better variable to gauge economic activity, but we’ll use Medain Income as a rough indicator here.</p>
+<p>To start, we make our <code>tidycensus</code> pull for PUMAs and the <code>B19013_001</code> variable. We’ll then subset to just those PUMAs in our target 5 borough geography. To do this, we are using a spatial operation to create a single spatial object, and then check to ensure all the parts are indeed in the target 5 borough geography.</p>
+<blockquote class="blockquote">
+<p>st_union() dissolves those five county polygons into a single (multi)polygon representing the NYC boundary—handy for spatial filtering/clipping other layers to NYC.</p>
+</blockquote>
+<p>Next, we create a new, reprojected object <code>pumas_2263 &lt;- st_transform(pumas_nyc, 2263)</code> using the <code>EPSG: 2263</code> CRS as the target CRS.</p>
+<p>We then move along to calculating areal attributes for the object <code>pumas_2263</code> - we also did this in the lab. We also make sure that <code>multi_centroids_sf</code> is also reprojected to <code>EPSG: 2263</code>. Next, we generate an object <code>permit_counts</code> that stores the permits intersecting with the PUMAs; we then are able to derive a rate of permits per PUMAs.</p>
+<p>Next we create the object <code>pumas_enriched</code> adding through the <code>mutate</code> function from <code>tidyverse</code> new variables for absolute count of permits and the rate of permits as <code>permits_per_sqmi</code>. We then print to the Console these statistics:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a># ---- Console summary: totals + overall rate + top 5 by rate ----</span>
+<span id="cb5-2"><a href="#cb5-2"></a>total_permits &lt;- sum(pumas_enriched$permits_total, na.rm = TRUE)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>total_area_mi2 &lt;- sum(pumas_enriched$area_mi2, na.rm = TRUE)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>overall_rate &lt;- if (total_area_mi2 &gt; 0) total_permits / total_area_mi2 else NA_real_</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>message(sprintf("Total permits counted across NYC PUMAs: %s",</span>
+<span id="cb5-7"><a href="#cb5-7"></a>                formatC(total_permits, format = "d", big.mark = ",")))</span>
+<span id="cb5-8"><a href="#cb5-8"></a>message(sprintf("Overall permits per square mile (citywide): %.2f", overall_rate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In your `.Rmd writeup this week, certainly include these statistics in your discussion of the pattern of the building permits data.</p>
+</div>
+</div>
+<p>Finally, we build out the parameters for the final <code>ggplot</code> multivariable choropleth map where the choropleth colors represent median income and the proportional symbols represent the number of permits per PUMA:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-5.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Choropleth Map | Median Income &gt; Number of Permits</em></figcaption><p></p>
+</figure>
+</div>
+<p>Its hard to argue that there isn’t a spatial correlation between the two variables (think mid-town Manhattan as the cluster that proves the rule here). In the next step, we can test this relationship further.</p>
+</section>
+<section id="step-7" class="level4">
+<h4 class="anchored" data-anchor-id="step-7">Step 7:</h4>
+<p>In this final step, we conclude our exploration of the spatial dimension of the permits data but reverting back to a scatterplot to view the dimensions of the two variables of interest - median income and number of permits. Keep in mind we are not controlling for size differences in the PUMAs - we did that via our earlier rates - but as we saw in the mapping, there’s a clear trend in the absolute count of permits as much as in the rates.</p>
+<p>We first build a new, clean object and simply call it <code>df</code> and pass it to <code>ggplot</code> for the final plotting named <code>gg_corr</code>. The direction and strength of the relationship between median income and permit frequency indeed appears positive and strong.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-6.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Scatterplot Results per PUMA | Median Income &gt; Number of Permits</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="step-8" class="level4">
+<h4 class="anchored" data-anchor-id="step-8">Step 8:</h4>
+<p>As we have progressed through this week’s script, we have created a fair number of objects and related plots and Console statistics. Certainly utilize these in your assignment <code>.Rmd</code> submission. To follow are some example RDS object code chunks for saving to the <code>/results</code> subdirectory. These can be brought into your assignment <code>.Rmd</code> for the final submission.</p>
+<ul>
+<li>At line #87, we print the first plot <code>gg_permit_plot</code>; this can be saved as follows:</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a># save your resulting gg_permit_plot as an RDS object</span>
+<span id="cb6-2"><a href="#cb6-2"></a>saveRDS(gg_permit_plot, file = "~/Desktop/assignment_7/results/gg_permit_plot.rds")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>At line #239, we print a choropleth plot <code>gg_pumas_plot</code>; this can be saved as follows:</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href="#cb7-1"></a># save your resulting gg_pumas_plot as an RDS object</span>
+<span id="cb7-2"><a href="#cb7-2"></a>saveRDS(gg_pumas_plot, file = "~/Desktop/assignment_7/results/gg_pumas_plot.rds")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>At line #268, we print the scatterplot for the relationship Median household income to Number of Permits Per PUMA; this can be saved as follows:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a># save your resulting gg_corr_plot as an RDS object</span>
+<span id="cb8-2"><a href="#cb8-2"></a>saveRDS(gg_corr_plot, file = "~/Desktop/assignment_7/results/gg_corr_plot.rds")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the end, you could have 3 new <code>.rds</code> files located in the <code>/results</code> subdirectory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-7.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em><code>.rds</code> objects prior to working in assignment_7 <code>.Rmd</code></em></figcaption><p></p>
+</figure>
+</div>
+<p>If you would also like to add images from your <code>tmap</code> interactive map, the best approach is not to embed the interactive map itself as an object, but rather export still images of the map as <code>.png</code> and also save those in your <code>/results</code> subdirectory, to then be called from your <code>.Rmd</code> file.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c7_assignment_files/img/7-8.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em><code>saving</code>tmap<code>outtakes as</code>.png<code>files</code> via Plot interface</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="class-7-assignment---develop-.rmd-submission" class="level2">
+<h2 class="anchored" data-anchor-id="class-7-assignment---develop-.rmd-submission">Class 7 Assignment - Develop <code>.Rmd</code> Submission</h2>
+<p>From within your <code>assignment_7</code> project, navigate to the docs folder. This is the location in which you will first download the example R Markdown file (<code>.Rmd</code>), and open it anew in your project. Alternatively, you can create your own R Markdown file, but the download version has some formatting set up that can be a helpful start point (as was the case for previous assignment starter <code>.Rmd</code> files).</p>
+<p>To open an existing R Markdown file:</p>
+<p><em>File &gt; Open File &gt; assignment_7 &gt; docs &gt; assignment_6.Rmd</em></p>
+<p>To create your own R Markdown file:</p>
+<p><em>File &gt; New File &gt; R Markdown</em></p>
+<ul>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_7.Rmd"><code>assignment_7.Rmd</code> ‘starter file’</a></li>
+</ul>
+<p>Next, loading, working with and saving data in the Console is <em>NOT</em> the same as loading, displaying and plotting data in an <code>.Rmd</code> file. Keep in mind that the Console is the iterative, working environment, whereas <code>.Rmd</code> is designed for publishing and sharing your analysis results.</p>
+<p>So, the first step <em>following</em> the completion of accessing, transformation, plotting and saving both the frequency table and the land use map as <code>.rds</code> objects is to load them <em>within</em> the <code>.Rmd</code> environment.</p>
+<p>We load the data as follows from <em>within</em> the <code>.Rmd</code> document. Utilize the green <em>run</em> button to the far right of the code block to execute the code:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href="#cb9-1"></a># Load the saved ggplot object</span>
+<span id="cb9-2"><a href="#cb9-2"></a>gg_permit_plot &lt;- readRDS("~/Desktop/assignment_7/results/gg_permit_plot.rds")</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a># Display the loaded plot</span>
+<span id="cb9-5"><a href="#cb9-5"></a>print(gg_permit_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a># Load the saved ggplot object</span>
+<span id="cb10-2"><a href="#cb10-2"></a>gg_pumas_plot &lt;- readRDS("~/Desktop/assignment_7/results/gg_pumas_plot.rds")</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a># Display the loaded plot</span>
+<span id="cb10-5"><a href="#cb10-5"></a>print(gg_pumas_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href="#cb11-1"></a># Load the saved ggplot object</span>
+<span id="cb11-2"><a href="#cb11-2"></a>gg_corr_plot &lt;- readRDS("~/Desktop/assignment_7/results/gg_corr_plot.rds")</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a># Display the loaded plot</span>
+<span id="cb11-5"><a href="#cb11-5"></a>print(gg_corr_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A placeholder code chunk for each of these sections is located in the starter <code>.Rmd</code>, as well as code chunk for incorporating an <code>.png</code> file.</p>
+<p>Make sure to load in your required libraries at the top of the script.</p>
+<p>As you finalize your code and bring it into your <code>.Rmd</code> submission document, all components - the libraries, the data object and the plotting code - need to exist in the <code>.Rmd</code> environment as it operates separate of your Console environment.</p>
+<p>For your contextual writing and observations consider the following prompts:</p>
+<ul>
+<li>Describe the overall pattern of the permits data. Did you find any components of the larger pattern that were surprising?</li>
+<li>Research a portion of the overall pattern, particularly with the <code>tmap</code> interactive map. Are there particular buildings or sections of the city that surprised you?</li>
+<li>Incorporate discussion of the Rate and Count statistics that were printed to the Console. Did any of these either underscore the larger pattern of the data; or break from that pattern in any significant way?</li>
+</ul>
+<p>The assignment 7 submission is due to Canvas on Thursday, October 16th, 2025 at 11:59pm. The format can and should be an <code>.html</code> document format generated from your <code>Rmd</code> document; or a <code>.pdf</code> document.</p>
+<p>Note that when you knit your output, the <code>.Rmd</code> should not be removed; that is, keep it in your assignment folder in addition to the final <code>.html</code> or <code>.pdf</code> submission.</p>
+<p>The Assignment 7 R Markdown deliverable is due to Canvas on Thursday, October 16th, 2025 at 11:59pm.</p>
+<section id="references" class="level4">
+<h4 class="anchored" data-anchor-id="references">References:</h4>
+<ul>
+<li><a href="https://r-tmap.github.io/tmap/">tmap package</a></li>
+<li><a href="https://r-tmap.github.io/tmap/reference/tmap_mode.html">tmap interactive maps</a></li>
+<li><a href="https://r.geocompx.org/spatial-operations">Spatial Operations with R</a></li>
+<li><a href="https://r4ds.hadley.nz/joins.html">Table Joins with R</a></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c7_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

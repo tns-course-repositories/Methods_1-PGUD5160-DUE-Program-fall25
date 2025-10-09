@@ -5,7 +5,7 @@
 #getwd() #return upstream path before ~/
 #list.files("~/Desktop/assignment7", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)
 
-# ---- Filter DOB Permits by Issued Date (>= 2025-01-01) ----
+# ---- DOB Permits by Issued Date (>= 2025-01-01) ----
 
 library(tidyverse)
 library(sf)
@@ -15,16 +15,19 @@ library(classInt)      # for Jenks
 library(RColorBrewer)  # for the "Greens" palette
 library(scales)
 
-#if census api key is needed
-#census_api_key("YOUR CENSUS API KEY HERE")
+# if census api key is needed
+# census_api_key("YOUR CENSUS API KEY HERE")
 
+
+
+# Filter out Scientific Notation for Plots
 options(scipen = 999)  # globally discourage scientific notation
 
 # ---- Read in DOB Permits by Issued Date (>= 2025-01-01 + NYC Building Centroids ----
-permits_path <- "/Users/x15/Desktop/assignment_7/data/DOB_fixed.csv"
-building_centroids <- st_read("/Users/x15/Desktop/assignment_7/data/bes_20230301/bes_20230301.shp")
+permits_path <- "~/Desktop/assignment_7/data/DOB_permits_2025-2-date.csv"
+building_centroids <- st_read("~/Desktop/assignment_7/data/bes_20230301/bes_20230301.shp")
 
-# --- read CSV (base utils to avoid vroom/readr path issues) ---
+# --- Read CSV (base utils to avoid vroom/readr path issues) ---
 permits_tbl <- utils::read.csv(
   permits_path,
   check.names = FALSE,     # keep original column names like "Bin"
@@ -37,14 +40,14 @@ if (any(!nzchar(names(permits_tbl)))) {
   names(permits_tbl)[empty_idx] <- paste0("unnamed_col_", empty_idx)
 }
 
-# --- 2) Standardize BIN columns/types on both datasets ---
+# ---  Standardize BIN columns/types on both datasets ---
 # building_centroids is an sf POINT with numeric column 'bin'
 cent_sf <- building_centroids %>%
   mutate(bin = as.integer(bin)) %>%      # coerce numeric → integer
   filter(!is.na(bin)) %>%
   group_by(bin) %>% slice(1) %>% ungroup()   # ensure 1 centroid per BIN
 
-# --- standardize BIN in permits (create a clean 'bin' column without rename) ---
+# --- Standardize BIN in permits (create a clean 'bin' column without rename) ---
 nm  <- names(permits_tbl); nml <- tolower(nm)
 bin_idx <- which(nm == "Bin" | nml == "bin")[1]
 stopifnot(!is.na(bin_idx))
@@ -59,50 +62,30 @@ message("Centroids (unique BINs): ", nrow(cent_sf))
 message("Permits (rows, no de-dup): ", nrow(permits_tbl))
 message("Joined rows (one per permit with centroid): ", nrow(permits_centroids_sf))
 
-# counts per BIN (on the joined, one-row-per-permit layer)
+# bin_counts: one row per BIN with number of permits
 bin_counts <- permits_centroids_sf |>
-  st_drop_geometry() |>
-  count(bin, name = "n_permits") |>
-  arrange(desc(n_permits))
+  sf::st_drop_geometry() |>
+  dplyr::count(bin, name = "n_permits")
 
-# show top 20 BINs by number of permits
-head(bin_counts, 20)
+centroids_with_counts <- cent_sf |>
+  dplyr::left_join(bin_counts, by = "bin") |>
+  dplyr::mutate(n_permits = tidyr::replace_na(n_permits, 0L))
 
-# just the BINs that have >1 permit
-multi_bins <- filter(bin_counts, n_permits > 1)
-nrow(multi_bins)           # how many buildings have multiple permits?
-sum(multi_bins$n_permits)  # how many permits among those buildings?
+# Keep buildings with >= 1 permit (includes singles)
+multi_centroids_sf <- centroids_with_counts |>
+  dplyr::filter(n_permits >= 1)
 
-#mapping
-# If you also have the unique centroids layer 'cent_sf' (one row per bin):
-# cent_sf <- building_centroids |> mutate(bin = as.integer(bin)) |> group_by(bin) |> slice(1) |> ungroup()
-
-multi_centroids_sf <- cent_sf |>
-  left_join(bin_counts, by = "bin") |>
-  mutate(n_permits = tidyr::replace_na(n_permits, 0L)) |>
-  filter(n_permits > 1)
-
-# quick map with ggplot
-ggplot() +
-  geom_sf(data = multi_centroids_sf, aes(size = n_permits), alpha = 0.6) +
+# Quick map with ggplot
+gg_permit_plot <- ggplot() +
+  geom_sf(data = multi_centroids_sf, aes(size = n_permits), alpha = 0.1) +
   scale_size_continuous(name = "Permits per building") +
   coord_sf(expand = FALSE) +
   labs(title = "Buildings with Multiple Permits") +
-  theme_minimal()
+  theme_minimal()# Tmap
 
-# Tmap
-# --- (only if you don't already have multi_centroids_sf) ---
-# Build it from your joined layer: `permits_centroids_sf` (one row per permit) + `cent_sf` (one row per BIN)
-if (!exists("multi_centroids_sf")) {
-  bin_counts <- permits_centroids_sf |>
-    st_drop_geometry() |>
-    count(bin, name = "n_permits")
-  
-  multi_centroids_sf <- cent_sf |>
-    left_join(bin_counts, by = "bin") |>
-    mutate(n_permits = tidyr::replace_na(n_permits, 0L)) |>
-    filter(n_permits > 1)
-}
+# Print the plot
+gg_permit_plot
+
 
 # --- tmap proportional symbols (size ~ n_permits) ---
 
@@ -126,7 +109,7 @@ tm_multi <-
 
 tm_multi
 
-# ---- 1) Pull ACS 2023 5-yr median income for NY PUMAs (geometry) ----
+# ----  Pull ACS 2023 5-yr median income for NY PUMAs (geometry) ----
 # B19013_001 = Median household income (inflation-adjusted $)
 pumas_ny <- get_acs(
   geography = "public use microdata area",
@@ -138,16 +121,16 @@ pumas_ny <- get_acs(
   output    = "wide"   # gives B19013_001E (estimate) and B19013_001M (MOE)
 )
 
-# ---- 2) Keep only NYC PUMAs (spatial clip to 5 counties) ----
+# ----  Keep only NYC PUMAs (spatial clip to 5 counties) ----
 nyc_counties <- c("005","047","061","081","085")  # Bronx, Kings, New York, Queens, Richmond
 nyc_sf <- tigris::counties(state = "NY", cb = TRUE, year = 2023, class = "sf") |>
   filter(COUNTYFP %in% nyc_counties) |>
   st_union()
 
-# check and reinstate PUMAs whose representative point is within NYC
+# Check and reinstate PUMAs whose representative point is within NYC
 pumas_nyc <- pumas_ny[ lengths(sf::st_within(sf::st_point_on_surface(pumas_ny), nyc_sf)) > 0, ]
 
-# ---- 3) Reproject to EPSG:2263 and compute area (US ft²) and mi² ----
+# ----  Reproject to EPSG:2263 and compute area (US ft²) and mi² ----
 pumas_2263 <- st_transform(pumas_nyc, 2263)
 
 # st_area() in EPSG:2263 returns US survey feet²; keep numeric to avoid unit wrangling
@@ -157,17 +140,25 @@ pumas_2263 <- pumas_2263 |>
     area_mi2   = area_usft2 / (5280^2)                    # square miles
   )
 
-# ---- 4) Points-in-polygon: count multi_centroids_sf within each PUMA ----
+# ----  Points-in-polygon: count multi_centroids_sf total permits within each PUMA ----
 stopifnot(exists("multi_centroids_sf"), inherits(multi_centroids_sf, "sf"))
 
 # Reproject from EPSG: 8767 to EPSG: 2263
 multi_centroids_sf <- sf::st_transform(multi_centroids_sf, 2263)
 
-# Fast count: number of points intersecting each polygon
-permit_counts <- lengths(st_intersects(pumas_2263, multi_centroids_sf))
+# Fast count: number of permits intersecting each polygon
+ix <- st_intersects(pumas_2263, multi_centroids_sf, sparse = TRUE)
+permit_counts <- vapply(ix, function(i) sum(multi_centroids_sf$n_permits[i], na.rm = TRUE), numeric(1))
+
+# Write to Console Permits and Points Statistics
+total_permits <- sum(permit_counts, na.rm = TRUE)
+message("Total permits counted across PUMAs: ",
+        formatC(total_permits, format = "d", big.mark = ","))
+message("Total points in multi_centroids_sf: ",
+        formatC(nrow(multi_centroids_sf), format = "d", big.mark = ","))
 
 
-# ---- 5) Normalize to rate per square mile & tidy income cols ----
+# ----  Normalize to rate per square mile & tidy income cols ----
 pumas_enriched <- pumas_2263 |>
   mutate(
     permits_total        = permit_counts,
@@ -178,19 +169,41 @@ pumas_enriched <- pumas_2263 |>
   select(GEOID, NAME, median_income_2023, median_income_moe,
          area_usft2, area_mi2, permits_total, permits_per_sqmi, geometry)
 
+
+# ---- Console summary: totals + overall rate + top 5 by rate ----
+total_permits <- sum(pumas_enriched$permits_total, na.rm = TRUE)
+total_area_mi2 <- sum(pumas_enriched$area_mi2, na.rm = TRUE)
+overall_rate <- if (total_area_mi2 > 0) total_permits / total_area_mi2 else NA_real_
+
+message(sprintf("Total permits counted across NYC PUMAs: %s",
+                formatC(total_permits, format = "d", big.mark = ",")))
+message(sprintf("Overall permits per square mile (citywide): %.2f", overall_rate))
+
+# Top 5 PUMAs by permits per square mile
+top5 <- pumas_enriched |>
+  sf::st_drop_geometry() |>
+  dplyr::select(GEOID, NAME, permits_total, permits_per_sqmi) |>
+  dplyr::arrange(dplyr::desc(permits_per_sqmi)) |>
+  head(5)
+
+print(top5)
+
+
 # --- Jenks (5) on median income ---
 vals <- pumas_enriched |> st_drop_geometry() |> pull(median_income_2023)
 vals <- vals[is.finite(vals)]
 ci   <- classInt::classIntervals(vals, n = 5, style = "jenks")
-brks <- unique(ci$brks)  # ensure strictly increasing
+brks <- unique(ci$brks)
 
+# Lower/upper vectors
+lowers <- head(brks, -1)
+uppers <- tail(brks, -1) 
 
 
 # Build pretty labels like "$35,000–$55,400"
-bin_labels <- purrr::map2_chr(
-  head(brks, -1), tail(brks,  1),
-  ~ paste0(scales::dollar(.x, accuracy = 1), "–", scales::dollar(.y, accuracy = 1))
-)
+bin_labels <- map2_chr(lowers, uppers,
+                       ~ paste0(dollar(.x, accuracy = 1000), "–", dollar(.y, accuracy = 1000)))
+bin_labels[length(bin_labels)] <- paste0("≥ ", dollar(lowers[length(lowers)], accuracy = 1000))
 
 pumas_plot <- pumas_enriched %>%
   mutate(mi_jenks = cut(median_income_2023,
@@ -198,13 +211,12 @@ pumas_plot <- pumas_enriched %>%
                         include.lowest = TRUE,
                         labels = bin_labels))
 
-
 # one representative point per PUMA for proportional symbols
 puma_pts <- sf::st_point_on_surface(pumas_plot)
 
 
 # --- Static ggplot: Greens ramp + proportional circles ---
-gg_pumas <- ggplot() +
+gg_pumas_plot <- ggplot() +
   geom_sf(data = pumas_plot,
           aes(fill = mi_jenks),
           color = "white", linewidth = 0.25) +
@@ -223,7 +235,8 @@ gg_pumas <- ggplot() +
         axis.text = element_blank(),
         axis.ticks = element_blank())
 
-gg_pumas
+#Create Plot
+gg_pumas_plot
 
 
 ## Correlative plot
@@ -238,7 +251,7 @@ df <- pumas_enriched %>%
   filter(is.finite(median_income), is.finite(permits_total))
 
 # Plot: points + linear smooth, nicely formatted axes
-gg_corr <- ggplot(df, aes(x = median_income, y = permits_total)) +
+gg_corr_plot <- ggplot(df, aes(x = median_income, y = permits_total)) +
   geom_point(alpha = 0.7, size = 2) +
   geom_smooth(method = "lm", se = TRUE, linewidth = 0.8,
               color = "#2ca25f", fill = "#a1d99b") +  # green line + light-green ribbon
@@ -252,7 +265,7 @@ gg_corr <- ggplot(df, aes(x = median_income, y = permits_total)) +
   theme_minimal(base_size = 12) +
   theme(panel.grid.minor = element_blank())
 
-gg_corr
+gg_corr_plot
 
 
 

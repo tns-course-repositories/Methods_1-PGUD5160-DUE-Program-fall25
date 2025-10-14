@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-14">
+
+<title>Class 8 Lab: NYC Evictions &amp; Rent Stablized Units - Tidyverse Experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c8_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c8_lab_files/libs/quarto-html/quarto.js"></script>
+<script src="c8_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c8_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c8_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c8_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c8_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c8_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c8_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c8_lab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c8_lab_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#step-1-project-management-in-rstudio-for-lab_8-also-applicable-for-assignment_8" id="toc-step-1-project-management-in-rstudio-for-lab_8-also-applicable-for-assignment_8" class="nav-link" data-scroll-target="#step-1-project-management-in-rstudio-for-lab_8-also-applicable-for-assignment_8">Step 1: Project Management in RStudio for <code>lab_8</code> (also applicable for <code>assignment_8</code>)</a></li>
+  <li><a href="#experiment-1-weekly-evictions-last-52-weeks" id="toc-experiment-1-weekly-evictions-last-52-weeks" class="nav-link" data-scroll-target="#experiment-1-weekly-evictions-last-52-weeks">EXPERIMENT 1 — Weekly evictions (last 52 weeks)</a></li>
+  <li><a href="#experiment-2-weekly-evictions-by-borough-last-52-weeks" id="toc-experiment-2-weekly-evictions-by-borough-last-52-weeks" class="nav-link" data-scroll-target="#experiment-2-weekly-evictions-by-borough-last-52-weeks">EXPERIMENT 2 — Weekly evictions by BOROUGH (last 52 weeks)</a></li>
+  <li><a href="#experiment-3-latest-12-weeks-sorted-table" id="toc-experiment-3-latest-12-weeks-sorted-table" class="nav-link" data-scroll-target="#experiment-3-latest-12-weeks-sorted-table">EXPERIMENT 3 — Latest 12 weeks (sorted table)</a></li>
+  <li><a href="#experiment-4-rs-stock-by-borough-shares-of-buildings-units" id="toc-experiment-4-rs-stock-by-borough-shares-of-buildings-units" class="nav-link" data-scroll-target="#experiment-4-rs-stock-by-borough-shares-of-buildings-units">EXPERIMENT 4 — RS stock by borough (shares of buildings &amp; units)</a></li>
+  <li><a href="#experiment-5-eda-rs-parcels-buildings-by-year-built-yearblt-yearly-bar" id="toc-experiment-5-eda-rs-parcels-buildings-by-year-built-yearblt-yearly-bar" class="nav-link" data-scroll-target="#experiment-5-eda-rs-parcels-buildings-by-year-built-yearblt-yearly-bar">EXPERIMENT 5 — EDA — RS Parcels: Buildings by Year Built (YEARBLT), yearly bar</a></li>
+  <li><a href="#experiment-6-event-level-join-evictions-to-rs-by-bbl" id="toc-experiment-6-event-level-join-evictions-to-rs-by-bbl" class="nav-link" data-scroll-target="#experiment-6-event-level-join-evictions-to-rs-by-bbl">EXPERIMENT 6 — Event-level join: evictions to RS by BBL</a></li>
+  <li><a href="#experiment-7-borough-rates-events-per-1000-rs-units-of-rs-units" id="toc-experiment-7-borough-rates-events-per-1000-rs-units-of-rs-units" class="nav-link" data-scroll-target="#experiment-7-borough-rates-events-per-1000-rs-units-of-rs-units">EXPERIMENT 7 — Borough rates: events per 1,000 RS units + % of RS units</a></li>
+  <li><a href="#experiment-8-top-rs-owners-by-eviction-event-count" id="toc-experiment-8-top-rs-owners-by-eviction-event-count" class="nav-link" data-scroll-target="#experiment-8-top-rs-owners-by-eviction-event-count">EXPERIMENT 8 — Top RS owners by eviction event count</a></li>
+  <li><a href="#experiment-9-rs-buildings-with-most-eviction-events" id="toc-experiment-9-rs-buildings-with-most-eviction-events" class="nav-link" data-scroll-target="#experiment-9-rs-buildings-with-most-eviction-events">EXPERIMENT 9 — RS buildings with most eviction events</a></li>
+  <li><a href="#experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks" id="toc-experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks" class="nav-link" data-scroll-target="#experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks">EXPERIMENT 10 — Weekly eviction events at RS buildings (last 52 weeks)</a></li>
+  <li><a href="#experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks-1" id="toc-experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks-1" class="nav-link" data-scroll-target="#experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks-1">EXPERIMENT 10 — Weekly eviction events at RS buildings (last 52 weeks)</a>
+  <ul class="collapse">
+  <li><a href="#experiment-11-borough-shares-eviction-events-vs-rs-unit-shares" id="toc-experiment-11-borough-shares-eviction-events-vs-rs-unit-shares" class="nav-link" data-scroll-target="#experiment-11-borough-shares-eviction-events-vs-rs-unit-shares">EXPERIMENT 11 — Borough shares: eviction events vs RS unit shares</a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
+  <li><a href="#assignment-8-link" id="toc-assignment-8-link" class="nav-link" data-scroll-target="#assignment-8-link">Assignment 8 Link:</a></li>
+  <li><a href="#scripts-lab-data" id="toc-scripts-lab-data" class="nav-link" data-scroll-target="#scripts-lab-data">Scripts &amp; Lab Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 8 Lab: NYC Evictions &amp; Rent Stablized Units - Tidyverse Experiments</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 14, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this eighth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_8</code>) then move along to working with the <code>tidyverse</code> package for both eviction and rent stabilization data for NYC. This lab can and should be used in conjunction with this week’s assignment 8 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c8_assignment">Assignment 8</a>.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>In this week’s lab, we will work with data that has previously been downloaded in the case of evictions; for rent stabilized determinations, we will work with a spatial dataset tied to the MapPluto tax lots.</p>
+<p>To start, we will utilize <a href="https://data.cityofnewyork.us/City-Government/Evictions/6z8x-wfk4/about_data">NYC Eviction Data</a> from the OpenNYC platform. This data features executed (completed) evictions 2017-Present.</p>
+<p>Second, we will use a pre-formed shapefile which is a subset of MapPLUTO parcels that fit a relatively recent listing of ‘likely’ rent stabilized properties.</p>
+<p>With these two data resources, we will first organize them within <code>R</code> with a series of <em>helpers</em> that standardize how we will work with the data. The primary package will be <code>tidyverse</code>, and we will call in various libraries that come integrated that make up the <a href="https://www.tidyverse.org/packages/">core</a> of the <em>tidyverse universe</em>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c8_lab_files/img/8-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>NYC Borough Boundary clipped to shoreline version</em></figcaption><p></p>
+</figure>
+</div>
+<p>This lab comes will important, significant caveats:</p>
+<ol type="1">
+<li>NYC Eviction data is well mantained and comprehensive, dating back to 2017. But that does not mean that there are not issues with its development with over 100,000 evictions in the data set. Some evictions are missing (NA) data, and some are tied to either bogus or non-existent identifiers that can be matched to MapPLUTO and/or a buildings layer. And there are likely duplicate evictions entered to the data set.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c8_lab_files/img/8-2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Evictions Data NYC</em></figcaption><p></p>
+</figure>
+</div>
+<ol start="2" type="1">
+<li>Like many seemingly important aspects of urban life, particularly NYC, their importance does not in any way guarantee easy, accessible data. This is certainly the case for the designation ‘Rent Stablized’:</li>
+</ol>
+<blockquote class="blockquote">
+<p>Rent stabilization is a form of rent regulation that limits how much a landlord can increase rent each year and gives tenants the right to renew their leases. This system provides tenants with additional protections, such as the right to receive required services and not be evicted except for legal reasons. The maximum rent increase is determined by a local board, such as the Rent Guidelines Board in New York City.</p>
+</blockquote>
+<p>Part of the issue is the organization of buildings vs MapPLUTO parcels. Several issues are at play:</p>
+<ul>
+<li><p>A residential building can either be owned outright by one entity with no other parties; it can be a co-op; it can be a condo; and it can also be a condop - hybrid of co-op and condo ownership. Each of these features a BBL reference differently.</p></li>
+<li><p>All buildings regardless of their structure feature a BIN number. However, information about what is taking place within the building may be hard to gather - particularly tracking down rent stablized units therein.</p></li>
+</ul>
+<p>There is indeed an agency that is tasked with a myriad of aspects of rent stabilization, and indeed they publish data - this is the <a href="https://rentguidelinesboard.cityofnewyork.us/resources/rent-stabilized-building-lists/">Rent Guidelines Board</a>. However, like many agencies despite prompting by the open source and data science worlds, have refused to publish their data in a machine-readable format. Here’s the defense:</p>
+<blockquote class="blockquote">
+<p>The rent-stabilized list is still in PDF format because it is a large, static dataset that is time-consuming and resource-intensive to update into a dynamic, searchable database for public use. Maintaining the list requires significant effort due to changes in the “Statewide Housing Security and Tenant Protection Act of 2019” and other ongoing updates to rent laws, so the most practical method of distribution has been PDFs for the time being.</p>
+</blockquote>
+<p>This is a bad defense; and for our mapping this week, we are going to avoid PDFs entirely. Certainly we can/could parse these via R - the <a href="https://library.virginia.edu/data/articles/reading-pdf-files-into-r-for-text-mining">pdftools pacakge</a> does this. Instead, we are going to rely on a a former New School student who developed an app for tracking rent stabilized buildings. We are going to use his <a href="https://clhenrick.io/work/am-i-rent-stabilized/">Chris Henrick</a> 2020 list as a proxy for properties - not specific buildings - that are ‘likely’ feature either a unit or many units, many buildings that are deemed rent stabilized.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c8_lab_files/img/8-3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>2023 Building Registrations for Rent Stabilized Units</em></figcaption><p></p>
+</figure>
+</div>
+<p>For <code>lab_8</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_8_data_subdirectory.zip">Data Download LINK</a></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_8_data-subdirectory</code> to simply <code>data</code> and place it into your <code>lab_8</code> directory.</p>
+</div>
+</div>
+</section>
+<section id="step-1-project-management-in-rstudio-for-lab_8-also-applicable-for-assignment_8" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_8-also-applicable-for-assignment_8">Step 1: Project Management in RStudio for <code>lab_8</code> (also applicable for <code>assignment_8</code>)</h2>
+<p>As we have done for previous labs, we will create a <code>lab_8</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c8_lab_files/img/8-4.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Lab 8 Directory + Subdirectory Structure</em></figcaption><p></p>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>lab_8.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>list.files("~/Desktop/lab_7", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_8</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_8</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>lab_8</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>For this week’s lab, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_8_data_subdirectory.zip">data subdirectory download</a>.</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c8_lab8-script-1.R">Class 8 Tidyverse Experiments lab script</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_7&gt;scripts&gt;c8_lab8-script-1.R</em></p>
+<p>To start, <code>tidyverse</code> and <code>gt</code> packages we’ve installed in past labs and assignments are called. The other packages are part of the <code>tidyverse</code> universe and they download with the larger package; we just call them explicitly here also”</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>  library(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  library(lubridate)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  library(tidyr)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  library(gt)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  library(scales)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  library(stringr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, set paths for both the evictions and rent stablized data:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>ev_path &lt;- "~/Desktop/lab_8/data/Evictions_20251012.csv" # Evictions Data Path</span>
+<span id="cb4-2"><a href="#cb4-2"></a>rs_path &lt;- "~/Desktop/lab_8/data/ny_likely_rs_2020.csv" # Rent Stabilized Data Path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To follow, we create two new tibble data frame objects named <code>ev</code> and <code>rs</code>; note that we are using the <code>mutate()</code> function address formatting issues across both tibbles.</p>
+<p>Before running the experiments, we need a series of helpers that target the join behavior and deal with setting the <code>gt</code> table results. Since these helpers are used across multiple experiments, we just set these up prior to <em>any</em> experiments and how them in temporary memory for our work session.</p>
+</section>
+</section>
+<section id="experiment-1-weekly-evictions-last-52-weeks" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-1-weekly-evictions-last-52-weeks">EXPERIMENT 1 — Weekly evictions (last 52 weeks)</h2>
+<p>In this first experiment, we want to see a trend analysis over the last 52 weeks of eviction events. Here we are not paying attention to any eviction details; we just want a total number of evictions at given periods, and then compare those periods to understand the fequency trend in the last year of eviction activity.</p>
+<p>In creating the subset tibble <code>ev_weekly_last_year</code> we:</p>
+<ul>
+<li><code>filter(executed_date &gt;= start, executed_date &lt;= anchor)</code></li>
+<li><code>mutate(week = floor_date(executed_date, "week", week_start = 1))</code></li>
+<li><code>count(week, name = "evictions")</code></li>
+<li><code>complete(week = seq(min(week), max(week), by = "1 week")</code></li>
+<li><code>arrange(week)</code></li>
+</ul>
+<p>We then plot this tibble using the <code>geom_line()</code> format:</p>
+<blockquote class="blockquote">
+<p><code>geom_line()</code> connects data points with lines, typically ordered by a variable on the x-axis, making it suitable for visualizing trends over time or relationships between ordered variables.</p>
+</blockquote>
+</section>
+<section id="experiment-2-weekly-evictions-by-borough-last-52-weeks" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-2-weekly-evictions-by-borough-last-52-weeks">EXPERIMENT 2 — Weekly evictions by BOROUGH (last 52 weeks)</h2>
+<p>To follow, we create a new tibble data frame object <code>ev_weekly_boro</code>, with several new functions:</p>
+<ul>
+<li><code>count(BOROUGH, week, name = "evictions")</code></li>
+<li><code>group_by(BOROUGH)</code></li>
+<li><code>ungroup()</code></li>
+<li><code>arrange(BOROUGH, week)</code></li>
+</ul>
+<p>We then plot this tibble using the <code>geom_line()</code> format, but this time with each grouped <code>BOROUGH</code> adopting its own <code>geom_line()</code>.</p>
+</section>
+<section id="experiment-3-latest-12-weeks-sorted-table" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-3-latest-12-weeks-sorted-table">EXPERIMENT 3 — Latest 12 weeks (sorted table)</h2>
+<p>In this experiment, we create a new object <code>ev_weekly_last_12</code> from the tibble object in experiment 1 <code>ev_weekly_last_year</code>. To do this subset, we use two functions:</p>
+<ul>
+<li><code>slice_tail(n = 12)</code></li>
+<li><code>arrange(desc(evictions))</code></li>
+</ul>
+<p>We then send this result to <code>gt</code> library to create a table view of the last 12 weeks of evictions data. In the <code>gt</code> table, we use the following to <code>mutate()</code> argument to aggregate evictions on a per week basis:</p>
+<ul>
+<li><code>mutate(week = as.Date(week), evictions = number(evictions, accuracy = 1))</code></li>
+</ul>
+</section>
+<section id="experiment-4-rs-stock-by-borough-shares-of-buildings-units" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-4-rs-stock-by-borough-shares-of-buildings-units">EXPERIMENT 4 — RS stock by borough (shares of buildings &amp; units)</h2>
+<p>Now we turn to the rent stablized (rs) data, creating a tibble data frame <code>rs_by_boro</code>. The following functions are used to aggregate the rs parcels and the number of units therein on a per borough basis:</p>
+<ul>
+<li><code>group_by(borough)</code></li>
+<li><code>summarize(buildings = n(), units     = sum(unitsres, na.rm = TRUE)</code> <code>, .groups   = "drop")</code></li>
+<li><code>mutate(share_buildings = buildings / sum(buildings),</code> <code>share_units     = units     / sum(units))</code></li>
+<li><code>arrange(desc(share_units))</code></li>
+</ul>
+<p>To follow, we print as a <code>gt</code> following 4 new named attributes created with <code>mutate()</code> function.</p>
+</section>
+<section id="experiment-5-eda-rs-parcels-buildings-by-year-built-yearblt-yearly-bar" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-5-eda-rs-parcels-buildings-by-year-built-yearblt-yearly-bar">EXPERIMENT 5 — EDA — RS Parcels: Buildings by Year Built (YEARBLT), yearly bar</h2>
+<p>In this experiment, we want to know the concentration of building vintage; we want to know if there is an era of building activity that produced or at least now houses the rent stablized units. Keep in mind we are still working at the BBL level which is a parcel identifier - we are not acutally working with particular, unique buildings via the BIN identifier.</p>
+<p>To start, we run a couple helpers then create the <code>rs_yearly</code> tibbbl data frame with these functions and arguments:</p>
+<ul>
+<li><code>mutate(year_built = suppressWarnings(as.integer(yearbuilt)))</code></li>
+<li><code>filter(!is.na(year_built),</code> <code>dplyr::between(year_built, year_limit_min, year_limit_max))</code></li>
+<li><code>count(year_built, name = "buildings")</code></li>
+<li><code>complete(year_built = seq(min(year_built),</code> <code>max(year_built), by = 1),fill = list(buildings = 0)</code></li>
+</ul>
+<p>Next, we use the <code>geom_col()</code> format to show in bar chart format the concentrations and spread of rs buildings (parcels) per decade:</p>
+<blockquote class="blockquote">
+<p>geom_col() is a function within the ggplot2 package in R, used for creating column charts (or bar charts where the height represents a value from the data). It is distinct from geom_bar(), which counts the number of cases in each group by default.</p>
+</blockquote>
+</section>
+<section id="experiment-6-event-level-join-evictions-to-rs-by-bbl" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-6-event-level-join-evictions-to-rs-by-bbl">EXPERIMENT 6 — Event-level join: evictions to RS by BBL</h2>
+<p>Next we turn to a critcal <em>join</em> operation. Althought its just several lines of code, its arguably the most important step for the remaining experiments. Here we want to join on a shared identifier in both the rs and evictions data.</p>
+<p>While we have the BIN in the evictions data, we don’t have it in the rs data. So we revert to the parcel BBL identifier. We create a one-row-per-BBL key from rs data set; then perform an inner join (dropping events whose BBL isn’t in rs_key). The result is rs parcels where at least one eviction event has matched.</p>
+<ul>
+<li><p>Evictions (EV): 117,286 records across 43,131 unique BBLs (≈ 2.72 events/BBL on average).</p></li>
+<li><p>Rent-stabilized (RS): 60,856 unique BBLs.</p></li>
+<li><p>Join (<code>rs_ev</code>) via INNER JOIN: 62,245 records → these are the EV rows whose BBLs exist in RS (match rate ≈ 53.1% of all EV rows).</p></li>
+<li><p>Because 62,245 &gt; 60,856, many RS BBLs have multiple EV events—that’s why we see BBLs repeating in <code>rs_ev</code>.</p></li>
+</ul>
+<p>What “repeating BBLs” signify:</p>
+<p>A repeated BBL in <code>rs_ev</code> means multiple eviction events attached to the same property (e.g., different dates/tenants/cases).</p>
+<p>Repeats can also include true duplicates if the EV data have duplicated records; that’s why we create a de-duping trusted event key before interpreting “repeat activity.”</p>
+<p>The code is as follows:</p>
+<p><code>rs_key &lt;- make_rs_key(rs)</code><br>
+<code>rs_ev  &lt;- join_rs_events(ev, rs_key)</code></p>
+</section>
+<section id="experiment-7-borough-rates-events-per-1000-rs-units-of-rs-units" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-7-borough-rates-events-per-1000-rs-units-of-rs-units">EXPERIMENT 7 — Borough rates: events per 1,000 RS units + % of RS units</h2>
+<p>In this experiment, we aggregate our eviction events in rent stabilized buildings to the borough level to compare across the boroughs. We create a new tibble data frame <code>rs_units_upper</code> via the previous <code>rs_key</code></p>
+<ul>
+<li><code>rs_units_upper &lt;- rs_units_by_borough(rs_key)</code></li>
+</ul>
+<p>We then run <code>mutate()</code> and <code>count()</code> functions, creating the <code>rs_ev_boro</code> aggregation:</p>
+<ul>
+<li><code>mutate(BOROUGH = dplyr::coalesce(BOROUGH, borough_from_bbl(bbl)))</code></li>
+<li><code>count(BOROUGH, name = "evictions_at_rs")</code></li>
+</ul>
+<p>Finally, we create a <code>rs_rates</code> tibble data frame by <code>left_join</code> the <code>rs_units_upper</code> using <code>mutate()</code> and <code>arrange()</code> to get our rates that are then passed along to the <code>gt</code> plot.</p>
+</section>
+<section id="experiment-8-top-rs-owners-by-eviction-event-count" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-8-top-rs-owners-by-eviction-event-count">EXPERIMENT 8 — Top RS owners by eviction event count</h2>
+<p>To start, we create custom function to clean up the odd characters and spaces that will likely be present in our owners name column. Next, we create a new tibble data frame <code>top_owners</code> filtering out any that are <code>NA</code>, then count and sort the results and limit the results to just the top 15 with the <code>slice_head()</code> function. We will follow this with a <code>gt</code> table.</p>
+</section>
+<section id="experiment-9-rs-buildings-with-most-eviction-events" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-9-rs-buildings-with-most-eviction-events">EXPERIMENT 9 — RS buildings with most eviction events</h2>
+<p>In this version, we replicate the pattern of experiment 8 to capture not owners but the buildings (actually parcels based on the BBL). Here we create a tibble data frame object <code>top_bbls</code> and pass along to a final <code>gt</code> table.</p>
+</section>
+<section id="experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks">EXPERIMENT 10 — Weekly eviction events at RS buildings (last 52 weeks)</h2>
+<p>In this experiment, we create a new tibble data frame <code>top_bbls</code></p>
+</section>
+<section id="experiment-10-weekly-eviction-events-at-rs-buildings-last-52-weeks-1" class="level1">
+<h1>EXPERIMENT 10 — Weekly eviction events at RS buildings (last 52 weeks)</h1>
+<p>In this experiment, we subset the eviction events to just those in the rs buildings, and then pass the resulting tibble data frame object <code>ev_weekly_rs</code> to ggplot. Note that in the result, we will see the same pattern as <em>EXPERIMENT 1 — Weekly evictions (last 52 weeks)</em>, but the weekly evictions on the y axis are smaller in number because we are only considering those evictions in rs buildings, not all evictions.</p>
+<section id="experiment-11-borough-shares-eviction-events-vs-rs-unit-shares" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-11-borough-shares-eviction-events-vs-rs-unit-shares">EXPERIMENT 11 — Borough shares: eviction events vs RS unit shares</h2>
+<p>In this final experiment, we will explore further the eviction events within the rs buildings; and particularly considering the unit counts per bbl in the <code>rs_key</code> from experiment 6. We create a final object <code>share_tbl</code> from a series of tidyverse functions, passing along to print as a <code>gt</code> table. We will review the footnotes in the resulting table to help our interpretation of the results.</p>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p>In this eighth demonstration lab, we utilized core features from the <code>tidyverse</code> package to produce new insights first about each data set - evictions then rent stabilized buildings - then about the concurrence of both via the join process. Each of these experiments can be used further in assignment 8; just keep in mind we are largely looking at the last 52 weeks of the data. In the assignment 8, we don’t necessarily subset to just the past year; we take into consideration all evictions dating back to 2017. If you do use work from this lab, avoid the ‘52 week’ subsets so that you can incorporate work that takes into consideration all eviction data dating back to 2017. The following experiments use the ‘52 week’ subset:</p>
+<ul>
+<li>EXPERIMENT 1 — Weekly evictions (last 52 weeks)</li>
+<li>EXPERIMENT 2 — Weekly evictions by BOROUGH (last 52 weeks)</li>
+<li>EXPERIMENT 3 — Latest 12 weeks (sorted table)</li>
+<li>EXPERIMENT 10 — Weekly eviction events at RS buildings (last 52 weeks)</li>
+</ul>
+</section>
+<section id="assignment-8-link" class="level2">
+<h2 class="anchored" data-anchor-id="assignment-8-link">Assignment 8 Link:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c8_assignment">Assignment 8</a>.</li>
+</ul>
+</section>
+<section id="scripts-lab-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-lab-data">Scripts &amp; Lab Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c8_lab8-script-1.R">Class 8 Lab 8 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_8&gt;scripts&gt;c8_lab8-script-1.R</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_8_data_subdirectory.zip">Data Subdirectory Download</a></p></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://evictionlab.org/eviction-tracking/new-york-ny/">Eviction Lab - NYC</a></li>
+<li><a href="https://www.dropbox.com/scl/fi/x8gdmve5hmw2x9gfpqepx/ny_likely_rs_2020.csv?rlkey=hzrl32sjldwouicux1lr1e5xc&amp;e=1&amp;dl=0">Likely Rent Stablized Data Set</a></li>
+<li><a href="https://data.cityofnewyork.us/City-Government/Evictions/6z8x-wfk4/about_data">NYC OpenData Eviction Data</a></li>
+<li><a href="https://www.nyc.gov/site/hpd/about/open-data.page">HPD Open Data and Metrics</a></li>
+<li><a href="https://www.nyc.gov/site/hpd/about/research.page">HPD New York City Housing and Vacancy Survey (NYCHVS)</a></li>
+<li><a href="https://council.nyc.gov/data/evictions/">NYC City Council Evictions Data Page</a></li>
+<li><a href="https://www.anhd.org/project/displacement-alert-project-dap">ANHD Displacement Alert Project (DAP)</a></li>
+<li><a href="https://portal.displacementalert.org/">DAP Portal</a></li>
+<li><a href="https://www.justfix.org/en/tools/">Just Fix - Technology for Housing Justice</a></li>
+<li><a href="https://data.cityofnewyork.us/Housing-Development/DOB-Safety-Violations/855j-jady/about_data">DOB Safety Violations</a></li>
+<li><a href="https://github.com/nycdb/nycdb/wiki/Dataset:-Subsidized-Housing-Database">NYU Furman Center’s Subsidized Housing Database</a></li>
+<li><a href="https://data.cityofnewyork.us/Housing-Development/Speculation-Watch-List/adax-9mit/about_data">HPD Speculation Watch List</a></li>
+<li><a href="https://data.cityofnewyork.us/Housing-Development/DOB-ECB-Violations/6bgk-3dad/about_data">DOB ECB Violations</a></li>
+<li><a href="https://data.cityofnewyork.us/dataset/NYC-Citywide-Rolling-Calendar-Sales/usep-8jbt/about_data">NYC Citywide Rolling Calendar Sales</a></li>
+<li><a href="https://data.cityofnewyork.us/Housing-Development/Housing-Maintenance-Code-Complaints-and-Problems/ygpa-z7cr/about_data">Housing Maintenance Code Complaints and Problems</a></li>
+<li><a href="https://data.cityofnewyork.us/Housing-Development/Housing-Maintenance-Code-Violations/wvxf-dwi5/about_data">HPD Housing Maintenance Code Violations</a></li>
+<li><a href="https://data.cityofnewyork.us/Housing-Development/DOB-Violations/3h2n-5cm9/about_data">DOB Violations</a></li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c8_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

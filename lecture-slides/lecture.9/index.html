@@ -1,0 +1,2776 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.2.280">
+
+  <title>Class 9 Lecture |Working with Dates &amp; Time in R</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Class 9 Lecture |Working with Dates &amp; Time in R</h1>
+  <p class="subtitle">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="the-concept-of-time-in-data" class="slide level2">
+<h2>The Concept of Time in Data</h2>
+<p>Time operates as a <strong>dimension</strong>, <strong>index</strong> and <strong>ordering principle</strong> within data:</p>
+<ul>
+<li class="fragment"><p><em>Point in time</em>: a single event (e.g., eviction date)</p></li>
+<li class="fragment"><p><em>Duration</em>: a span (e.g., building construction period, start to finish)</p></li>
+<li class="fragment"><p><em>Cycle</em>: recurring intervals (e.g., seasons, months)</p></li>
+<li class="fragment"><p><em>Trajectory</em>: movement over time (e.g., route, growth)</p></li>
+</ul>
+<blockquote>
+<p>When we visualize time, we make change visible.</p>
+</blockquote>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>Joseph Priestley — A Chart of Biography (1765)</p>
+<ul>
+<li class="fragment"><p>First true timeline chart.</p></li>
+<li class="fragment"><p>Each bar shows a person’s lifespan.</p></li>
+<li class="fragment"><p>Features duration and overlap through position on a time axis.</p></li>
+<li class="fragment"><p>Concept: Encoding lifespan as length → understanding concurrency of lives.</p></li>
+</ul>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-1" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>Joseph Priestley — A Chart of Biography (1765)</p>
+<p><img data-src="index_files/img/9-1.png" class="absolute" style="top: 220px; left: 100px; width: 900px; "></p>
+<div class="footer">
+<p>Source:<a href="https://en.wikipedia.org/wiki/A_Chart_of_Biography#/media/File:PriestleyChart.gif">A redacted version of Priestley’s Chart of Biography (1765)</a></p>
+</div>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-2" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>William Playfair — The Commercial and Political Atlas (1786)</p>
+<ul>
+<li class="fragment"><p>Invented the line chart to show trade balance over years.</p></li>
+<li class="fragment"><p>Introduced trend and change over time.</p></li>
+<li class="fragment"><p>Concept: Time on the x-axis; values on y-axis → emergence of time series.</p></li>
+</ul>
+<div class="footer">
+<p>Source:<a href="https://www.historyofinformation.com/detail.php?entryid=2929">William Playfair Founds Statistical Graphics, and Invents the Line Chart and Bar Chart</a></p>
+</div>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-3" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>William Playfair — The Commercial and Political Atlas (1786)</p>
+<p><img data-src="index_files/img/9-2.png" class="absolute" style="top: 210px; left: 180px; width: 650px; "></p>
+<div class="footer">
+<p>Source:<a href="https://www.historyofinformation.com/detail.php?entryid=2929">William Playfair Founds Statistical Graphics, and Invents the Line Chart and Bar Chart</a></p>
+</div>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-4" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>Florence Nightingale — Coxcomb Diagram (1858)</p>
+<ul>
+<li class="fragment"><p>Monthly data on deaths during the Crimean War.</p></li>
+<li class="fragment"><p>Circular layout: each wedge = month; radius = deaths.</p></li>
+<li class="fragment"><p>Highlights seasonality and preventable causes.</p></li>
+<li class="fragment"><p>Concept: Time as a cycle (month → month).</p></li>
+</ul>
+<div class="footer">
+<p>Source:<a href="https://www.historyofinformation.com/detail.php?entryid=3815">Florence Nightingale’s Rose Diagram</a></p>
+</div>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-5" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>Florence Nightingale — Coxcomb Diagram (1858)</p>
+<p><img data-src="index_files/img/9-4.png" class="absolute" style="top: 240px; left: 180px; width: 700px; "></p>
+<div class="footer">
+<p>Source:<a href="https://www.historyofinformation.com/detail.php?entryid=3815">Florence Nightingale’s Rose Diagram</a></p>
+</div>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-6" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>Charles Joseph Minard — Napoleon’s March to Moscow (1869)</p>
+<ul>
+<li class="fragment"><p>Combines time, geography, and quantity.</p></li>
+<li class="fragment"><p>Line width = army size; path = geography; temperature line = retreat.</p></li>
+<li class="fragment"><p>Time moves along the route.</p></li>
+<li class="fragment"><p>Concept: Trajectory through time and space.</p></li>
+</ul>
+<div class="footer">
+<p>Source:<a href="https://www.historyofinformation.com/detail.php?id=2787">Charles Joseph Minard Issues One of the Best Statistical Graphics Ever Drawn</a></p>
+</div>
+</section>
+<section id="the-concept-of-time-in-data---historical-examples-7" class="slide level2">
+<h2>The Concept of Time in Data - Historical Examples</h2>
+<p>Charles Joseph Minard — Napoleon’s March to Moscow (1869)</p>
+<p><img data-src="index_files/img/9-5.png" class="absolute" style="top: 240px; left: 60px; width: 850px; "></p>
+<div class="footer">
+<p>Source:<a href="https://www.historyofinformation.com/detail.php?id=2787">Charles Joseph Minard Issues One of the Best Statistical Graphics Ever Drawn</a></p>
+</div>
+</section>
+<section id="concept-of-time-in-data-3" class="slide level2">
+<h2>Concept of Time in Data (3)</h2>
+<ol type="1">
+<li class="fragment">Time as a <strong>Dimension</strong>:</li>
+</ol>
+<ul>
+<li class="fragment"><p>Time is not just another variable — it’s a <em>structural</em> feature of reality that data tries to capture.</p>
+<ul>
+<li class="fragment"><p>In data analysis, a dimension is a measurable axis of variation.</p></li>
+<li class="fragment"><p>Time as a dimension lets us locate an observation in a sequence: when did something happen?</p></li>
+<li class="fragment"><p>It provides context for change — just as space locates where, time locates when.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="concept-of-time-in-data-3-1" class="slide level2">
+<h2>Concept of Time in Data (3)</h2>
+<ol start="2" type="1">
+<li class="fragment">Time as a <strong>Index</strong>:</li>
+</ol>
+<ul>
+<li class="fragment"><p>In time series, time acts like a <strong>row label</strong> or <strong>index</strong> that orders observations.</p>
+<ul>
+<li class="fragment"><p>In data analysis, a dimension is a measurable axis of variation.</p></li>
+<li class="fragment"><p>In a spreadsheet or dataframe, time stamps act as an <strong>index</strong> to the rows</p></li>
+<li class="fragment"><p>The analysis often flows <em>along</em> this index — computing differences, trends, or moving averages.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="concept-of-time-in-data---3" class="slide level2">
+<h2>Concept of Time in Data - (3)</h2>
+<ol start="3" type="1">
+<li class="fragment">Time as an <strong>Ordering Principle</strong>:</li>
+</ol>
+<ul>
+<li class="fragment"><p>Even when not a true numeric dimension, time orders categories or events.</p>
+<ul>
+<li class="fragment"><p>Many datasets don’t measure time continuously but categorically:</p>
+<ul>
+<li class="fragment">Decades (“Pre-1960s”, “1970s”, “2000s”); Months or seasons; Historical eras</li>
+</ul></li>
+<li class="fragment"><p>Time provides sequence — useful for grouping or mapping.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="concept-of-time-in-data---3---summary" class="slide level2">
+<h2>Concept of Time in Data - (3 - Summary)</h2>
+<ul>
+<li class="fragment"><p>Dimension → numeric &amp; continuous → line charts, trends, regression</p></li>
+<li class="fragment"><p>Index → ordering backbone → time series, lagged features, animations</p></li>
+<li class="fragment"><p>Ordering principle → categorical → choropleths, grouped bars, faceted plots</p></li>
+</ul>
+</section>
+<section id="concept-of-time-in-data---3---modern-r-tools" class="slide level2">
+<h2>Concept of Time in Data - (3 - Modern R Tools)</h2>
+<p><img data-src="index_files/img/9-6.png" class="absolute" style="top: 270px; left: 60px; width: 1000px; "></p>
+</section>
+<section id="concept-of-time-in-data---3---typical-workflow" class="slide level2">
+<h2>Concept of Time in Data - (3 - Typical Workflow)</h2>
+<p><code>lubridate</code> &gt; <code>forcats</code> &gt; <code>ggplot2</code></p>
+<ul>
+<li class="fragment"><code>lubridate</code> — parse, manipulate, and round dates.</li>
+<li class="fragment"><code>forcats</code> — order months, seasons, and eras.</li>
+<li class="fragment"><code>ggplot2</code> — visualize time as line, bar, or cycle.</li>
+</ul>
+</section>
+<section id="core-base-r-date-handling" class="slide level2">
+<h2>Core Base <code>R</code> Date Handling</h2>
+<ul>
+<li class="fragment"><p>Functions: <code>as.Date()</code>, <code>Sys.Date()</code>, <code>format()</code>, <code>difftime()</code></p></li>
+<li class="fragment"><p>Common problems:</p>
+<ul>
+<li class="fragment">“2025-10-18” vs “10/18/25” vs “18 Oct 2025”.</li>
+<li class="fragment">Time zones and character strings.</li>
+</ul></li>
+</ul>
+</section>
+<section id="core-base-r---date-handling---code-example-1" class="slide level2">
+<h2>Core Base <code>R</code> - Date Handling - Code Example #1</h2>
+<p><br> <br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2025-01-01"</span>, <span class="st">"01/15/2025"</span>, <span class="st">"Feb 10, 2025"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">as.Date</span>(dates, <span class="at">format =</span> <span class="st">"%Y-%m-%d"</span>)   <span class="co"># fails on some formats</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2025-01-01" NA           NA          </code></pre>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling</h2>
+<blockquote>
+<p>“The tidyverse way to handle messy time.”</p>
+</blockquote>
+<ul>
+<li class="fragment"><p>Why use <code>lubridate</code>:</p>
+<ul>
+<li class="fragment"><p>Simplifies parsing and arithmetic.</p></li>
+<li class="fragment"><p>Integrates with tidyverse pipes.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="the-lubridate-package---date-handling-1" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling</h2>
+<ul>
+<li class="fragment">Parsing functions: <code>ymd()</code>,<code>mdy()</code>, <code>ymd_hms()</code>.</li>
+<li class="fragment">Extractors: <code>year()</code>, <code>month()</code>, <code>wday()</code>, <code>hour()</code>.</li>
+<li class="fragment">Arithmetic: <code>date + days(7)</code>, <code>interval()</code>, <code>floor_date()</code>.</li>
+</ul>
+</section>
+<section id="the-lubridate-package---date-handling---code-example-2" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Code Example #2</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>dates <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2025-10-18"</span>, <span class="st">"10/18/2025"</span>, <span class="st">"October 18, 2025"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">ymd</span>(dates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2025-10-18" NA           NA          </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">mdy</span>(dates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA           "2025-10-18" "2025-10-18"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">ymd_hms</span>(dates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA NA NA</code></pre>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling---mock-up" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Mock Up</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co"># --- Dummy eviction-like data (10 rows) ---</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co"># --- Date kept in typical character format</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>ev <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="at">case_id        =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="at">BOROUGH        =</span> <span class="fu">c</span>(<span class="st">"Manhattan"</span>,<span class="st">"Brooklyn"</span>,<span class="st">"Queens"</span>,<span class="st">"Bronx"</span>,<span class="st">"Staten Island"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>                     <span class="st">"Manhattan"</span>,<span class="st">"Brooklyn"</span>,<span class="st">"Queens"</span>,<span class="st">"Bronx"</span>,<span class="st">"Manhattan"</span>),</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="at">executed_date  =</span> <span class="fu">c</span>(</span>
+<span id="cb9-10"><a href="#cb9-10"></a>    <span class="st">"2025-01-02"</span>,<span class="st">"2025-01-03"</span>,<span class="st">"2025-01-07"</span>,<span class="st">"2025-01-12"</span>,<span class="st">"2025-02-01"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11"></a>    <span class="st">"2025-02-03"</span>,<span class="st">"2025-02-05"</span>,<span class="st">"2025-03-15"</span>,<span class="st">"2025-03-16"</span>,<span class="st">"2025-03-20"</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a>  )</span>
+<span id="cb9-13"><a href="#cb9-13"></a>)</span>
+<span id="cb9-14"><a href="#cb9-14"></a>ev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   case_id BOROUGH       executed_date
+     &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;        
+ 1       1 Manhattan     2025-01-02   
+ 2       2 Brooklyn      2025-01-03   
+ 3       3 Queens        2025-01-07   
+ 4       4 Bronx         2025-01-12   
+ 5       5 Staten Island 2025-02-01   
+ 6       6 Manhattan     2025-02-03   
+ 7       7 Brooklyn      2025-02-05   
+ 8       8 Queens        2025-03-15   
+ 9       9 Bronx         2025-03-16   
+10      10 Manhattan     2025-03-20   </code></pre>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling---mock-up-result" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Mock Up Result</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="geuohjifpb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#geuohjifpb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#geuohjifpb thead, #geuohjifpb tbody, #geuohjifpb tfoot, #geuohjifpb tr, #geuohjifpb td, #geuohjifpb th {
+  border-style: none;
+}
+
+#geuohjifpb p {
+  margin: 0;
+  padding: 0;
+}
+
+#geuohjifpb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#geuohjifpb .gt_title {
+  color: #333333;
+  font-size: 18px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#geuohjifpb .gt_subtitle {
+  color: #333333;
+  font-size: 12px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#geuohjifpb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#geuohjifpb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#geuohjifpb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#geuohjifpb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#geuohjifpb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#geuohjifpb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#geuohjifpb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#geuohjifpb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#geuohjifpb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#geuohjifpb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#geuohjifpb .gt_row {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#geuohjifpb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#geuohjifpb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#geuohjifpb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#geuohjifpb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#geuohjifpb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#geuohjifpb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#geuohjifpb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#geuohjifpb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#geuohjifpb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#geuohjifpb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#geuohjifpb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#geuohjifpb .gt_left {
+  text-align: left;
+}
+
+#geuohjifpb .gt_center {
+  text-align: center;
+}
+
+#geuohjifpb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#geuohjifpb .gt_font_normal {
+  font-weight: normal;
+}
+
+#geuohjifpb .gt_font_bold {
+  font-weight: bold;
+}
+
+#geuohjifpb .gt_font_italic {
+  font-style: italic;
+}
+
+#geuohjifpb .gt_super {
+  font-size: 65%;
+}
+
+#geuohjifpb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#geuohjifpb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#geuohjifpb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#geuohjifpb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#geuohjifpb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#geuohjifpb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#geuohjifpb .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#geuohjifpb .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#geuohjifpb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="3" class="gt_heading gt_title gt_font_normal" style=""><span data-qmd-base64="RXZpY3Rpb24gUmVjb3JkcyAoRHVtbXkgRGF0YSk="><span class="gt_from_md">Eviction Records (Dummy Data)</span></span></td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="">Dates parsed with lubridate::ymd() for readable formatting</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="case_id">Case ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="BOROUGH">Borough</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="executed_date">Executed Date</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="case_id" class="gt_row gt_right">1</td>
+<td headers="BOROUGH" class="gt_row gt_left">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right">Jan 2, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">2</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Brooklyn</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Jan 3, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">3</td>
+<td headers="BOROUGH" class="gt_row gt_left">Queens</td>
+<td headers="executed_date" class="gt_row gt_right">Jan 7, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">4</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Bronx</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Jan 12, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">5</td>
+<td headers="BOROUGH" class="gt_row gt_left">Staten Island</td>
+<td headers="executed_date" class="gt_row gt_right">Feb 1, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">6</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Feb 3, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">7</td>
+<td headers="BOROUGH" class="gt_row gt_left">Brooklyn</td>
+<td headers="executed_date" class="gt_row gt_right">Feb 5, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">8</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Queens</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Mar 15, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">9</td>
+<td headers="BOROUGH" class="gt_row gt_left">Bronx</td>
+<td headers="executed_date" class="gt_row gt_right">Mar 16, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">10</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Mar 20, 2025</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling---code-example-3" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Code Example #3</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># --- Convert to Date ---</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>ev <span class="ot">&lt;-</span> ev <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">mutate</span>(<span class="at">executed_date =</span> <span class="fu">ymd</span>(executed_date))</span>
+<span id="cb11-7"><a href="#cb11-7"></a>ev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   case_id BOROUGH       executed_date
+     &lt;int&gt; &lt;chr&gt;         &lt;date&gt;       
+ 1       1 Manhattan     2025-01-02   
+ 2       2 Brooklyn      2025-01-03   
+ 3       3 Queens        2025-01-07   
+ 4       4 Bronx         2025-01-12   
+ 5       5 Staten Island 2025-02-01   
+ 6       6 Manhattan     2025-02-03   
+ 7       7 Brooklyn      2025-02-05   
+ 8       8 Queens        2025-03-15   
+ 9       9 Bronx         2025-03-16   
+10      10 Manhattan     2025-03-20   </code></pre>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling---table-result" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Table Result</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="dtikfnqbdu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dtikfnqbdu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#dtikfnqbdu thead, #dtikfnqbdu tbody, #dtikfnqbdu tfoot, #dtikfnqbdu tr, #dtikfnqbdu td, #dtikfnqbdu th {
+  border-style: none;
+}
+
+#dtikfnqbdu p {
+  margin: 0;
+  padding: 0;
+}
+
+#dtikfnqbdu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#dtikfnqbdu .gt_title {
+  color: #333333;
+  font-size: 18px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dtikfnqbdu .gt_subtitle {
+  color: #333333;
+  font-size: 12px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dtikfnqbdu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dtikfnqbdu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dtikfnqbdu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dtikfnqbdu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dtikfnqbdu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dtikfnqbdu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#dtikfnqbdu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#dtikfnqbdu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dtikfnqbdu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dtikfnqbdu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dtikfnqbdu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dtikfnqbdu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dtikfnqbdu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dtikfnqbdu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dtikfnqbdu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#dtikfnqbdu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dtikfnqbdu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dtikfnqbdu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dtikfnqbdu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dtikfnqbdu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dtikfnqbdu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dtikfnqbdu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dtikfnqbdu .gt_left {
+  text-align: left;
+}
+
+#dtikfnqbdu .gt_center {
+  text-align: center;
+}
+
+#dtikfnqbdu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dtikfnqbdu .gt_font_normal {
+  font-weight: normal;
+}
+
+#dtikfnqbdu .gt_font_bold {
+  font-weight: bold;
+}
+
+#dtikfnqbdu .gt_font_italic {
+  font-style: italic;
+}
+
+#dtikfnqbdu .gt_super {
+  font-size: 65%;
+}
+
+#dtikfnqbdu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#dtikfnqbdu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dtikfnqbdu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#dtikfnqbdu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#dtikfnqbdu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dtikfnqbdu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dtikfnqbdu .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#dtikfnqbdu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#dtikfnqbdu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="3" class="gt_heading gt_title gt_font_normal" style=""><span data-qmd-base64="RXZpY3Rpb24gUmVjb3JkcyAoRHVtbXkgRGF0YSk="><span class="gt_from_md">Eviction Records (Dummy Data)</span></span></td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="">Dates parsed with lubridate::ymd()</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="case_id">Case ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="BOROUGH">Borough</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="executed_date">Executed Date</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="case_id" class="gt_row gt_right">1</td>
+<td headers="BOROUGH" class="gt_row gt_left">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right">Jan 2, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">2</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Brooklyn</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Jan 3, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">3</td>
+<td headers="BOROUGH" class="gt_row gt_left">Queens</td>
+<td headers="executed_date" class="gt_row gt_right">Jan 7, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">4</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Bronx</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Jan 12, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">5</td>
+<td headers="BOROUGH" class="gt_row gt_left">Staten Island</td>
+<td headers="executed_date" class="gt_row gt_right">Feb 1, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">6</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Feb 3, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">7</td>
+<td headers="BOROUGH" class="gt_row gt_left">Brooklyn</td>
+<td headers="executed_date" class="gt_row gt_right">Feb 5, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">8</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Queens</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Mar 15, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">9</td>
+<td headers="BOROUGH" class="gt_row gt_left">Bronx</td>
+<td headers="executed_date" class="gt_row gt_right">Mar 16, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">10</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Mar 20, 2025</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling-2" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling</h2>
+<p>Continuous vs categorical time → “binning time” (weeks, months, decades).</p>
+<ul>
+<li class="fragment">“bin” weeks with <code>floor_date()</code> to group daily events into consistent, comparable time periods — instead of treating every single date as unique.</li>
+<li class="fragment">Standardize all events in the same week to a common label (e.g., “week of Jan 6, 2025”).</li>
+<li class="fragment">Simplify analysis — you can now count, summarize, or average by week rather than by day; suppresses ‘daily’ noise.</li>
+</ul>
+</section>
+<section id="the-lubridate-package---date-handling---code-example-4" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Code Example #4</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># --- Weekly bin (Monday start) ---</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>ev_weeked <span class="ot">&lt;-</span> ev <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">mutate</span>(<span class="at">week =</span> <span class="fu">floor_date</span>(executed_date, <span class="st">"week"</span>, <span class="at">week_start =</span> <span class="dv">1</span>))</span>
+<span id="cb13-7"><a href="#cb13-7"></a></span>
+<span id="cb13-8"><a href="#cb13-8"></a>ev_weeked</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   case_id BOROUGH       executed_date week      
+     &lt;int&gt; &lt;chr&gt;         &lt;date&gt;        &lt;date&gt;    
+ 1       1 Manhattan     2025-01-02    2024-12-30
+ 2       2 Brooklyn      2025-01-03    2024-12-30
+ 3       3 Queens        2025-01-07    2025-01-06
+ 4       4 Bronx         2025-01-12    2025-01-06
+ 5       5 Staten Island 2025-02-01    2025-01-27
+ 6       6 Manhattan     2025-02-03    2025-02-03
+ 7       7 Brooklyn      2025-02-05    2025-02-03
+ 8       8 Queens        2025-03-15    2025-03-10
+ 9       9 Bronx         2025-03-16    2025-03-10
+10      10 Manhattan     2025-03-20    2025-03-17</code></pre>
+</div>
+</div>
+</section>
+<section id="the-lubridate-package---date-handling---code-example-4-1" class="slide level2">
+<h2>The <code>lubridate</code> Package - Date Handling - Code Example #4</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="plpxyydjmo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#plpxyydjmo table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#plpxyydjmo thead, #plpxyydjmo tbody, #plpxyydjmo tfoot, #plpxyydjmo tr, #plpxyydjmo td, #plpxyydjmo th {
+  border-style: none;
+}
+
+#plpxyydjmo p {
+  margin: 0;
+  padding: 0;
+}
+
+#plpxyydjmo .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#plpxyydjmo .gt_title {
+  color: #333333;
+  font-size: 18px;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#plpxyydjmo .gt_subtitle {
+  color: #333333;
+  font-size: 12px;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#plpxyydjmo .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#plpxyydjmo .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#plpxyydjmo .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#plpxyydjmo .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#plpxyydjmo .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#plpxyydjmo .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#plpxyydjmo .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#plpxyydjmo .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#plpxyydjmo .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#plpxyydjmo .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#plpxyydjmo .gt_row {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#plpxyydjmo .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plpxyydjmo .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#plpxyydjmo .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#plpxyydjmo .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#plpxyydjmo .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plpxyydjmo .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#plpxyydjmo .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plpxyydjmo .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#plpxyydjmo .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plpxyydjmo .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#plpxyydjmo .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#plpxyydjmo .gt_left {
+  text-align: left;
+}
+
+#plpxyydjmo .gt_center {
+  text-align: center;
+}
+
+#plpxyydjmo .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#plpxyydjmo .gt_font_normal {
+  font-weight: normal;
+}
+
+#plpxyydjmo .gt_font_bold {
+  font-weight: bold;
+}
+
+#plpxyydjmo .gt_font_italic {
+  font-style: italic;
+}
+
+#plpxyydjmo .gt_super {
+  font-size: 65%;
+}
+
+#plpxyydjmo .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#plpxyydjmo .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#plpxyydjmo .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#plpxyydjmo .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#plpxyydjmo .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#plpxyydjmo .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#plpxyydjmo .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#plpxyydjmo .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#plpxyydjmo div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal" style=""><span data-qmd-base64="RXZpY3Rpb25zIHdpdGggV2Vla2x5IEJpbnMgKER1bW15IERhdGEp"><span class="gt_from_md">Evictions with Weekly Bins (Dummy Data)</span></span></td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="">Weeks computed via lubridate::floor_date(executed_date, 'week', week_start = 1)</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="case_id">Case ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="BOROUGH">Borough</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="executed_date">Executed Date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="week">Week (Mon start)</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="case_id" class="gt_row gt_right">2</td>
+<td headers="BOROUGH" class="gt_row gt_left">Brooklyn</td>
+<td headers="executed_date" class="gt_row gt_right">Jan 3, 2025</td>
+<td headers="week" class="gt_row gt_right">Dec 30, 2024</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">1</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Jan 2, 2025</td>
+<td headers="week" class="gt_row gt_right gt_striped">Dec 30, 2024</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">4</td>
+<td headers="BOROUGH" class="gt_row gt_left">Bronx</td>
+<td headers="executed_date" class="gt_row gt_right">Jan 12, 2025</td>
+<td headers="week" class="gt_row gt_right">Jan 6, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">3</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Queens</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Jan 7, 2025</td>
+<td headers="week" class="gt_row gt_right gt_striped">Jan 6, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">5</td>
+<td headers="BOROUGH" class="gt_row gt_left">Staten Island</td>
+<td headers="executed_date" class="gt_row gt_right">Feb 1, 2025</td>
+<td headers="week" class="gt_row gt_right">Jan 27, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">7</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Brooklyn</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Feb 5, 2025</td>
+<td headers="week" class="gt_row gt_right gt_striped">Feb 3, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">6</td>
+<td headers="BOROUGH" class="gt_row gt_left">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right">Feb 3, 2025</td>
+<td headers="week" class="gt_row gt_right">Feb 3, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">9</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Bronx</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Mar 16, 2025</td>
+<td headers="week" class="gt_row gt_right gt_striped">Mar 10, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right">8</td>
+<td headers="BOROUGH" class="gt_row gt_left">Queens</td>
+<td headers="executed_date" class="gt_row gt_right">Mar 15, 2025</td>
+<td headers="week" class="gt_row gt_right">Mar 10, 2025</td></tr>
+    <tr><td headers="case_id" class="gt_row gt_right gt_striped">10</td>
+<td headers="BOROUGH" class="gt_row gt_left gt_striped">Manhattan</td>
+<td headers="executed_date" class="gt_row gt_right gt_striped">Mar 20, 2025</td>
+<td headers="week" class="gt_row gt_right gt_striped">Mar 17, 2025</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="lubridate-forcats-date-handling---code-example-5" class="slide level2">
+<h2><code>Lubridate</code> + <code>forcats</code> Date Handling - Code Example #5</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co"># Derive month from the weekly date and keep it ordered Jan–Dec using lubridate::month()</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>ev_monthly <span class="ot">&lt;-</span> ev_weeked <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>  <span class="fu">mutate</span>(<span class="at">month =</span> <span class="fu">month</span>(week, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>  <span class="fu">count</span>(month, <span class="at">name =</span> <span class="st">"evictions"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10"></a></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co"># Quick check plot: bars will appear in calendar order</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="fu">ggplot</span>(ev_monthly, <span class="fu">aes</span>(month, evictions)) <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-a-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="lubridate-forcats-date-handling---code-example-6" class="slide level2">
+<h2><code>Lubridate</code> + <code>forcats</code> Date Handling - Code Example #6</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb16-5"><a href="#cb16-5"></a></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="co"># Reorder Months via fct_relevel</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>ev_monthly_random <span class="ot">&lt;-</span> ev_monthly <span class="sc">|&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a>  <span class="fu">mutate</span>(<span class="at">month =</span> <span class="fu">fct_relevel</span>(month, <span class="fu">c</span>(<span class="st">"Dec"</span>,<span class="st">"Mar"</span>,<span class="st">"Jan"</span>,<span class="st">"Feb"</span>)))</span>
+<span id="cb16-9"><a href="#cb16-9"></a></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co"># Quick check plot: bars will appear in new order</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="fu">ggplot</span>(ev_monthly_random, <span class="fu">aes</span>(month, evictions)) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-b-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="lubridate-forcats-date-handling---code-example-6-1" class="slide level2">
+<h2><code>Lubridate</code> + <code>forcats</code> Date Handling - Code Example #6</h2>
+<ul>
+<li class="fragment"><p>Reorder boroughs by total evictions (most → least)</p></li>
+<li class="fragment"><p>Why: Legends and facets are clearer when categories are ordered by relevance. fct_reorder() sorts factor levels by a summary of a numeric vector.</p></li>
+</ul>
+</section>
+<section id="lubridate-forcats-date-handling---code-example-6-2" class="slide level2">
+<h2><code>Lubridate</code> + <code>forcats</code> Date Handling - Code Example #6</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>ev_by_boro <span class="ot">&lt;-</span> ev_weeked <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">count</span>(BOROUGH, <span class="at">name =</span> <span class="st">"evictions"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">mutate</span>(<span class="at">BOROUGH =</span> <span class="fu">fct_reorder</span>(BOROUGH, evictions, <span class="at">.desc =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">ggplot</span>(ev_by_boro, <span class="fu">aes</span>(BOROUGH, evictions, <span class="at">fill =</span> BOROUGH)) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Evictions"</span>, <span class="at">fill =</span> <span class="st">"Borough (data-driven order)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-m-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="ggplot---time-as-a-line-weekly-time-series" class="slide level2">
+<h2>GGplot - Time as a line (weekly time series)</h2>
+<p>Line: treats time as a continuous index → shows trend/tempo clearly.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ev_week_counts <span class="ot">&lt;-</span> ev_weeked <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">count</span>(week, <span class="at">name =</span> <span class="st">"evictions"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="fu">arrange</span>(week)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ggplot---time-as-a-line-weekly-time-series-1" class="slide level2">
+<h2>GGplot - Time as a line (weekly time series)</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">ggplot</span>(ev_week_counts, <span class="fu">aes</span>(week, evictions)) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"1 month"</span>, <span class="at">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="fu">labs</span>(</span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="at">title =</span> <span class="st">"Evictions per Week (Dummy Data)"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Evictions"</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a>) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11"></a><span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-ca-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="ggplot-time-as-a-bar-monthly-totals" class="slide level2">
+<h2>GGplot Time as a bar (monthly totals)</h2>
+<p>Bar: aggregates to intervals (months) → easy to compare totals.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>ev_monthly <span class="ot">&lt;-</span> ev_weeked <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">mutate</span>(<span class="at">month =</span> <span class="fu">month</span>(week, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">count</span>(month, <span class="at">name =</span> <span class="st">"evictions"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4"></a></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="fu">ggplot</span>(ev_monthly, <span class="fu">aes</span>(month, evictions)) <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="fu">labs</span>(</span>
+<span id="cb20-8"><a href="#cb20-8"></a><span class="at">title =</span> <span class="st">"Monthly Evictions (Binned by Week → Month)"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9"></a><span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Evictions"</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>) <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11"></a><span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-k-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="ggplot-time-as-a-cycle-seasonality-by-month-polar" class="slide level2">
+<h2>GGPlot Time as a cycle (seasonality by month, polar)</h2>
+<p>Cycle: treats months as a repeating season → highlights periodic patterns (think Nightingale’s coxcomb).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>ev_monthly_cycle <span class="ot">&lt;-</span> ev_weeked <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">mutate</span>(<span class="at">month =</span> <span class="fu">month</span>(week, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="fu">count</span>(month, <span class="at">name =</span> <span class="st">"evictions"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4"></a></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="fu">ggplot</span>(ev_monthly_cycle, <span class="fu">aes</span>(month, evictions)) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a><span class="fu">coord_polar</span>() <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="fu">labs</span>(</span>
+<span id="cb21-9"><a href="#cb21-9"></a><span class="at">title =</span> <span class="st">"Seasonality: Evictions by Month (Polar Cycle)"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a>) <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a><span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-g-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="ggplot-faceted" class="slide level2">
+<h2>GGPLOT faceted</h2>
+<p>In the faceted map or chart, time is encoded as a continuous variable within each small plot (e.g., weekly or monthly evictions on the x-axis).</p>
+<p>Each facet isolates space (a borough) while allowing time to unfold horizontally inside it.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">#Weekly counts per borough</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>ev_week_counts_boro <span class="ot">&lt;-</span> ev_weeked <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">count</span>(BOROUGH, week, <span class="at">name =</span> <span class="st">"evictions"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="fu">arrange</span>(BOROUGH, week)</span>
+<span id="cb22-5"><a href="#cb22-5"></a></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co">#Faceted line chart</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="fu">ggplot</span>(ev_week_counts_boro, <span class="fu">aes</span>(week, evictions)) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Evictions per Week — Faceted by Borough"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Evictions"</span>) <span class="sc">+</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span> BOROUGH, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11"></a><span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="index_files/figure-revealjs/date5-l-1.png" style="width:30.0%" class="r-stretch quarto-figure-center"></section>
+<section id="summary---the-concept-of-time-in-data-r-packages-listing" class="slide level2">
+<h2>Summary - The Concept of Time in Data | R Packages Listing</h2>
+<p><img data-src="index_files/img/9-7.png" class="absolute" style="top: 240px; left: 180px; width: 700px; "></p>
+<div class="footer footer-default">
+
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: false,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

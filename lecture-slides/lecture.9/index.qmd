@@ -1,0 +1,665 @@
+---
+title: "Class 9 Lecture |Working with Dates & Time in R"
+subtitle: "Fall 2025 | Instructor: Stephen Metts | [PGUD 5160 - CRN 2247](https://courses.newschool.edu/courses/PGUD5160/)"
+format:
+  revealjs: 
+    slide-number: true
+    theme: [index_files/custom.scss]
+    touch: true
+    incremental: true
+    code-overflow: wrap
+    controls: false
+    progress: false
+    center: false
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false
+  error: true        # <- show errors in-place so you can locate them
+# freeze: false
+resources:
+  - demo.pdf
+---
+
+## The Concept of Time in Data
+
+Time operates as a **dimension**, **index** and **ordering principle** within data:
+
+- *Point in time*: a single event (e.g., eviction date)
+
+- *Duration*: a span (e.g., building construction period, start to finish)
+
+- *Cycle*: recurring intervals (e.g., seasons, months)
+
+- *Trajectory*: movement over time (e.g., route, growth)
+
+> When we visualize time, we make change visible.
+
+
+## The Concept of Time in Data - Historical Examples
+
+Joseph Priestley — A Chart of Biography (1765)
+
+- First true timeline chart.
+
+- Each bar shows a person’s lifespan.
+
+- Features duration and overlap through position on a time axis.
+
+- Concept: Encoding lifespan as length → understanding concurrency of lives.
+
+
+## The Concept of Time in Data - Historical Examples
+
+Joseph Priestley — A Chart of Biography (1765)
+
+![](index_files/img/9-1.png){.absolute top="220" left="100" width="900"}
+
+::: footer
+Source:[A redacted version of Priestley's Chart of Biography (1765)](https://en.wikipedia.org/wiki/A_Chart_of_Biography#/media/File:PriestleyChart.gif)
+:::
+
+
+## The Concept of Time in Data - Historical Examples
+
+William Playfair — The Commercial and Political Atlas (1786)
+
+
+- Invented the line chart to show trade balance over years.
+
+- Introduced trend and change over time.
+
+- Concept: Time on the x-axis; values on y-axis → emergence of time series.
+
+
+::: footer
+Source:[William Playfair Founds Statistical Graphics, and Invents the Line Chart and Bar Chart](https://www.historyofinformation.com/detail.php?entryid=2929)
+:::
+
+
+## The Concept of Time in Data - Historical Examples
+
+William Playfair — The Commercial and Political Atlas (1786)
+
+![](index_files/img/9-2.png){.absolute top="210" left="180" width="650"}
+
+
+::: footer
+Source:[William Playfair Founds Statistical Graphics, and Invents the Line Chart and Bar Chart](https://www.historyofinformation.com/detail.php?entryid=2929)
+:::
+
+
+## The Concept of Time in Data - Historical Examples
+
+Florence Nightingale — Coxcomb Diagram (1858)
+
+- Monthly data on deaths during the Crimean War.
+
+- Circular layout: each wedge = month; radius = deaths.
+
+- Highlights seasonality and preventable causes.
+
+- Concept: Time as a cycle (month → month).
+
+::: footer
+Source:[Florence Nightingale's Rose Diagram](https://www.historyofinformation.com/detail.php?entryid=3815)
+:::
+
+
+## The Concept of Time in Data - Historical Examples
+
+Florence Nightingale — Coxcomb Diagram (1858)
+
+![](index_files/img/9-4.png){.absolute top="240" left="180" width="700"}
+
+::: footer
+Source:[Florence Nightingale's Rose Diagram](https://www.historyofinformation.com/detail.php?entryid=3815)
+:::
+
+## The Concept of Time in Data - Historical Examples
+
+Charles Joseph Minard — Napoleon’s March to Moscow (1869)
+
+- Combines time, geography, and quantity.
+
+- Line width = army size; path = geography; temperature line = retreat.
+
+- Time moves along the route.
+
+- Concept: Trajectory through time and space.
+
+::: footer
+Source:[Charles Joseph Minard Issues One of the Best Statistical Graphics Ever Drawn](https://www.historyofinformation.com/detail.php?id=2787)
+:::
+
+## The Concept of Time in Data - Historical Examples
+
+Charles Joseph Minard — Napoleon’s March to Moscow (1869)
+
+![](index_files/img/9-5.png){.absolute top="240" left="60" width="850"}
+
+
+::: footer
+Source:[Charles Joseph Minard Issues One of the Best Statistical Graphics Ever Drawn](https://www.historyofinformation.com/detail.php?id=2787)
+:::
+
+## Concept of Time in Data (3)
+
+1. Time as a **Dimension**:
+
+- Time is not just another variable — it’s a *structural* feature of reality that data tries to capture.
+
+  - In data analysis, a dimension is a measurable axis of variation.
+
+  - Time as a dimension lets us locate an observation in a sequence: when did something happen?
+
+  - It provides context for change — just as space locates where, time locates when.
+
+## Concept of Time in Data (3)
+
+2. Time as a **Index**:
+
+- In time series, time acts like a **row label** or **index** that orders observations.
+
+  - In data analysis, a dimension is a measurable axis of variation.
+
+  - In a spreadsheet or dataframe, time stamps act as an **index** to the rows
+
+  - The analysis often flows *along* this index — computing differences, trends, or moving averages.
+
+
+## Concept of Time in Data - (3)
+
+3. Time as an **Ordering Principle**:
+
+- Even when not a true numeric dimension, time orders categories or events.
+
+  - Many datasets don’t measure time continuously but categorically:
+  
+    - Decades (“Pre-1960s”, “1970s”, “2000s”); Months or seasons; Historical eras
+    
+  - Time provides sequence — useful for grouping or mapping.
+
+## Concept of Time in Data - (3 - Summary)
+
+- Dimension → numeric & continuous → line charts, trends, regression
+
+- Index → ordering backbone → time series, lagged features, animations
+
+- Ordering principle → categorical → choropleths, grouped bars, faceted plots
+
+
+## Concept of Time in Data - (3 - Modern R Tools)
+
+![](index_files/img/9-6.png){.absolute top="270" left="60" width="1000"}
+
+## Concept of Time in Data - (3 - Typical Workflow)
+
+`lubridate` > `forcats` > `ggplot2`
+
+- `lubridate` — parse, manipulate, and round dates.
+- `forcats` — order months, seasons, and eras.
+- `ggplot2` — visualize time as line, bar, or cycle.
+
+## Core Base `R` Date Handling
+
+- Functions: `as.Date()`, `Sys.Date()`, `format()`, `difftime()`
+
+- Common problems:
+
+  - “2025-10-18” vs “10/18/25” vs “18 Oct 2025”.
+  - Time zones and character strings.
+
+
+
+## Core Base `R` - Date Handling - Code Example #1
+
+<br>
+<br>
+
+```{r}
+#| label: date1
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+dates <- c("2025-01-01", "01/15/2025", "Feb 10, 2025")
+as.Date(dates, format = "%Y-%m-%d")   # fails on some formats
+```
+
+## The `lubridate` Package - Date Handling 
+
+>“The tidyverse way to handle messy time.”
+
+- Why use `lubridate`:
+
+  - Simplifies parsing and arithmetic.
+
+  - Integrates with tidyverse pipes.
+  
+## The `lubridate` Package - Date Handling 
+  
+- Parsing functions: `ymd()`,` mdy()`, `ymd_hms()`.
+- Extractors: `year()`, `month()`, `wday()`, `hour()`.
+- Arithmetic: `date + days(7)`, `interval()`, `floor_date()`.  
+  
+
+## The `lubridate` Package - Date Handling - Code Example #2
+  
+  
+```{r}
+#| label: date2
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+library(lubridate)
+dates <- c("2025-10-18", "10/18/2025", "October 18, 2025")
+ymd(dates)
+mdy(dates)
+ymd_hms(dates)
+```
+## The `lubridate` Package - Date Handling - Mock Up
+
+```{r}
+#| label: date3
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(lubridate)
+# --- Dummy eviction-like data (10 rows) ---
+# --- Date kept in typical character format
+ev <- tibble(
+  case_id        = 1:10,
+  BOROUGH        = c("Manhattan","Brooklyn","Queens","Bronx","Staten Island",
+                     "Manhattan","Brooklyn","Queens","Bronx","Manhattan"),
+  executed_date  = c(
+    "2025-01-02","2025-01-03","2025-01-07","2025-01-12","2025-02-01",
+    "2025-02-03","2025-02-05","2025-03-15","2025-03-16","2025-03-20"
+  )
+)
+ev
+```
+
+## The `lubridate` Package - Date Handling - Mock Up Result
+
+```{r}
+#| label: date-3-f
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(lubridate)
+library(gt)
+
+ev |>
+mutate(executed_date = ymd(executed_date)) |>
+gt() |>
+fmt_date(columns = executed_date, date_style = 6) |>
+cols_label(
+case_id = "Case ID",
+BOROUGH = "Borough",
+executed_date = "Executed Date"
+) |>
+tab_header(
+title = md("Eviction Records (Dummy Data)"),
+subtitle = "Dates parsed with lubridate::ymd() for readable formatting"
+) |>
+opt_row_striping() |>
+tab_options(
+table.font.size = px(14),
+heading.title.font.size = px(18),
+heading.subtitle.font.size = px(12),
+data_row.padding = px(4)
+)
+
+
+```
+
+## The `lubridate` Package - Date Handling - Code Example #3
+
+```{r}
+#| label: date4
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(lubridate)
+
+# --- Convert to Date ---
+ev <- ev |>
+  mutate(executed_date = ymd(executed_date))
+ev
+```
+
+## The `lubridate` Package - Date Handling - Table Result
+
+```{r}
+#| label: date-4-f
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(lubridate)
+library(gt)
+
+ev |>
+gt() |>
+fmt_date(columns = executed_date, date_style = 6) |> # e.g., "Jan 02, 2025"
+cols_label(
+case_id = "Case ID",
+BOROUGH = "Borough",
+executed_date = "Executed Date"
+) |>
+opt_row_striping() |>
+tab_header(
+title = md("Eviction Records (Dummy Data)"),
+subtitle = "Dates parsed with lubridate::ymd()"
+) |>
+tab_options(
+table.font.size = px(14),
+heading.title.font.size = px(18),
+heading.subtitle.font.size = px(12)
+)
+```
+
+## The `lubridate` Package - Date Handling 
+
+Continuous vs categorical time → “binning time” (weeks, months, decades).
+
+- “bin” weeks with `floor_date()` to group daily events into consistent, comparable time periods — instead of treating every single date as unique.
+- Standardize all events in the same week to a common label (e.g., “week of Jan 6, 2025”).
+- Simplify analysis — you can now count, summarize, or average by week rather than by day; suppresses 'daily' noise.
+
+## The `lubridate` Package - Date Handling - Code Example #4
+
+```{r}
+#| label: date5
+#| echo: true
+#| eval: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(lubridate)
+
+# --- Weekly bin (Monday start) ---
+ev_weeked <- ev |>
+  mutate(week = floor_date(executed_date, "week", week_start = 1))
+
+ev_weeked
+```
+
+## The `lubridate` Package - Date Handling - Code Example #4
+
+```{r}
+#| label: date-4-s
+#| echo: false
+#| message: false
+#| warning: false
+
+library(gt)
+ev_weeked <- ev |>
+mutate(week = floor_date(executed_date, "week", week_start = 1)) |>
+arrange(week, BOROUGH, case_id)
+
+ev_weeked |>
+gt() |>
+fmt_date(columns = c(executed_date, week), date_style = 6) |>
+cols_label(
+case_id = "Case ID",
+BOROUGH = "Borough",
+executed_date = "Executed Date",
+week = "Week (Mon start)"
+) |>
+opt_row_striping() |>
+tab_header(
+title = md("Evictions with Weekly Bins (Dummy Data)"),
+subtitle = "Weeks computed via lubridate::floor_date(executed_date, 'week', week_start = 1)"
+) |>
+tab_options(
+table.font.size = px(14),
+heading.title.font.size = px(18),
+heading.subtitle.font.size = px(12),
+data_row.padding = px(4)
+)
+```
+
+
+## `Lubridate` + `forcats` Date Handling - Code Example #5
+
+```{r}
+#| label: date5-a
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+library(dplyr)
+library(lubridate)
+library(forcats)
+library(ggplot2)
+
+# Derive month from the weekly date and keep it ordered Jan–Dec using lubridate::month()
+ev_monthly <- ev_weeked |>
+  mutate(month = month(week, label = TRUE, abbr = TRUE)) |>
+  count(month, name = "evictions")
+
+# Quick check plot: bars will appear in calendar order
+ggplot(ev_monthly, aes(month, evictions)) +
+  geom_col()
+```
+
+## `Lubridate` + `forcats` Date Handling - Code Example #6
+
+```{r}
+#| label: date5-b
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+library(dplyr)
+library(lubridate)
+library(forcats)
+library(ggplot2)
+
+# Reorder Months via fct_relevel
+ev_monthly_random <- ev_monthly |>
+  mutate(month = fct_relevel(month, c("Dec","Mar","Jan","Feb")))
+
+# Quick check plot: bars will appear in new order
+ggplot(ev_monthly_random, aes(month, evictions)) +
+  geom_col()
+```
+
+
+## `Lubridate` + `forcats` Date Handling - Code Example #6
+
+- Reorder boroughs by total evictions (most → least)
+
+- Why: Legends and facets are clearer when categories are ordered by relevance. fct_reorder() sorts factor levels by a summary of a numeric vector.
+
+
+
+
+## `Lubridate` + `forcats` Date Handling - Code Example #6
+
+```{r}
+#| label: date5-m
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+ev_by_boro <- ev_weeked |>
+  count(BOROUGH, name = "evictions") |>
+  mutate(BOROUGH = fct_reorder(BOROUGH, evictions, .desc = TRUE))
+
+ggplot(ev_by_boro, aes(BOROUGH, evictions, fill = BOROUGH)) +
+  geom_col() +
+  labs(x = NULL, y = "Evictions", fill = "Borough (data-driven order)")
+```
+
+
+
+## GGplot - Time as a line (weekly time series)
+
+Line: treats time as a continuous index → shows trend/tempo clearly.
+
+```{r}
+#| label: date5-c
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+ev_week_counts <- ev_weeked |>
+count(week, name = "evictions") |>
+arrange(week)
+
+```
+
+
+## GGplot - Time as a line (weekly time series)
+
+```{r}
+#| label: date5-ca
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+library(scales)
+
+ggplot(ev_week_counts, aes(week, evictions)) +
+geom_line() +
+scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+scale_y_continuous(labels = label_number(big.mark = ",")) +
+labs(
+title = "Evictions per Week (Dummy Data)",
+x = NULL, y = "Evictions"
+) +
+theme_minimal()
+```
+
+
+
+
+
+## GGplot Time as a bar (monthly totals)
+
+
+Bar: aggregates to intervals (months) → easy to compare totals.
+
+```{r}
+#| label: date5-k
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+ev_monthly <- ev_weeked |>
+mutate(month = month(week, label = TRUE, abbr = TRUE)) |>
+count(month, name = "evictions")
+
+ggplot(ev_monthly, aes(month, evictions)) +
+geom_col() +
+labs(
+title = "Monthly Evictions (Binned by Week → Month)",
+x = NULL, y = "Evictions"
+) +
+theme_minimal()
+```
+
+
+## GGPlot Time as a cycle (seasonality by month, polar)
+
+
+Cycle: treats months as a repeating season → highlights periodic patterns (think Nightingale’s coxcomb).
+
+
+
+```{r}
+#| label: date5-g
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+ev_monthly_cycle <- ev_weeked |>
+mutate(month = month(week, label = TRUE, abbr = TRUE)) |>
+count(month, name = "evictions")
+
+ggplot(ev_monthly_cycle, aes(month, evictions)) +
+geom_col() +
+coord_polar() +
+labs(
+title = "Seasonality: Evictions by Month (Polar Cycle)",
+x = NULL, y = NULL
+) +
+theme_minimal()
+```
+
+## GGPLOT faceted 
+
+In the faceted map or chart, time is encoded as a continuous variable within each small plot (e.g., weekly or monthly evictions on the x-axis).
+
+Each facet isolates space (a borough) while allowing time to unfold horizontally inside it.
+
+```{r}
+#| label: date5-l
+#| echo: true
+#| message: false
+#| warning: false
+#| fig-width: 5 # inches drawn
+#| fig-height: 3
+#| out-width: 30% # scale down in the slide
+#| fig-align: center
+
+#Weekly counts per borough
+ev_week_counts_boro <- ev_weeked |>
+count(BOROUGH, week, name = "evictions") |>
+arrange(BOROUGH, week)
+
+#Faceted line chart
+ggplot(ev_week_counts_boro, aes(week, evictions)) +
+geom_line() +
+labs(title = "Evictions per Week — Faceted by Borough", x = NULL, y = "Evictions") +
+facet_wrap(~ BOROUGH, ncol = 3, scales = "free_y") +
+theme_minimal()
+
+
+```
+
+
+## Summary - The Concept of Time in Data | R Packages Listing
+
+![](index_files/img/9-7.png){.absolute top="240" left="180" width="700"}

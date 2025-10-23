@@ -1,0 +1,64 @@
+---
+title: "assignment_9 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# If you need/want to make a page break in PDF output, you can use the following code snippet:
+
+\newpage
+
+# This is the section following the `\newpage` page break for PDF.
+
+Remember, typically first load your needed libraries. This week the processing was done in the assignment script; thus we don't necessarily need to load specific libraries for processing in this `.Rmd` example.
+
+Incorporate your plot images as needed to frame your observations about the NYC Evictions + Rent Stabilized parcels. Notice that `echo=FALSE` is set as a parameter to hide the code chunk printing in the final document which gives a cleaner look.
+
+Like assignment 8, for this assignment plotting imports as `.png` is a clean, simple way to incorporate you analysis results.
+
+## Example paths of  `.png` files saved in the `/results` subdirectory that result from Assignment 9 script:
+
+
+`~/Desktop/c9_assignment/results/sales_by_boro.png`
+
+`~/Desktop/c9_assignment/results/weekly_totals_aug_end.png`
+
+`~/Desktop/c9_assignment/results/monthly_overall.png`
+
+`~/Desktop/c9_assignment/results/monthly_by_borough.png`
+
+`~/Desktop/c9_assignment/results/ppsf_by_borough.png`
+
+`~/Desktop/c9_assignment/results/ppsf_by_category.png`
+
+`~/Desktop/c9_assignment/results/tax_class_stacked.png`
+
+
+```{r, out.width="100%", fig.align="center", echo=FALSE}
+
+knitr::include_graphics("~/Desktop/c9_assignment/results/sales_by_boro.png")
+
+```
+
+## Findings Section:
+
+Your findings writeup should be placed here.
+
+
+
+
+
+
+
+
+
+
+
+

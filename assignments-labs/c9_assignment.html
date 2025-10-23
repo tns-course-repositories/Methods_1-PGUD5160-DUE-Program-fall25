@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-23">
+
+<title>Class 9 Assignment: A Time Series Analysis of NYC Rolling Sales</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c9_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c9_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c9_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c9_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c9_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c9_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c9_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c9_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c9_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c9_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c9_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-9-materials" id="toc-week-9-materials" class="nav-link" data-scroll-target="#week-9-materials">Week 9 Materials</a></li>
+  <li><a href="#week-9-assignment-data" id="toc-week-9-assignment-data" class="nav-link" data-scroll-target="#week-9-assignment-data">Week 9 Assignment Data</a></li>
+  <li><a href="#week-8-reading" id="toc-week-8-reading" class="nav-link" data-scroll-target="#week-8-reading">Week 8 Reading</a></li>
+  <li><a href="#needed-packages-and-data" id="toc-needed-packages-and-data" class="nav-link" data-scroll-target="#needed-packages-and-data">🧰 Needed Packages and Data</a></li>
+  <li><a href="#section-1-cleaning-organization-excel-tidy-tibble" id="toc-section-1-cleaning-organization-excel-tidy-tibble" class="nav-link" data-scroll-target="#section-1-cleaning-organization-excel-tidy-tibble">🧹 Section 1 — Cleaning &amp; Organization (Excel → tidy tibble)</a>
+  <ul class="collapse">
+  <li><a href="#key-ideas" id="toc-key-ideas" class="nav-link" data-scroll-target="#key-ideas">🧩 Key Ideas</a></li>
+  <li><a href="#main-objects" id="toc-main-objects" class="nav-link" data-scroll-target="#main-objects">🗃️ Main Objects</a></li>
+  </ul></li>
+  <li><a href="#section-2-parse-dates-with-lubridate" id="toc-section-2-parse-dates-with-lubridate" class="nav-link" data-scroll-target="#section-2-parse-dates-with-lubridate">📅 Section 2 — Parse Dates with <code>lubridate</code></a>
+  <ul class="collapse">
+  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">🔍 Steps</a></li>
+  </ul></li>
+  <li><a href="#section-3-shape-dates-with-forcats" id="toc-section-3-shape-dates-with-forcats" class="nav-link" data-scroll-target="#section-3-shape-dates-with-forcats">🧭 Section 3 — Shape Dates with <code>forcats</code></a>
+  <ul class="collapse">
+  <li><a href="#adds" id="toc-adds" class="nav-link" data-scroll-target="#adds">⏱️ Adds</a></li>
+  </ul></li>
+  <li><a href="#section-4-core-visualizations" id="toc-section-4-core-visualizations" class="nav-link" data-scroll-target="#section-4-core-visualizations">📊 Section 4 — Core Visualizations</a>
+  <ul class="collapse">
+  <li><a href="#a-total-sales-by-borough" id="toc-a-total-sales-by-borough" class="nav-link" data-scroll-target="#a-total-sales-by-borough">🏙️ A) Total Sales by Borough</a></li>
+  <li><a href="#b-weekly-sales-trend" id="toc-b-weekly-sales-trend" class="nav-link" data-scroll-target="#b-weekly-sales-trend">📈 B) Weekly Sales Trend</a></li>
+  <li><a href="#c-monthly-patterns" id="toc-c-monthly-patterns" class="nav-link" data-scroll-target="#c-monthly-patterns">📆 C) Monthly Patterns</a></li>
+  </ul></li>
+  <li><a href="#section-5-rates-prices-ppsf" id="toc-section-5-rates-prices-ppsf" class="nav-link" data-scroll-target="#section-5-rates-prices-ppsf">💰 Section 5 — Rates &amp; Prices (PPSF)</a>
+  <ul class="collapse">
+  <li><a href="#filters" id="toc-filters" class="nav-link" data-scroll-target="#filters">🧾 Filters</a></li>
+  <li><a href="#metrics" id="toc-metrics" class="nav-link" data-scroll-target="#metrics">💡 Metrics</a></li>
+  <li><a href="#visuals" id="toc-visuals" class="nav-link" data-scroll-target="#visuals">📉 Visuals</a></li>
+  </ul></li>
+  <li><a href="#optional-save-pngs" id="toc-optional-save-pngs" class="nav-link" data-scroll-target="#optional-save-pngs">💾 Optional — Save PNGs</a></li>
+  <li><a href="#quality-checks-debugging-tips" id="toc-quality-checks-debugging-tips" class="nav-link" data-scroll-target="#quality-checks-debugging-tips">🧠 Quality Checks &amp; Debugging Tips</a></li>
+  <li><a href="#folder-structure-reproducibility" id="toc-folder-structure-reproducibility" class="nav-link" data-scroll-target="#folder-structure-reproducibility">🗂️ Folder Structure &amp; Reproducibility</a></li>
+  <li><a href="#outcomes" id="toc-outcomes" class="nav-link" data-scroll-target="#outcomes">🎓 Outcomes</a></li>
+  <li><a href="#part-ii-deliverables" id="toc-part-ii-deliverables" class="nav-link" data-scroll-target="#part-ii-deliverables">Part II Deliverables</a></li>
+  <li><a href="#submission-notes" id="toc-submission-notes" class="nav-link" data-scroll-target="#submission-notes">Submission Notes</a></li>
+  <li><a href="#timeline-deliverables" id="toc-timeline-deliverables" class="nav-link" data-scroll-target="#timeline-deliverables">Timeline &amp; Deliverables</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 9 Assignment: A Time Series Analysis of NYC Rolling Sales</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 23, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this ninth week’s assignment, we will build on the Class 9 Lab exploring the time dimension of data via packages <code>lubridate</code> and <code>forcats</code>.</p>
+<p>As we did for assignment 8, we’ll integrate the plotting results as image files (.png) into the Class 9 Assignment <code>.Rmd</code> submission</p>
+<p>Follow the steps below: first orient to this week’s materials, then work through this week’s script. Utilize the sections below in the assignment for an overview of the important sections of this week’s time series workflow.</p>
+<p><strong>Due Thursday 10/30/25 at 11:59pm</strong>.</p>
+</section>
+<section id="week-9-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-9-materials">Week 9 Materials</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c9_agenda">Class 9 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.9/index.html">Class 9 Lecture Slides</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c9_lab">Class 9 lab</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c9_assignment">Class 9 Assignment - This Document</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c9_assignment9-script-1.R">Class 9 Assignment Script #1</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c9_lab9-script-1.R">Class 9 Lab Script #1</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_9.Rmd">Class 9 Assignment .Rmd ‘starter file’</a></li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As we have done for past assignments, Create an R Project pointing at your <code>assignment_9</code> folder with subdirectories: <code>/data</code>, <code>/scripts</code>, <code>/docs</code>, <code>/results</code>. Confirm your working directory with <code>getwd()</code> and list files via <code>list.files(recursive = TRUE)</code> as needed.</p>
+</div>
+</div>
+</section>
+<section id="week-9-assignment-data" class="level2">
+<h2 class="anchored" data-anchor-id="week-9-assignment-data">Week 9 Assignment Data</h2>
+<p>Like Lab 9, we will download the starter data, uncompress it and place into the <code>/data</code> directory. Make sure to alter your paths in the assignment scripts as needed.</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/assignment_9_data_subdirectory.zip">Data Download LINK</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c9_assignment_files/img/9-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Class 9 assignment <code>/data</code> structure</em></figcaption><p></p>
+</figure>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we are starting with <code>.xlsx</code> data, which is a typical file type that needs to be cleaned prior to incorporation into <code>tidyverse</code> tibble format.</p>
+</div>
+</div>
+</section>
+<section id="week-8-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-8-reading">Week 8 Reading</h2>
+<p>Next week’s quiz 9 will feature 5 multiple choice questions, and 5 True or False questions on the following online, accessible article:</p>
+<ul>
+<li><a href="https://furmancenter.org/stateofthecity/view/state-of-homeowners-and-their-homes-2024">Furman Center “State of Homeowners and Their Homes”</a></li>
+</ul>
+<p>This week’s assignment cleans, mutates and visualizes the NYC rolling sales data for 2025. This week’s reading contextualizes these sales within the larger affordability conversation happening locally and nationally.</p>
+<p>Pay attention to the following concept and themes from the reading:</p>
+<ul>
+<li><p>NYC’s homeownership rate</p></li>
+<li><p>Home prices and values as related to income.</p></li>
+<li><p>Racial and ethnic dimensions of home ownership.</p></li>
+<li><p>The city’s aging housing stock and property tax structure.</p></li>
+</ul>
+<p>At 7am Friday, October 31th, the ninth weekly quiz will open in Canvas. Utilize the posted <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c10_agenda">Class 10 Agenda</a> to gain the quiz access code which will be posted towards the beginning of the agenda. Expect 10 questions in total that cover the reading above.</p>
+</section>
+<section id="needed-packages-and-data" class="level2">
+<h2 class="anchored" data-anchor-id="needed-packages-and-data">🧰 Needed Packages and Data</h2>
+<ul>
+<li><p>Packages: <code>tidyverse</code>, <code>readxl</code>, <code>janitor</code>, <code>lubridate</code>, <code>stringr</code>, <code>forcats</code>, <code>ggplot2</code>, <code>scales</code>, <code>tidyr</code></p></li>
+<li><p>Excel files from NYC DOF Rolling Sales, saved as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>~/Desktop/c9_assignment/data/rollingsales_bronx.xlsx</span>
+<span id="cb1-2"><a href="#cb1-2"></a>~/Desktop/c9_assignment/data/rollingsales_brooklyn.xlsx</span>
+<span id="cb1-3"><a href="#cb1-3"></a>~/Desktop/c9_assignment/data/rollingsales_manhattan.xlsx</span>
+<span id="cb1-4"><a href="#cb1-4"></a>~/Desktop/c9_assignment/data/rollingsales_queens.xlsx</span>
+<span id="cb1-5"><a href="#cb1-5"></a>~/Desktop/c9_assignment/data/rollingsales_statenisland.xlsx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>Outputs (by default):</strong></p>
+<ul>
+<li><p>Cleaned tibble(s) in memory: <code>rolling_sales</code>, <code>rolling_sales_dates</code></p></li>
+<li><p>Plots printed to the Viewer</p></li>
+<li><p>Optional PNGs written to: <code>~/Desktop/c9_assignment/results</code></p></li>
+</ul>
+</section>
+<section id="section-1-cleaning-organization-excel-tidy-tibble" class="level2">
+<h2 class="anchored" data-anchor-id="section-1-cleaning-organization-excel-tidy-tibble">🧹 Section 1 — Cleaning &amp; Organization (Excel → tidy tibble)</h2>
+<p><strong>Goal:</strong> Read all five borough workbooks, <strong>skip the header junk</strong>, standardize column names, and combine all tabs into one tibble with a <code>borough</code> tag.<br>
+Keep <code>sale_date</code> as <strong>text</strong> (not a Date) formatted as <code>MM/DD/YYYY</code> for now.</p>
+<section id="key-ideas" class="level3">
+<h3 class="anchored" data-anchor-id="key-ideas">🧩 Key Ideas</h3>
+<ul>
+<li><code>find_header_row()</code> scans for the <strong>real header</strong> (detects keywords like “sale price”, “zip code”, etc.) and skips the rest.</li>
+<li><code>normalize_names()</code> + <code>janitor::clean_names()</code> → consistent lowercase names.</li>
+<li><code>coerce_types()</code> converts number-like columns while leaving <code>sale_date</code> alone.</li>
+<li><code>fix_sale_date_text()</code> makes sure Excel date serials become readable <code>"MM/DD/YYYY"</code> text.</li>
+</ul>
+</section>
+<section id="main-objects" class="level3">
+<h3 class="anchored" data-anchor-id="main-objects">🗃️ Main Objects</h3>
+<ul>
+<li><code>file_results</code> — per-file cleaned data.</li>
+<li><code>precombine_counts</code> — QA check showing rows per borough before combining.</li>
+<li><code>rolling_sales</code> — full dataset combined across boroughs.</li>
+</ul>
+<blockquote class="blockquote">
+<p>💡 <strong>Why keep <code>sale_date</code> as text?</strong><br>
+To visually inspect the data before changing types. The real parsing happens later.</p>
+</blockquote>
+</section>
+</section>
+<section id="section-2-parse-dates-with-lubridate" class="level2">
+<h2 class="anchored" data-anchor-id="section-2-parse-dates-with-lubridate">📅 Section 2 — Parse Dates with <code>lubridate</code></h2>
+<p><strong>Goal:</strong> Convert the text <code>sale_date</code> into a proper <strong>Date</strong> column (<code>sale_date_date</code>) while keeping the original.</p>
+<section id="steps" class="level3">
+<h3 class="anchored" data-anchor-id="steps">🔍 Steps</h3>
+<ol type="1">
+<li><code>mutate(sale_date_date = lubridate::mdy(sale_date_chr))</code></li>
+<li>Validate:
+<ul>
+<li>Confirms class = Date<br>
+</li>
+<li>Reports any <code>NA</code>s (unparsed)<br>
+</li>
+<li>Shows min/max date range</li>
+</ul></li>
+</ol>
+<p><strong>Output:</strong> <code>rolling_sales_dates</code> — the cleaned tibble with both text and Date formats.</p>
+</section>
+</section>
+<section id="section-3-shape-dates-with-forcats" class="level2">
+<h2 class="anchored" data-anchor-id="section-3-shape-dates-with-forcats">🧭 Section 3 — Shape Dates with <code>forcats</code></h2>
+<p><strong>Goal:</strong> Create time-based grouping variables for easier plotting.</p>
+<section id="adds" class="level3">
+<h3 class="anchored" data-anchor-id="adds">⏱️ Adds</h3>
+<ul>
+<li><code>week_start</code> — week (Mon-based)</li>
+<li><code>month_date</code> — first day of the month</li>
+<li><code>month_label</code> — ordered month factor (<code>Jan</code>, <code>Feb</code>, …, <code>Dec</code>)</li>
+</ul>
+<p><strong>Object:</strong> <code>rs_cat</code> — filtered version with date groupings.</p>
+</section>
+</section>
+<section id="section-4-core-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="section-4-core-visualizations">📊 Section 4 — Core Visualizations</h2>
+<section id="a-total-sales-by-borough" class="level3">
+<h3 class="anchored" data-anchor-id="a-total-sales-by-borough">🏙️ A) Total Sales by Borough</h3>
+<p>Bar chart summarizing total transactions per borough.<br>
+Uses <code>fct_reorder()</code> to sort from most to least.</p>
+</section>
+<section id="b-weekly-sales-trend" class="level3">
+<h3 class="anchored" data-anchor-id="b-weekly-sales-trend">📈 B) Weekly Sales Trend</h3>
+<p>Line chart of weekly totals (Jan 2024 → Aug end of latest year).<br>
+Excludes September to avoid the data “cliff.”<br>
+Uses <code>complete()</code> to fill gaps (weeks with zero sales).</p>
+</section>
+<section id="c-monthly-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="c-monthly-patterns">📆 C) Monthly Patterns</h3>
+<ul>
+<li><strong>Overall pattern:</strong> bar chart of all months across years (<code>plot_monthly_overall</code>)</li>
+<li><strong>Faceted view:</strong> same, but one panel per borough (<code>plot_monthly_by_boro</code>)</li>
+</ul>
+<blockquote class="blockquote">
+<p>🌟 Tip: Overlay or annotate special events (policy shifts, interest rate changes, etc.) to connect patterns to context.</p>
+</blockquote>
+</section>
+</section>
+<section id="section-5-rates-prices-ppsf" class="level2">
+<h2 class="anchored" data-anchor-id="section-5-rates-prices-ppsf">💰 Section 5 — Rates &amp; Prices (PPSF)</h2>
+<p><strong>Goal:</strong> Filter to valid, plausible sales and compute <strong>Price Per Square Foot (PPSF)</strong>.</p>
+<section id="filters" class="level3">
+<h3 class="anchored" data-anchor-id="filters">🧾 Filters</h3>
+<ul>
+<li><code>sale_price &gt; 0</code></li>
+<li><code>gross_square_feet &gt;= 100</code></li>
+</ul>
+</section>
+<section id="metrics" class="level3">
+<h3 class="anchored" data-anchor-id="metrics">💡 Metrics</h3>
+<ul>
+<li><code>ppsf = sale_price / gross_square_feet</code></li>
+<li>(Optional) <code>sqft_per_100_dollars = (100 * gross_square_feet) / sale_price</code></li>
+</ul>
+</section>
+<section id="visuals" class="level3">
+<h3 class="anchored" data-anchor-id="visuals">📉 Visuals</h3>
+<ol type="1">
+<li><strong>Median PPSF by Borough</strong> → horizontal bar (<code>plot_ppsf_boro</code>)</li>
+<li><strong>Median PPSF by Building Class (Top 15)</strong> → ordered by median (<code>plot_ppsf_cat</code>)</li>
+<li><strong>Borough × Tax Class Composition</strong> (<code>plot_tax_stacked</code>)<br>
+Stacked proportions:
+<ul>
+<li>🏠 <code>1 = Single, Two, Three Family Homes + Condos ≤ 3 Stories</code></li>
+<li>🏢 <code>2 = Rentals, Coops, Condos &gt; 3 Stories</code></li>
+<li>🏭 <code>4 = Commercial and Industrial Real Estate</code></li>
+<li><code>Other</code> = everything else</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="optional-save-pngs" class="level2">
+<h2 class="anchored" data-anchor-id="optional-save-pngs">💾 Optional — Save PNGs</h2>
+<p>Automatically creates <code>~/Desktop/c9_assignment/results</code> and exports each plot with clear filenames:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Plot</th>
+<th>Filename</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sales by Borough</td>
+<td><code>sales_by_boro.png</code></td>
+</tr>
+<tr class="even">
+<td>Weekly Totals</td>
+<td><code>weekly_totals_aug_end.png</code></td>
+</tr>
+<tr class="odd">
+<td>Monthly Overall</td>
+<td><code>monthly_overall.png</code></td>
+</tr>
+<tr class="even">
+<td>Monthly by Borough</td>
+<td><code>monthly_by_borough.png</code></td>
+</tr>
+<tr class="odd">
+<td>PPSF by Borough</td>
+<td><code>ppsf_by_borough.png</code></td>
+</tr>
+<tr class="even">
+<td>PPSF by Category</td>
+<td><code>ppsf_by_category.png</code></td>
+</tr>
+<tr class="odd">
+<td>Tax Class Stacked</td>
+<td><code>tax_class_stacked.png</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>🧩 Add a timestamp easily:<br>
+<code>paste0(filename_stub, "_", format(Sys.Date(), "%Y-%m-%d"), ".png")</code></p>
+</blockquote>
+</section>
+<section id="quality-checks-debugging-tips" class="level2">
+<h2 class="anchored" data-anchor-id="quality-checks-debugging-tips">🧠 Quality Checks &amp; Debugging Tips</h2>
+<ul>
+<li>⚠️ <strong>Header not detected?</strong><br>
+Add more <code>.anchor_tokens</code> (e.g., “BBL”, “neighborhood”).</li>
+<li>🗓️ <strong>Bad date parse?</strong><br>
+Review unique <code>sale_date_chr</code> values and adjust <code>fix_sale_date_text()</code>.</li>
+<li>💸 <strong>Weird PPSF outliers?</strong><br>
+Drop extreme 1% tails or log-transform for smoother visuals.</li>
+<li>📉 <strong>Final-week dropoff?</strong><br>
+Usually means partial data — safe to clip the time window (we do).</li>
+</ul>
+</section>
+<section id="folder-structure-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="folder-structure-reproducibility">🗂️ Folder Structure &amp; Reproducibility</h2>
+<pre><code>c9_assignment/
+├─ data/
+  ├─ rollingsales_bronx.xlsx
+  ├─ rollingsales_brooklyn.xlsx
+  ├─ rollingsales_manhattan.xlsx
+  ├─ rollingsales_queens.xlsx
+  └─ rollingsales_statenisland.xlsx</code></pre>
+</section>
+<section id="outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="outcomes">🎓 Outcomes</h2>
+<p>The complete workflow accomplishes: - 🧹 Clean and unify messy multi-sheet Excel data - 🧭 Parse and bucket time using <code>lubridate</code> and <code>forcats</code> - 📊 Summarize data across boroughs, weeks, and months - 💰 Compute price-per-square-foot metrics - 🎨 Create publication-ready visualizations - 💾 Export charts as high-quality PNGs for Assignment 9 <code>.Rmd</code> submission</p>
+</section>
+<section id="part-ii-deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="part-ii-deliverables">Part II Deliverables</h2>
+<ol type="1">
+<li>Visualization outputs for NYC Rolling Sales over the past year</li>
+<li>Contextual summary of your findings and observations</li>
+</ol>
+<p>Use the following prompts to help guide your contextual summary:</p>
+<ul>
+<li>Borough-Level Patterns:</li>
+</ul>
+<blockquote class="blockquote">
+<p>What do the total and median sales plots suggest about the differences between NYC boroughs in housing market activity and price levels? Which boroughs appear most active versus most expensive, and what factors might explain that divergence?</p>
+</blockquote>
+<ul>
+<li>Temporal Trends:</li>
+</ul>
+<blockquote class="blockquote">
+<p>Looking at the weekly and monthly sales plots, what seasonal or cyclical patterns can you identify? Do certain months or periods show spikes or dips in sales volume, and what might drive those trends (e.g., policy, weather, market behavior)?</p>
+</blockquote>
+<ul>
+<li>Building Typologies and Value:</li>
+</ul>
+<blockquote class="blockquote">
+<p>From the “Price per Square Foot by Building Class Category” visualization, what does the data reveal about the relative value of different property types in NYC? Which categories appear over- or under-valued, and how might that relate to location, density, or building age?</p>
+</blockquote>
+<ul>
+<li>Tax Class Composition:</li>
+</ul>
+<blockquote class="blockquote">
+<p>In the stacked tax class proportion plot, how does the composition of sales differ across boroughs? What does this tell us about the mix of residential, rental, and commercial property types in each area?</p>
+</blockquote>
+<ul>
+<li>Comparative Interpretation and Insight:</li>
+</ul>
+<blockquote class="blockquote">
+<p>Taking all plots together, what larger story emerges about NYC’s real estate market? How might differences in volume, timing, and property characteristics reflect broader social, economic, or spatial patterns across the city?</p>
+</blockquote>
+</section>
+<section id="submission-notes" class="level2">
+<h2 class="anchored" data-anchor-id="submission-notes">Submission Notes</h2>
+<ul>
+<li>Submit an <strong>HTML</strong> or <strong>PDF</strong> produced from your Assignment 9 <code>.qmd</code> (use starter - <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_9.Rmd">Class 9 Assignment .Rmd ‘starter file’</a>).</li>
+</ul>
+<p>Utilize the <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_9.Rmd">Class 9 Assignment .Rmd ‘starter file’</a> for the development of your write-up and static plots.</p>
+</section>
+<section id="timeline-deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="timeline-deliverables">Timeline &amp; Deliverables</h2>
+<ul>
+<li><strong>Due</strong>: <em>(October 30th, 2025 - 11:59pm )</em><br>
+</li>
+<li><strong>Deliverables</strong>: rendered <code>.html</code> or <code>.pdf</code>; hold onto your <code>.qmd</code> in the project folder (do not remove after rendering).</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://forcats.tidyverse.org/">Forcats Package</a></li>
+<li><a href="https://lubridate.tidyverse.org/">Lubridate Package</a></li>
+<li><a href="https://r4ds.hadley.nz/datetimes.html">R for Data Science - Dates and Times</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c9_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

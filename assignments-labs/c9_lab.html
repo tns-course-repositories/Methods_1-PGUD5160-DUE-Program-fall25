@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-23">
+
+<title>Class 9 Lab: Working with Dates &amp; Time in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c9_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c9_lab_files/libs/quarto-html/quarto.js"></script>
+<script src="c9_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c9_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c9_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c9_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c9_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c9_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c9_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c9_lab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c9_lab_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#lab-setup" id="toc-lab-setup" class="nav-link" data-scroll-target="#lab-setup">Lab Setup</a></li>
+  <li><a href="#lab-9-working-with-the-time-dimension-in-r-part-i" id="toc-lab-9-working-with-the-time-dimension-in-r-part-i" class="nav-link" data-scroll-target="#lab-9-working-with-the-time-dimension-in-r-part-i">🧭 Lab 9: Working with the Time Dimension in R (Part I)</a>
+  <ul class="collapse">
+  <li><a href="#setup-read-data" id="toc-setup-read-data" class="nav-link" data-scroll-target="#setup-read-data">🗂️ 1. Setup &amp; Read Data</a></li>
+  <li><a href="#identify-columns-containing-time-or-date-information" id="toc-identify-columns-containing-time-or-date-information" class="nav-link" data-scroll-target="#identify-columns-containing-time-or-date-information">🔍 2. Identify Columns Containing Time or Date Information</a></li>
+  <li><a href="#detect-and-parse-date-time-format" id="toc-detect-and-parse-date-time-format" class="nav-link" data-scroll-target="#detect-and-parse-date-time-format">⏱️ 3. Detect and Parse Date-Time Format</a></li>
+  <li><a href="#sanity-check-the-parsed-result-always-a-good-data-hygiene-step" id="toc-sanity-check-the-parsed-result-always-a-good-data-hygiene-step" class="nav-link" data-scroll-target="#sanity-check-the-parsed-result-always-a-good-data-hygiene-step">🧮 4. Sanity Check the Parsed Result (always a good data hygiene step)</a></li>
+  <li><a href="#extract-and-order-time-parts-with-lubridate-and-forcats" id="toc-extract-and-order-time-parts-with-lubridate-and-forcats" class="nav-link" data-scroll-target="#extract-and-order-time-parts-with-lubridate-and-forcats">📆 5. Extract and Order Time Parts with <code>lubridate</code> and <code>forcats</code></a></li>
+  <li><a href="#summarize-by-time-dimensions" id="toc-summarize-by-time-dimensions" class="nav-link" data-scroll-target="#summarize-by-time-dimensions">📊 6. Summarize by Time Dimensions</a></li>
+  <li><a href="#visualize-patterns-over-time" id="toc-visualize-patterns-over-time" class="nav-link" data-scroll-target="#visualize-patterns-over-time">📈 7. Visualize Patterns Over Time</a></li>
+  </ul></li>
+  <li><a href="#lab-9-working-with-the-time-dimension-in-r-part-ii" id="toc-lab-9-working-with-the-time-dimension-in-r-part-ii" class="nav-link" data-scroll-target="#lab-9-working-with-the-time-dimension-in-r-part-ii">🧭 Lab 9: Working with the Time Dimension in R (Part II)</a></li>
+  <li><a href="#load-and-verify-spatial-libraries" id="toc-load-and-verify-spatial-libraries" class="nav-link" data-scroll-target="#load-and-verify-spatial-libraries">1️⃣ Load and Verify Spatial Libraries</a></li>
+  <li><a href="#read-the-geojson-file" id="toc-read-the-geojson-file" class="nav-link" data-scroll-target="#read-the-geojson-file">2️⃣ Read the GeoJSON File</a></li>
+  <li><a href="#explore-structure-and-identify-time-columns" id="toc-explore-structure-and-identify-time-columns" class="nav-link" data-scroll-target="#explore-structure-and-identify-time-columns">3️⃣ Explore Structure and Identify Time Columns</a></li>
+  <li><a href="#subset-to-manhattan-by-bbl-prefix" id="toc-subset-to-manhattan-by-bbl-prefix" class="nav-link" data-scroll-target="#subset-to-manhattan-by-bbl-prefix">4️⃣ Subset to Manhattan by BBL Prefix</a></li>
+  <li><a href="#clean-and-transform-geometry" id="toc-clean-and-transform-geometry" class="nav-link" data-scroll-target="#clean-and-transform-geometry">5️⃣ Clean and Transform Geometry</a></li>
+  <li><a href="#parse-and-validate-construction-year" id="toc-parse-and-validate-construction-year" class="nav-link" data-scroll-target="#parse-and-validate-construction-year">6️⃣ Parse and Validate Construction Year</a></li>
+  <li><a href="#summarize-by-year-and-decade" id="toc-summarize-by-year-and-decade" class="nav-link" data-scroll-target="#summarize-by-year-and-decade">7️⃣ Summarize by Year and Decade</a></li>
+  <li><a href="#visualize-building-activity-over-time" id="toc-visualize-building-activity-over-time" class="nav-link" data-scroll-target="#visualize-building-activity-over-time">8️⃣ Visualize Building Activity over Time</a></li>
+  <li><a href="#classify-eras-pre-war-vs-post-war" id="toc-classify-eras-pre-war-vs-post-war" class="nav-link" data-scroll-target="#classify-eras-pre-war-vs-post-war">9️⃣ Classify Eras: Pre-war vs Post-war</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">🔚 Reflection</a>
+  <ul class="collapse">
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">💡 Interpretation</a></li>
+  <li><a href="#what-weve-covered" id="toc-what-weve-covered" class="nav-link" data-scroll-target="#what-weve-covered">🧠 What We’ve Covered</a></li>
+  </ul></li>
+  <li><a href="#wrap-up-reflection" id="toc-wrap-up-reflection" class="nav-link" data-scroll-target="#wrap-up-reflection">💬 Wrap-Up Reflection</a></li>
+  <li><a href="#assignment-8-link" id="toc-assignment-8-link" class="nav-link" data-scroll-target="#assignment-8-link">Assignment 8 Link:</a></li>
+  <li><a href="#scripts-lab-data" id="toc-scripts-lab-data" class="nav-link" data-scroll-target="#scripts-lab-data">Scripts &amp; Lab Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 9 Lab: Working with Dates &amp; Time in R</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 23, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this ninth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_9</code>) then move along to working with the <code>tidyverse</code> package generally, but with the explicit addition of <code>lubridate</code>, <code>forcats</code> along with <code>scales</code> and <code>stringr</code>.</p>
+<p>This lab can and should be used in conjunction with this week’s assignment 9 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c9_assignment">Assignment 9</a>.</p>
+<p>This lab walks through a compact set of <strong>tidyverse</strong> based workflows to transform, analyze and visualize the time dimension of NYC data.</p>
+<hr>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>In this week’s lab, we will work with data that has previously been downloaded first from the 311 NYC OpenData platform; and second from NYC Planning for the builidngs footprints data set.</p>
+<p>To start, we will utilize <a href="https://data.cityofnewyork.us/City-Government/Evictions/6z8x-wfk4/about_data">311</a> from the OpenNYC platform. Our query to return 75,543 unique complaints for <code>Illegal Conversion of Residential Building/Space</code> is as follows:</p>
+<ul>
+<li>Agency Name = <code>Department of Buildings</code></li>
+<li>Complaint Type = <code>Building/Use</code></li>
+<li>Descriptor = <code>Illegal Conversion of Residential Building/Space</code></li>
+<li>Created Date is between <code>2020 Jan 01</code> and <code>2025 Oct 01</code></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c9_lab_files/img/9_1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>NYC OpenData Query for <code>Illegal Conversion of Residential Building/Space</code> </em></figcaption><p></p>
+</figure>
+</div>
+<p>We can note in the previous preview of the returned data that our <code>Create Date</code> is in the form of <code>date</code> + <code>time</code>.</p>
+<p>In order to proceed with our <code>lubridate</code> workflow in this lab, we will utilize the following to parse and format:</p>
+<ul>
+<li><code>lubridate::mdy_hms("10/01/2025 10:26:24 AM")</code></li>
+</ul>
+<p>Explanation:</p>
+<p><code>m = month</code></p>
+<p><code>d = day</code></p>
+<p><code>y = year</code></p>
+<p><code>_hms = hour-minute-second</code></p>
+<p><code>automatic handling of AM/PM</code></p>
+<p>Second, we will utilze the NYC Buildings Footprint spatial data set:</p>
+<blockquote class="blockquote">
+<p>Building footprints represent the full perimeter outline of each building as viewed from directly above. Additional attribute information maintained for each feature includes: Building Identification Number (BIN); Borough, Block, and Lot information(BBL); ground elevation at building base; roof height above ground elevation; construction year, and feature type.</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/CityOfNewYork/nyc-geo-metadata/blob/main/Metadata/Metadata_BuildingFootprints.md">Buildings Metadata Listing</a></li>
+<li><a href="https://nycmaps-nyc.hub.arcgis.com/datasets/nyc::building/about">Building Download LINK</a></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c9_lab_files/img/9_2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em><code>CONSTRUCTION_YEAR</code> is the time dimension of the buildings footprint layer in <code>number</code> format </em></figcaption><p></p>
+</figure>
+</div>
+<p>For <code>lab_9</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_9_data_subdirectory.zip">Data Download LINK</a></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_9_data-subdirectory</code> to simply <code>data</code> and place it into your <code>lab_9</code> directory.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="lab-setup" class="level2">
+<h2 class="anchored" data-anchor-id="lab-setup">Lab Setup</h2>
+<section id="step-1-project-management-in-rstudio-for-lab_9-also-applicable-for-assignment_9" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_9-also-applicable-for-assignment_9">Step 1: Project Management in RStudio for <code>lab_9</code> (also applicable for <code>assignment_9</code>)</h4>
+<p>As we have done for previous labs, we will create a <code>lab_9</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c9_lab_files/img/9_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Lab 9 Directory + Subdirectory Structure</em></figcaption><p></p>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>lab_9.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>list.files("~/Desktop/lab_9", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_9</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_9</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>lab_9</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>For this week’s lab, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_9_data_subdirectory.zip">data subdirectory download</a>.</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c9_lab9-script-1.R">Class 9 Time Dimension lab script</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_7&gt;scripts&gt;c9_lab9-script-1.R</em></p>
+<hr>
+</section>
+</section>
+<section id="lab-9-working-with-the-time-dimension-in-r-part-i" class="level2">
+<h2 class="anchored" data-anchor-id="lab-9-working-with-the-time-dimension-in-r-part-i">🧭 Lab 9: Working with the Time Dimension in R (Part I)</h2>
+<p><strong>Packages:</strong> <code>tidyverse</code>, <code>lubridate</code>, <code>forcats</code>, <code>scales</code><br>
+<strong>Data:</strong><br>
+- <code>311_Service_Requests_from_2010_to_Present_20251019.csv</code></p>
+<p>This lab explores how to <strong>detect</strong>, <strong>parse</strong>, and <strong>visualize time</strong> in tabular data, using NYC’s 311 complaint records related to building activity.<br>
+We move from raw text dates to clean, ordered, and visual summaries using <code>lubridate</code> and <code>forcats</code>.</p>
+<section id="setup-read-data" class="level3">
+<h3 class="anchored" data-anchor-id="setup-read-data">🗂️ 1. Setup &amp; Read Data</h3>
+<p>We begin by loading core packages and reading the CSV file.<br>
+The dataset includes time-stamped 311 service requests; our goal is to locate and interpret the date columns.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(scales)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>DOB_path <span class="ot">&lt;-</span> <span class="st">"~/Desktop/lab_9/data/311_Service_Requests_from_2010_to_Present_20251019.csv"</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>dob <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(DOB_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">glimpse</span>(dob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="identify-columns-containing-time-or-date-information" class="level3">
+<h3 class="anchored" data-anchor-id="identify-columns-containing-time-or-date-information">🔍 2. Identify Columns Containing Time or Date Information</h3>
+<p>We can quickly find likely time-related columns by name pattern and preview some example values.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>time_cols <span class="ot">&lt;-</span> <span class="fu">names</span>(dob) <span class="sc">%&gt;%</span> <span class="fu">str_subset</span>(<span class="fu">regex</span>(<span class="st">"(date|time)"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">message</span>(<span class="st">"Likely time/date columns: "</span>, <span class="fu">paste</span>(time_cols, <span class="at">collapse =</span> <span class="st">", "</span>))</span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>dob <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(time_cols)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">unique</span>(.x), <span class="dv">3</span>), <span class="at">collapse =</span> <span class="st">" | "</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"column"</span>, <span class="at">values_to =</span> <span class="st">"examples"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">arrange</span>(column)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="detect-and-parse-date-time-format" class="level3">
+<h3 class="anchored" data-anchor-id="detect-and-parse-date-time-format">⏱️ 3. Detect and Parse Date-Time Format</h3>
+<p>We test a small sample to detect the format of <code>Created Date</code>, then explicitly parse the full column using <code>lubridate::mdy_hms()</code> (with AM/PM).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>x <span class="ot">&lt;-</span> dob<span class="sc">$</span><span class="st">`</span><span class="at">Created Date</span><span class="st">`</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>trial <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">mdy_hms</span>(<span class="fu">head</span>(x[<span class="sc">!</span><span class="fu">is.na</span>(x)], <span class="dv">100</span>), <span class="at">tz =</span> <span class="st">"America/New_York"</span>))</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">"Detected mdy_hms (AM/PM) → parsed %.1f%% of sample"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>                <span class="fu">mean</span>(<span class="sc">!</span><span class="fu">is.na</span>(trial)) <span class="sc">*</span> <span class="dv">100</span>))</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>dob <span class="ot">&lt;-</span> dob <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="at">created_date_raw =</span> <span class="st">`</span><span class="at">Created Date</span><span class="st">`</span>,</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="at">created_date     =</span> <span class="fu">mdy_hms</span>(<span class="st">`</span><span class="at">Created Date</span><span class="st">`</span>, <span class="at">tz =</span> <span class="st">"America/New_York"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sanity-check-the-parsed-result-always-a-good-data-hygiene-step" class="level3">
+<h3 class="anchored" data-anchor-id="sanity-check-the-parsed-result-always-a-good-data-hygiene-step">🧮 4. Sanity Check the Parsed Result (always a good data hygiene step)</h3>
+<p>Confirm the new column is a proper POSIXct time, and review ranges, timezone, and missing values.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">stopifnot</span>(<span class="st">"created_date"</span> <span class="sc">%in%</span> <span class="fu">names</span>(dob), <span class="fu">inherits</span>(dob<span class="sc">$</span>created_date, <span class="st">"POSIXt"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>dob <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="at">rows        =</span> <span class="fu">n</span>(),</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="at">parsed_NA   =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(created_date)),</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="at">tz          =</span> <span class="fu">attr</span>(created_date, <span class="st">"tzone"</span>) <span class="sc">%||%</span> <span class="fu">Sys.timezone</span>(),</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    <span class="at">min_created =</span> <span class="fu">min</span>(created_date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="at">max_created =</span> <span class="fu">max</span>(created_date, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then review the year distribution to ensure values look reasonable:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>dob <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(created_date)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">count</span>(<span class="at">year =</span> <span class="fu">year</span>(created_date), <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">arrange</span>(year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="extract-and-order-time-parts-with-lubridate-and-forcats" class="level3">
+<h3 class="anchored" data-anchor-id="extract-and-order-time-parts-with-lubridate-and-forcats">📆 5. Extract and Order Time Parts with <code>lubridate</code> and <code>forcats</code></h3>
+<p>We now extract year and month components, preserving chronological month order with <code>forcats</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dob_time <span class="ot">&lt;-</span> dob <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(created_date)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">year  =</span> <span class="fu">year</span>(created_date),</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="at">month =</span> <span class="fu">month</span>(created_date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="at">ym    =</span> <span class="fu">floor_date</span>(created_date, <span class="st">"month"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="summarize-by-time-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="summarize-by-time-dimensions">📊 6. Summarize by Time Dimensions</h3>
+<p>We build three summarized datasets for different time views.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># (a) Monthly time series (continuous over time)</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>by_ym <span class="ot">&lt;-</span> dob_time <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">count</span>(ym, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">arrange</span>(ym)</span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># (b) Month × Year grid (for line or facet plots)</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>by_year_month <span class="ot">&lt;-</span> dob_time <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">count</span>(year, month, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="fu">complete</span>(year, month, <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>  <span class="fu">arrange</span>(year, month)</span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co"># (c) All-year seasonality (total by month)</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>by_month_all <span class="ot">&lt;-</span> dob_time <span class="sc">%&gt;%</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a>  <span class="fu">count</span>(month, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>  <span class="fu">arrange</span>(month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="visualize-patterns-over-time" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-patterns-over-time">📈 7. Visualize Patterns Over Time</h3>
+<section id="a-monthly-time-series" class="level4">
+<h4 class="anchored" data-anchor-id="a-monthly-time-series">(a) Monthly Time Series</h4>
+<p>A simple line plot showing overall complaint volume by month.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>range_txt <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  rng <span class="ot">&lt;-</span> <span class="fu">range</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">paste0</span>(<span class="fu">format</span>(rng[<span class="dv">1</span>], <span class="st">"%b %Y"</span>), <span class="st">"–"</span>, <span class="fu">format</span>(rng[<span class="dv">2</span>], <span class="st">"%b %Y"</span>))</span>
+<span id="cb10-4"><a href="#cb10-4"></a>}</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="fu">ggplot</span>(by_ym, <span class="fu">aes</span>(ym, n)) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="at">title    =</span> <span class="st">"311 ‘Building Construction’ Complaints — Monthly"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="at">subtitle =</span> <span class="fu">range_txt</span>(by_ym<span class="sc">$</span>ym),</span>
+<span id="cb10-11"><a href="#cb10-11"></a>    <span class="at">x        =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Complaints per month"</span>,</span>
+<span id="cb10-12"><a href="#cb10-12"></a>    <span class="at">caption  =</span> <span class="st">"Source: NYC Open Data (311 Service Requests, time = Created Date)"</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">"6 months"</span>, <span class="at">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b-seasonal-lines-by-year" class="level4">
+<h4 class="anchored" data-anchor-id="b-seasonal-lines-by-year">(b) Seasonal Lines by Year</h4>
+<p>Compare patterns across years, using color to distinguish each year.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">ggplot</span>(by_year_month, <span class="fu">aes</span>(month, n, <span class="at">group =</span> year, <span class="at">color =</span> <span class="fu">factor</span>(year))) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="at">title    =</span> <span class="st">"Seasonality by Year — 311 ‘Building Construction’ Complaints"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5"></a>    <span class="at">subtitle =</span> <span class="st">"Calendar months (Jan–Dec) compared across years"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Complaints"</span>, <span class="at">color =</span> <span class="st">"Year"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>    <span class="at">caption  =</span> <span class="st">"Source: NYC Open Data (311 Service Requests)"</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="c-faceted-small-multiples-by-year" class="level4">
+<h4 class="anchored" data-anchor-id="c-faceted-small-multiples-by-year">(c) Faceted Small Multiples by Year</h4>
+<p>Each panel shows the seasonal pattern for one year — helpful for scanning yearly variation.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(by_year_month, <span class="fu">aes</span>(month, n, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(year), <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="at">title    =</span> <span class="st">"Seasonality (Small Multiples) — 311 ‘Building Construction’ Complaints"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="at">subtitle =</span> <span class="st">"Each panel shows Jan–Dec pattern for a given year"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Complaints"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>    <span class="at">caption  =</span> <span class="st">"Source: NYC Open Data (311 Service Requests)"</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="d-total-seasonality-across-all-years" class="level4">
+<h4 class="anchored" data-anchor-id="d-total-seasonality-across-all-years">(d) Total Seasonality Across All Years</h4>
+<p>Aggregate all years together to see which months have the most complaints overall.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">ggplot</span>(by_month_all, <span class="fu">aes</span>(month, n)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="at">title    =</span> <span class="st">"Seasonality (All Years Combined) — 311 ‘Building Construction’ Complaints"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="at">subtitle =</span> <span class="st">"Total complaints by calendar month"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Total complaints"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7"></a>    <span class="at">caption  =</span> <span class="st">"Source: NYC Open Data (311 Service Requests)"</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+</section>
+<section id="lab-9-working-with-the-time-dimension-in-r-part-ii" class="level2">
+<h2 class="anchored" data-anchor-id="lab-9-working-with-the-time-dimension-in-r-part-ii">🧭 Lab 9: Working with the Time Dimension in R (Part II)</h2>
+<p><strong>Packages:</strong> <code>tidyverse</code>, <code>lubridate</code>, <code>forcats</code>, <code>scales</code><br>
+<strong>Data:</strong><br>
+- <code>~/Desktop/lab_9/data/BUILDING_view_-5690770882456580009.geojson</code></p>
+<p>In this lab Part II, we extend our exploration of <strong>time as a data dimension</strong> by working with NYC Building Footprints.<br>
+We’ll identify construction years, clean and validate spatial data, summarize by year and decade, and visualize historical eras through both charts and maps.</p>
+</section>
+<section id="load-and-verify-spatial-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="load-and-verify-spatial-libraries">1️⃣ Load and Verify Spatial Libraries</h2>
+<p>We use the <strong>sf</strong> package for spatial data. This step ensures your installation is up-to-date and linked to valid GEOS / GDAL / PROJ libraries.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">library</span>(sf)</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">packageVersion</span>(<span class="st">"sf"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4"></a>sf<span class="sc">:::</span><span class="fu">sf_extSoftVersion</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="read-the-geojson-file" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-geojson-file">2️⃣ Read the GeoJSON File</h2>
+<p>Load the NYC building footprints dataset as an <code>sf</code> object.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>fp_path <span class="ot">&lt;-</span> <span class="st">"~/Desktop/lab_9/data/BUILDING_view_-5690770882456580009.geojson"</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">stopifnot</span>(<span class="fu">file.exists</span>(fp_path))</span>
+<span id="cb15-3"><a href="#cb15-3"></a>footprints <span class="ot">&lt;-</span> <span class="fu">st_read</span>(fp_path, <span class="at">quiet =</span> <span class="cn">TRUE</span>, <span class="at">options =</span> <span class="st">"FLATTEN_NESTED_ATTRIBUTES=YES"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Note:</strong> <code>FLATTEN_NESTED_ATTRIBUTES=YES</code> expands nested attribute tables into columns.</li>
+</ul>
+</section>
+<section id="explore-structure-and-identify-time-columns" class="level2">
+<h2 class="anchored" data-anchor-id="explore-structure-and-identify-time-columns">3️⃣ Explore Structure and Identify Time Columns</h2>
+<p>Inspect the dataset’s structure and locate columns that look like time or year fields.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">glimpse</span>(footprints)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>time_cols <span class="ot">&lt;-</span> <span class="fu">names</span>(footprints) <span class="sc">%&gt;%</span> <span class="fu">str_subset</span>(<span class="fu">regex</span>(<span class="st">"(date|time|year)"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">print</span>(time_cols)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, preview a few example values from each of those columns:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>footprints <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(time_cols)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">paste</span>(<span class="fu">head</span>(<span class="fu">unique</span>(.x), <span class="dv">3</span>), <span class="at">collapse =</span> <span class="st">" | "</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"column"</span>, <span class="at">values_to =</span> <span class="st">"examples"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>  <span class="fu">arrange</span>(column)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="subset-to-manhattan-by-bbl-prefix" class="level2">
+<h2 class="anchored" data-anchor-id="subset-to-manhattan-by-bbl-prefix">4️⃣ Subset to Manhattan by BBL Prefix</h2>
+<p>The <strong>Borough-Block-Lot (BBL)</strong> code encodes borough as the first digit.<br>
+Manhattan BBLs begin with <strong>“1”</strong>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>bbl_col <span class="ot">&lt;-</span> <span class="fu">names</span>(footprints) <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>  { .[<span class="fu">str_detect</span>(., <span class="fu">regex</span>(<span class="st">"^MAPPLUTO[_]?BBL$"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))] } <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>  { <span class="cf">if</span> (<span class="fu">length</span>(.) <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">names</span>(footprints)[<span class="fu">str_detect</span>(<span class="fu">names</span>(footprints),</span>
+<span id="cb18-4"><a href="#cb18-4"></a>     <span class="fu">regex</span>(<span class="st">"</span><span class="sc">\b</span><span class="st">MAPPLUTO[_]?BBL</span><span class="sc">\b</span><span class="st">|^BBL$|</span><span class="sc">\b</span><span class="st">BBL</span><span class="sc">\b</span><span class="st">"</span>, <span class="at">ignore_case =</span> <span class="cn">TRUE</span>))] <span class="cf">else</span> . } <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="fu">first</span>()</span>
+<span id="cb18-6"><a href="#cb18-6"></a></span>
+<span id="cb18-7"><a href="#cb18-7"></a>footprints <span class="ot">&lt;-</span> footprints <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb18-9"><a href="#cb18-9"></a>    <span class="at">BBL_chr =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-10"><a href="#cb18-10"></a>      <span class="fu">is.numeric</span>(.data[[bbl_col]]) <span class="sc">~</span> <span class="fu">format</span>(.data[[bbl_col]], <span class="at">scientific =</span> <span class="cn">FALSE</span>, <span class="at">trim =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-11"><a href="#cb18-11"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.character</span>(.data[[bbl_col]])</span>
+<span id="cb18-12"><a href="#cb18-12"></a>    ) <span class="sc">|&gt;</span> <span class="fu">str_trim</span>()</span>
+<span id="cb18-13"><a href="#cb18-13"></a>  )</span>
+<span id="cb18-14"><a href="#cb18-14"></a></span>
+<span id="cb18-15"><a href="#cb18-15"></a>manhattan_fp <span class="ot">&lt;-</span> footprints <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_starts</span>(BBL_chr, <span class="st">"1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="clean-and-transform-geometry" class="level2">
+<h2 class="anchored" data-anchor-id="clean-and-transform-geometry">5️⃣ Clean and Transform Geometry</h2>
+<p>We project to <strong>EPSG 2263</strong> (NY State Plane), fix invalid geometries, and simplify for faster plotting.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">sf_use_s2</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>fp <span class="ot">&lt;-</span> manhattan_fp <span class="sc">|&gt;</span> <span class="fu">st_transform</span>(<span class="dv">2263</span>) <span class="sc">|&gt;</span> <span class="fu">st_make_valid</span>() <span class="sc">|&gt;</span> <span class="fu">st_buffer</span>(<span class="dv">0</span>)</span>
+<span id="cb19-3"><a href="#cb19-3"></a>fp <span class="ot">&lt;-</span> fp[<span class="fu">st_is_valid</span>(fp), ]</span>
+<span id="cb19-4"><a href="#cb19-4"></a>fp <span class="ot">&lt;-</span> <span class="fu">st_simplify</span>(fp, <span class="at">dTolerance =</span> <span class="dv">3</span>, <span class="at">preserveTopology =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Tip:</strong> Simplifying geometries helps speed up rendering while maintaining shape integrity.</li>
+</ul>
+</section>
+<section id="parse-and-validate-construction-year" class="level2">
+<h2 class="anchored" data-anchor-id="parse-and-validate-construction-year">6️⃣ Parse and Validate Construction Year</h2>
+<p>We extract, clean, and constrain construction years to reasonable limits.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>lower_ok <span class="ot">&lt;-</span> 1500L</span>
+<span id="cb20-2"><a href="#cb20-2"></a>upper_ok <span class="ot">&lt;-</span> <span class="fu">year</span>(<span class="fu">Sys.Date</span>()) <span class="sc">+</span> 1L</span>
+<span id="cb20-3"><a href="#cb20-3"></a></span>
+<span id="cb20-4"><a href="#cb20-4"></a>fp <span class="ot">&lt;-</span> fp <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-6"><a href="#cb20-6"></a>    <span class="at">construction_year_raw =</span> <span class="st">`</span><span class="at">CONSTRUCTION_YEAR</span><span class="st">`</span>,</span>
+<span id="cb20-7"><a href="#cb20-7"></a>    <span class="at">construction_year =</span> readr<span class="sc">::</span><span class="fu">parse_integer</span>(<span class="fu">as.character</span>(<span class="st">`</span><span class="at">CONSTRUCTION_YEAR</span><span class="st">`</span>), <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>)),</span>
+<span id="cb20-8"><a href="#cb20-8"></a>    <span class="at">construction_year =</span> <span class="fu">if_else</span>(construction_year <span class="sc">==</span> 0L, <span class="cn">NA_integer_</span>, construction_year),</span>
+<span id="cb20-9"><a href="#cb20-9"></a>    <span class="at">construction_year =</span> <span class="fu">if_else</span>(construction_year <span class="sc">&lt;</span> lower_ok <span class="sc">|</span> construction_year <span class="sc">&gt;</span> upper_ok, <span class="cn">NA_integer_</span>, construction_year),</span>
+<span id="cb20-10"><a href="#cb20-10"></a>    <span class="at">construction_date =</span> <span class="fu">make_date</span>(<span class="at">year =</span> construction_year, <span class="at">month =</span> <span class="dv">1</span>, <span class="at">day =</span> <span class="dv">1</span>)</span>
+<span id="cb20-11"><a href="#cb20-11"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="summarize-by-year-and-decade" class="level2">
+<h2 class="anchored" data-anchor-id="summarize-by-year-and-decade">7️⃣ Summarize by Year and Decade</h2>
+<p>Compute counts per <strong>year</strong> and <strong>decade</strong>, keeping the order chronological via <code>forcats</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>by_year <span class="ot">&lt;-</span> fp <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(construction_year)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">count</span>(construction_year, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">arrange</span>(construction_year) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">mutate</span>(<span class="at">year_f =</span> <span class="fu">factor</span>(construction_year, <span class="at">levels =</span> construction_year, <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb21-6"><a href="#cb21-6"></a></span>
+<span id="cb21-7"><a href="#cb21-7"></a>by_decade <span class="ot">&lt;-</span> fp <span class="sc">%&gt;%</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(construction_year)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>  <span class="fu">mutate</span>(<span class="at">decade =</span> (construction_year <span class="sc">%/%</span> <span class="dv">10</span>) <span class="sc">*</span> <span class="dv">10</span>,</span>
+<span id="cb21-10"><a href="#cb21-10"></a>         <span class="at">decade_label =</span> <span class="fu">paste0</span>(decade, <span class="st">"s"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a>  <span class="fu">count</span>(decade, decade_label, <span class="at">name =</span> <span class="st">"n"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a>  <span class="fu">arrange</span>(decade) <span class="sc">%&gt;%</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a>  <span class="fu">mutate</span>(<span class="at">decade_f =</span> <span class="fu">factor</span>(decade_label, <span class="at">levels =</span> decade_label, <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="visualize-building-activity-over-time" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-building-activity-over-time">8️⃣ Visualize Building Activity over Time</h2>
+<p><strong>A.</strong> Buildings by Construction Year<br>
+<strong>B.</strong> Buildings by Decade</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">ggplot</span>(by_year, <span class="fu">aes</span>(year_f, n)) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Buildings by Construction Year"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>))</span>
+<span id="cb22-6"><a href="#cb22-6"></a></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="fu">ggplot</span>(by_decade, <span class="fu">aes</span>(decade_f, n)) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Buildings by Decade of Construction"</span>, <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb22-10"><a href="#cb22-10"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These plots reveal construction peaks and troughs over time, reflecting economic and policy shifts in NYC’s development.</p>
+</section>
+<section id="classify-eras-pre-war-vs-post-war" class="level2">
+<h2 class="anchored" data-anchor-id="classify-eras-pre-war-vs-post-war">9️⃣ Classify Eras: Pre-war vs Post-war</h2>
+<p>We define <strong>Pre-war (&lt; 1940)</strong> and <strong>Post-war (≥ 1940)</strong> categories and map them.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>fp <span class="ot">&lt;-</span> fp <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-3"><a href="#cb23-3"></a>    <span class="at">era =</span> <span class="fu">case_when</span>(</span>
+<span id="cb23-4"><a href="#cb23-4"></a>      <span class="sc">!</span><span class="fu">is.na</span>(construction_year) <span class="sc">&amp;</span> construction_year <span class="sc">&lt;</span> 1940L <span class="sc">~</span> <span class="st">"Pre-war"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5"></a>      <span class="sc">!</span><span class="fu">is.na</span>(construction_year) <span class="sc">&amp;</span> construction_year <span class="sc">&gt;=</span> 1940L <span class="sc">~</span> <span class="st">"Post-war"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>    ),</span>
+<span id="cb23-8"><a href="#cb23-8"></a>    <span class="at">era =</span> <span class="fu">factor</span>(era, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Pre-war"</span>, <span class="st">"Post-war"</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-9"><a href="#cb23-9"></a>  )</span>
+<span id="cb23-10"><a href="#cb23-10"></a></span>
+<span id="cb23-11"><a href="#cb23-11"></a><span class="fu">ggplot</span>(<span class="fu">filter</span>(fp, <span class="sc">!</span><span class="fu">is.na</span>(era))) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> era), <span class="at">color =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Pre-war"</span> <span class="ot">=</span> <span class="st">"orange"</span>, <span class="st">"Post-war"</span> <span class="ot">=</span> <span class="st">"steelblue"</span>)) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-15"><a href="#cb23-15"></a>    <span class="at">title    =</span> <span class="st">"NYC Building Footprints — Manhattan (EPSG:2263)"</span>,</span>
+<span id="cb23-16"><a href="#cb23-16"></a>    <span class="at">subtitle =</span> <span class="st">"Pre-war (&lt;1940) vs Post-war (≥1940); simplified at ~3 ft tolerance"</span>,</span>
+<span id="cb23-17"><a href="#cb23-17"></a>    <span class="at">fill     =</span> <span class="st">"Era"</span>,</span>
+<span id="cb23-18"><a href="#cb23-18"></a>    <span class="at">caption  =</span> <span class="st">"Source: NYC Building Footprints (GeoJSON)"</span></span>
+<span id="cb23-19"><a href="#cb23-19"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-20"><a href="#cb23-20"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="reflection" class="level2">
+<h2 class="anchored" data-anchor-id="reflection">🔚 Reflection</h2>
+<p>This lab connects <strong>temporal data handling</strong> to <strong>spatial visualization</strong>. First, we’ve plotted the time dimension of the 311 data set for <code>Illegal Conversion of Residential Building/Space</code>. Second, by parsing and mapping the <code>CONSTRUCTION_YEAR</code>, we uncover how time reveals urban history — from pre-war density to post-war expansion.</p>
+<section id="interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation">💡 Interpretation</h3>
+<p>Through these workflows, we’ve moved from raw character timestamps to rich temporal summaries.<br>
+By combining <code>lubridate</code>, <code>forcats</code>, <code>sf</code> and <code>ggplot2</code>, we can:</p>
+<ul>
+<li>Parse messy date formats automatically<br>
+</li>
+<li>Extract and order time dimensions<br>
+</li>
+<li>Summarize data consistently across multiple scales (month, year)<br>
+</li>
+<li>Visualize temporal cycles and seasonality in civic datasets</li>
+<li>Map meaningful threshold and factored categories (‘pre war’ vs ‘post war’ buildings)</li>
+</ul>
+<p>This pipeline can be easily adapted to <strong>any dataset with time stamps</strong>. NYC is full of data that contains the temporal dimension all the way from seconds in the case of the 311 data, to full years in the case of the buildings data.</p>
+<hr>
+</section>
+<section id="what-weve-covered" class="level3">
+<h3 class="anchored" data-anchor-id="what-weve-covered">🧠 What We’ve Covered</h3>
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 38%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Concept</th>
+<th>Package</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parsing</td>
+<td>Making messy strings into usable dates</td>
+<td><strong>lubridate</strong></td>
+</tr>
+<tr class="even">
+<td>Extracting</td>
+<td>Turning time into categories</td>
+<td><strong>lubridate</strong> + <strong>forcats</strong></td>
+</tr>
+<tr class="odd">
+<td>Summarizing</td>
+<td>Collapsing events into bins</td>
+<td><strong>dplyr</strong></td>
+</tr>
+<tr class="even">
+<td>Visualizing</td>
+<td>Showing time as trend or cycle</td>
+<td><strong>ggplot2</strong></td>
+</tr>
+<tr class="odd">
+<td>Mapping</td>
+<td>Spatialize data for cartographic design</td>
+<td><strong>sf</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="wrap-up-reflection" class="level2">
+<h2 class="anchored" data-anchor-id="wrap-up-reflection">💬 Wrap-Up Reflection</h2>
+<p><strong>Discussion prompts:</strong> - What <em>patterns over time</em> did you find?<br>
+- Did you notice <em>seasonal</em>, <em>cyclical</em>, or <em>irregular</em> behavior?<br>
+- How does aggregating by month vs.&nbsp;year change the story?<br>
+- In the case of the buildings data set, what <em>insights</em> did we achieve in spatial mapping vs non-spatial plotting?</p>
+<hr>
+</section>
+<section id="assignment-8-link" class="level2">
+<h2 class="anchored" data-anchor-id="assignment-8-link">Assignment 8 Link:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c9_assignment">Assignment 9</a></li>
+</ul>
+<hr>
+</section>
+<section id="scripts-lab-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-lab-data">Scripts &amp; Lab Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c9_lab9-script-1.R">Class 9 Lab 9 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_8&gt;scripts&gt;c9_lab9-script-1.R</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_9_data_subdirectory.zip">Data Subdirectory Download</a></p></li>
+</ul>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://forcats.tidyverse.org/">Forcats Package</a></li>
+<li><a href="https://lubridate.tidyverse.org/">Lubridate Package</a></li>
+<li><a href="https://r4ds.hadley.nz/datetimes.html">R for Data Science - Dates and Times</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c9_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-27">
+
+<title>Class 10 Lab: Correlation in R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="c10_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c10_lab_files/libs/quarto-html/quarto.js"></script>
+<script src="c10_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c10_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c10_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c10_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c10_lab_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c10_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c10_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c10_lab_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c10_lab_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#lab-setup---part-i-and-ii" id="toc-lab-setup---part-i-and-ii" class="nav-link" data-scroll-target="#lab-setup---part-i-and-ii">Lab Setup - Part I and II</a></li>
+  <li><a href="#lab-10-part-i-correlation-and-seasonality-nypd-arrests-by-month-season" id="toc-lab-10-part-i-correlation-and-seasonality-nypd-arrests-by-month-season" class="nav-link" data-scroll-target="#lab-10-part-i-correlation-and-seasonality-nypd-arrests-by-month-season">Lab 10 | Part I — Correlation and Seasonality: NYPD Arrests by Month + Season</a></li>
+  <li><a href="#workflow-steps" id="toc-workflow-steps" class="nav-link" data-scroll-target="#workflow-steps">🧭 Workflow Steps</a>
+  <ul class="collapse">
+  <li><a href="#load-and-inspect-data" id="toc-load-and-inspect-data" class="nav-link" data-scroll-target="#load-and-inspect-data">1️⃣ Load and Inspect Data</a></li>
+  <li><a href="#prepare-temporal-variables" id="toc-prepare-temporal-variables" class="nav-link" data-scroll-target="#prepare-temporal-variables">2️⃣ Prepare Temporal Variables</a></li>
+  <li><a href="#aggregate-by-month" id="toc-aggregate-by-month" class="nav-link" data-scroll-target="#aggregate-by-month">3️⃣ Aggregate by Month</a></li>
+  <li><a href="#visualize-monthly-pattern" id="toc-visualize-monthly-pattern" class="nav-link" data-scroll-target="#visualize-monthly-pattern">4️⃣ Visualize Monthly Pattern</a></li>
+  <li><a href="#compute-correlations" id="toc-compute-correlations" class="nav-link" data-scroll-target="#compute-correlations">5️⃣ Compute Correlations</a></li>
+  <li><a href="#correlation-matrices-and-plots" id="toc-correlation-matrices-and-plots" class="nav-link" data-scroll-target="#correlation-matrices-and-plots">6️⃣ Correlation Matrices and Plots</a></li>
+  <li><a href="#aggregate-by-season" id="toc-aggregate-by-season" class="nav-link" data-scroll-target="#aggregate-by-season">7️⃣ Aggregate by Season</a></li>
+  <li><a href="#summary-of-results" id="toc-summary-of-results" class="nav-link" data-scroll-target="#summary-of-results">📊 Summary of Results</a></li>
+  </ul></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">🧩 Interpretation</a></li>
+  <li><a href="#discussion-points" id="toc-discussion-points" class="nav-link" data-scroll-target="#discussion-points">⚖️ Discussion Points</a></li>
+  <li><a href="#key-takeaway" id="toc-key-takeaway" class="nav-link" data-scroll-target="#key-takeaway">✅ Key Takeaway</a></li>
+  <li><a href="#lab-10-part-ii-correlation-and-seasonality-focus-on-seasonality-via-anova-approach" id="toc-lab-10-part-ii-correlation-and-seasonality-focus-on-seasonality-via-anova-approach" class="nav-link" data-scroll-target="#lab-10-part-ii-correlation-and-seasonality-focus-on-seasonality-via-anova-approach">Lab 10 | Part II — Correlation and Seasonality: Focus on Seasonality via ANOVA approach</a></li>
+  <li><a href="#workflow-steps-1" id="toc-workflow-steps-1" class="nav-link" data-scroll-target="#workflow-steps-1">🧭 Workflow Steps</a>
+  <ul class="collapse">
+  <li><a href="#create-a-season-level-summary-mean-arrests-per-day-to-normalize-slightly" id="toc-create-a-season-level-summary-mean-arrests-per-day-to-normalize-slightly" class="nav-link" data-scroll-target="#create-a-season-level-summary-mean-arrests-per-day-to-normalize-slightly">1️⃣ Create a season-level summary (mean arrests per day, to normalize slightly)</a></li>
+  <li><a href="#check-data-distribution-visually-include-outlier-analysis" id="toc-check-data-distribution-visually-include-outlier-analysis" class="nav-link" data-scroll-target="#check-data-distribution-visually-include-outlier-analysis">2️⃣ Check data distribution visually (include outlier analysis)</a></li>
+  <li><a href="#parametric-test-one-way-anova" id="toc-parametric-test-one-way-anova" class="nav-link" data-scroll-target="#parametric-test-one-way-anova">3️⃣ Parametric test — One-way ANOVA</a></li>
+  <li><a href="#interpretation-1" id="toc-interpretation-1" class="nav-link" data-scroll-target="#interpretation-1">4️⃣⃣ Interpretation:</a></li>
+  <li><a href="#anova-summary-breakdown" id="toc-anova-summary-breakdown" class="nav-link" data-scroll-target="#anova-summary-breakdown">🔹 ANOVA Summary Breakdown</a></li>
+  <li><a href="#anova-summary-breakdown-1" id="toc-anova-summary-breakdown-1" class="nav-link" data-scroll-target="#anova-summary-breakdown-1">🔹 ANOVA Summary Breakdown</a></li>
+  <li><a href="#key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative" id="toc-key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative" class="nav-link" data-scroll-target="#key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative">🧾 Key Points — Why the Lab Results Differ from the Usual Summer Crime Narrative</a></li>
+  </ul></li>
+  <li><a href="#assignment-10-link" id="toc-assignment-10-link" class="nav-link" data-scroll-target="#assignment-10-link">Assignment 10 Link:</a></li>
+  <li><a href="#scripts-lab-data" id="toc-scripts-lab-data" class="nav-link" data-scroll-target="#scripts-lab-data">Scripts &amp; Lab Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 10 Lab: Correlation in R</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 27, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this tenth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_10</code>).</p>
+<p>While we will continue to use <code>tidyverse</code> for the main body of the data manipulation, we will also use base r functions for correlation as well as the <code>tidyverse</code> built-in functions known as <code>corrr</code>.</p>
+<p>This lab can and should be used in conjunction with this week’s assignment 10 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c10_assignment">Assignment 10</a>.</p>
+<hr>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>To start, we will utilize the</p>
+<p>To start, we will utilize <a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u/about_data">NYPD Arrest Data - Historic</a> from the OpenNYC platform. We first subset this large data set to just 5 years between 2019 December 31st and 2024 December 31st; this returns 973069 arrests:</p>
+<p>Our query to return 973,069 unique arrest events as follows:</p>
+<ul>
+<li>Arrest Date is between <code>2020 Jan 01</code> and <code>2025 Oct 01</code></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c10_lab_files/img/10-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Query Filter on Data for NYC Arrest Data` </em></figcaption><p></p>
+</figure>
+</div>
+<p>For <code>lab_10</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_10_data_subdirectory.zip">Data Download LINK</a></p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_10_data-subdirectory</code> to simply <code>data</code> and place it into your <code>lab_10</code> directory.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="lab-setup---part-i-and-ii" class="level2">
+<h2 class="anchored" data-anchor-id="lab-setup---part-i-and-ii">Lab Setup - Part I and II</h2>
+<section id="step-1-project-management-in-rstudio-for-lab_10-also-applicable-for-assignment_10" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_10-also-applicable-for-assignment_10">Step 1: Project Management in RStudio for <code>lab_10</code> (also applicable for <code>assignment_10</code>)</h4>
+<p>As we have done for previous labs, we will create a <code>lab_10</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c9_lab_files/img/9_3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Lab 10 Directory + Subdirectory Structure</em></figcaption><p></p>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>lab_10.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>list.files("~/Desktop/lab_10", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_10</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_10</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>lab_10</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>For this week’s lab, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_10_data_subdirectory.zip">data subdirectory download</a>.</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 10 Correlation lab script</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_7&gt;scripts&gt;c10_lab10-script-1.R</em></p>
+<hr>
+</section>
+</section>
+<section id="lab-10-part-i-correlation-and-seasonality-nypd-arrests-by-month-season" class="level2">
+<h2 class="anchored" data-anchor-id="lab-10-part-i-correlation-and-seasonality-nypd-arrests-by-month-season">Lab 10 | Part I — Correlation and Seasonality: NYPD Arrests by Month + Season</h2>
+<p>This lab part I examines the relationship between <strong>time (month)</strong> and <strong>arrest volume</strong> in New York City using the NYPD Arrests Historic dataset (2019–2024).<br>
+We explore whether arrests show a <em>linear</em> or <em>monotonic</em> seasonal trend through correlation analysis and visualization.</p>
+<hr>
+</section>
+<section id="workflow-steps" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-steps">🧭 Workflow Steps</h2>
+<section id="load-and-inspect-data" class="level3">
+<h3 class="anchored" data-anchor-id="load-and-inspect-data">1️⃣ Load and Inspect Data</h3>
+<ul>
+<li>Import the NYPD Arrest dataset (<code>read_csv()</code>).</li>
+<li>Check structure (<code>glimpse()</code>) to confirm date and variable formatting.</li>
+</ul>
+</section>
+<section id="prepare-temporal-variables" class="level3">
+<h3 class="anchored" data-anchor-id="prepare-temporal-variables">2️⃣ Prepare Temporal Variables</h3>
+<ul>
+<li>Convert the <code>ARREST_DATE</code> column to a date type via <code>lubridate</code> (<code>mdy()</code>).</li>
+<li>Extract:
+<ul>
+<li><strong>month number</strong> (1–12)</li>
+<li><strong>month label</strong> (“Jan”, “Feb”, …)</li>
+<li><strong>season</strong> (Winter, Spring, Summer, Fall)</li>
+</ul></li>
+</ul>
+<p>This creates a time variable suitable for trend and correlation analysis.</p>
+</section>
+<section id="aggregate-by-month" class="level3">
+<h3 class="anchored" data-anchor-id="aggregate-by-month">3️⃣ Aggregate by Month</h3>
+<ul>
+<li>Count total arrests per month using <code>count()</code>.</li>
+<li>Output: a simple 12-row table (one row per month).</li>
+</ul>
+</section>
+<section id="visualize-monthly-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="visualize-monthly-pattern">4️⃣ Visualize Monthly Pattern</h3>
+<ul>
+<li>Plot arrests by month using a line + point chart.</li>
+<li>This shows any visible seasonal variation or peaks.</li>
+</ul>
+</section>
+<section id="compute-correlations" class="level3">
+<h3 class="anchored" data-anchor-id="compute-correlations">5️⃣ Compute Correlations</h3>
+<ul>
+<li><strong>Pearson’s r</strong> → tests for a <em>linear</em> relationship (month number vs.&nbsp;arrests).</li>
+<li><strong>Spearman’s ρ</strong> → tests for a <em>monotonic</em> (rank-based) trend.</li>
+<li>Results are printed along with:
+<ul>
+<li><strong>p-values</strong> (significance)</li>
+<li><strong>95% confidence interval</strong> for Pearson’s r</li>
+</ul></li>
+</ul>
+</section>
+<section id="correlation-matrices-and-plots" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-matrices-and-plots">6️⃣ Correlation Matrices and Plots</h3>
+<ul>
+<li>Create a small correlation matrix (month_num vs.&nbsp;arrests) for both Pearson and Spearman.</li>
+<li>Visualize with <code>ggcorrplot()</code> to reinforce concept of “matrix correlation.”</li>
+</ul>
+</section>
+<section id="aggregate-by-season" class="level3">
+<h3 class="anchored" data-anchor-id="aggregate-by-season">7️⃣ Aggregate by Season</h3>
+<ul>
+<li>Group months into four seasons.</li>
+<li>Plot total arrests per season as a bar chart.</li>
+<li>This highlights seasonality visually, even if correlations are weak.</li>
+</ul>
+<hr>
+</section>
+<section id="summary-of-results" class="level3">
+<h3 class="anchored" data-anchor-id="summary-of-results">📊 Summary of Results</h3>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Statistic</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Pearson’s r</strong></td>
+<td style="text-align: left;">0.091</td>
+<td style="text-align: left;">Very weak positive linear association between month number and arrests.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>95% CI</strong></td>
+<td style="text-align: left;">[-0.509 , 0.632]</td>
+<td style="text-align: left;">The true correlation could range from moderately negative to moderately positive.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>p-value</strong></td>
+<td style="text-align: left;">0.778</td>
+<td style="text-align: left;">Not statistically significant — we fail to reject H₀ (no correlation).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Spearman’s ρ</strong></td>
+<td style="text-align: left;">–0.056</td>
+<td style="text-align: left;">Weak, slightly negative rank correlation; also non-significant (p = 0.863).</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation">🧩 Interpretation</h2>
+<ul>
+<li>Both correlations are <strong>near zero</strong>, suggesting <strong>no clear linear or monotonic trend</strong> in arrests across the calendar year.<br>
+</li>
+<li>The <strong>large confidence interval</strong> shows that with only 12 observations (months), the estimate is imprecise.<br>
+</li>
+<li><strong>p-values &gt; 0.05</strong> mean the observed variation could easily arise by chance.<br>
+</li>
+<li>Visually, arrests may fluctuate seasonally (small bumps or dips), but not in a consistent up-or-down pattern.</li>
+</ul>
+<hr>
+</section>
+<section id="discussion-points" class="level2">
+<h2 class="anchored" data-anchor-id="discussion-points">⚖️ Discussion Points</h2>
+<ol type="1">
+<li>Why might arrests not follow a strict month-to-month trend?<br>
+(e.g., policy shifts, reporting changes, or specific events)</li>
+<li>How could we better capture <strong>seasonality</strong>?
+<ul>
+<li>Compare by <strong>season categories</strong> rather than month number.<br>
+</li>
+<li>Correlate arrests with <strong>temperature</strong> or <strong>population density</strong> data.</li>
+</ul></li>
+<li>What limitations come from using <strong>only 12 data points</strong> for correlation?</li>
+<li>Does <strong>spatial autocorrelation</strong> influence these temporal findings?</li>
+</ol>
+<hr>
+</section>
+<section id="key-takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaway">✅ Key Takeaway</h2>
+<blockquote class="blockquote">
+<p>The correlation between month and arrests in NYC (2019–2024) is <strong>weak and not statistically significant</strong>.<br>
+Seasonal variation exists, but it’s not captured well by a simple linear or monotonic correlation with month number.<br>
+Understanding arrest patterns likely requires more complex modeling (seasonal cycles, policy effects, or spatial factors).</p>
+</blockquote>
+</section>
+<section id="lab-10-part-ii-correlation-and-seasonality-focus-on-seasonality-via-anova-approach" class="level2">
+<h2 class="anchored" data-anchor-id="lab-10-part-ii-correlation-and-seasonality-focus-on-seasonality-via-anova-approach">Lab 10 | Part II — Correlation and Seasonality: Focus on Seasonality via ANOVA approach</h2>
+<p>Anova Definition:</p>
+<blockquote class="blockquote">
+<p>ANOVA (Analysis of Variance) is a statistical test that determines if there are significant differences between the means of three or more independent groups. It works by comparing the amount of variance between groups to the amount of variance within groups to determine if the groups are statistically different. The test is used when you have one categorical independent variable (called a “factor”) and a continuous dependent variable.</p>
+</blockquote>
+</section>
+<section id="workflow-steps-1" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-steps-1">🧭 Workflow Steps</h2>
+<blockquote class="blockquote">
+<p>Goal: Instead of correlating numeric month values, test whether mean arrests differ significantly between the 4 seasonal groups. We’ll use the original cleaned data <code>ar_clean</code> so that each arrest event contributes to its season, not just aggregated totals.</p>
+</blockquote>
+<section id="create-a-season-level-summary-mean-arrests-per-day-to-normalize-slightly" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-season-level-summary-mean-arrests-per-day-to-normalize-slightly">1️⃣ Create a season-level summary (mean arrests per day, to normalize slightly)</h3>
+</section>
+<section id="check-data-distribution-visually-include-outlier-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="check-data-distribution-visually-include-outlier-analysis">2️⃣ Check data distribution visually (include outlier analysis)</h3>
+</section>
+<section id="parametric-test-one-way-anova" class="level3">
+<h3 class="anchored" data-anchor-id="parametric-test-one-way-anova">3️⃣ Parametric test — One-way ANOVA</h3>
+</section>
+<section id="interpretation-1" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-1">4️⃣⃣ Interpretation:</h3>
+<ul>
+<li>If ANOVA p &lt; 0.05 → significant seasonal difference.</li>
+<li>If not, arrests vary slightly but not systematically by season.</li>
+</ul>
+</section>
+<section id="anova-summary-breakdown" class="level3">
+<h3 class="anchored" data-anchor-id="anova-summary-breakdown">🔹 ANOVA Summary Breakdown</h3>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Term</th>
+<th style="text-align: left;">Definition</th>
+<th style="text-align: left;">Key Value from Output</th>
+<th style="text-align: left;">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Df (Degrees of Freedom)</strong></td>
+<td style="text-align: left;">Number of independent sources of variation.</td>
+<td style="text-align: left;">Season = 3, Residuals = 1823</td>
+<td style="text-align: left;">Four seasons → 3 df for between-group variation; 1823 df for within-group (daily) variation.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Sum Sq (Sum of Squares)</strong></td>
+<td style="text-align: left;">Total variability attributed to each source.</td>
+<td style="text-align: left;">Season = 214,444; Residuals = 57,715,577</td>
+<td style="text-align: left;">Most variability is within seasons, not between them.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Mean Sq (Mean Squares)</strong></td>
+<td style="text-align: left;">Average variance per degree of freedom.</td>
+<td style="text-align: left;">Season = 71,481; Residuals = 31,660</td>
+<td style="text-align: left;">Used to compute the F-statistic.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>F value</strong></td>
+<td style="text-align: left;">Ratio of between-group to within-group variance.</td>
+<td style="text-align: left;">F = 2.258</td>
+<td style="text-align: left;">If F is large, group means differ more than expected by chance.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Pr(&gt;F)</strong></td>
+<td style="text-align: left;">p-value testing if all group means are equal.</td>
+<td style="text-align: left;">p = 0.0799</td>
+<td style="text-align: left;">About 8% chance that observed variation is random → not significant at 0.05, but marginal.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Significance code ( . )</strong></td>
+<td style="text-align: left;">Symbol marking significance level.</td>
+<td style="text-align: left;">“.” (dot)</td>
+<td style="text-align: left;">Indicates <em>marginal</em> significance (p &lt; 0.1 but &gt; 0.05).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Conclusion</strong></td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;">Weak evidence that arrest means differ by season; variation mostly due to daily noise.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="anova-summary-breakdown-1" class="level3">
+<h3 class="anchored" data-anchor-id="anova-summary-breakdown-1">🔹 ANOVA Summary Breakdown</h3>
+<p>A one-way ANOVA was conducted to compare the mean number of daily arrests across the four seasons (Winter, Spring, Summer, Fall).<br>
+Results showed a modest difference between group means — <em>F</em>(3, 1823) = 2.26, <em>p</em> = 0.0799 — indicating that while seasonal variation exists, it is <strong>not statistically significant</strong> at the conventional 0.05 level.</p>
+<p>In practical terms, this implies that while arrests may rise slightly during certain seasons (e.g., summer), the fluctuations are <strong>small relative to day-to-day variation</strong> and could plausibly be due to chance.</p>
+</section>
+<section id="key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative" class="level3">
+<h3 class="anchored" data-anchor-id="key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative">🧾 Key Points — Why the Lab Results Differ from the Usual Summer Crime Narrative</h3>
+<p>The lab’s finding of “no significant seasonal difference” doesn’t mean the ‘summer effect’ isn’t real — it means it’s not strongly visible in this <em>aggregated</em> arrest dataset under these years and these modeling choices.</p>
+<p>The previous analysis is still correct and valuable — it demonstrates how:</p>
+<ul>
+<li><p>Method, time frame, and variable choice all affect statistical outcomes.</p></li>
+<li><p>The story you get depends on what you measure (arrests vs.&nbsp;crimes) and how you aggregate (daily vs.&nbsp;seasonal).</p></li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Factor</th>
+<th style="text-align: left;">Effect on Pattern</th>
+<th style="text-align: left;">How to Check or Extend Analysis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Arrests ≠ Crimes Reported</strong></td>
+<td style="text-align: left;">Arrests depend on enforcement and policy, not just incident rates.</td>
+<td style="text-align: left;">Compare to NYPD CompStat or 911 complaint data to see crime incidents directly.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Aggregation by Season</strong></td>
+<td style="text-align: left;">Grouping into four broad seasons smooths short, sharp summer peaks.</td>
+<td style="text-align: left;">Replot by month or week to capture more granular fluctuations.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Pandemic &amp; Policy Periods (2019–2024)</strong></td>
+<td style="text-align: left;">COVID-19, protests, and bail reform disrupted normal cycles.</td>
+<td style="text-align: left;">Split the dataset pre- and post-2020 to test for structural breaks.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Mixed Offense Types</strong></td>
+<td style="text-align: left;">Offenses vary differently by season; combining them cancels trends.</td>
+<td style="text-align: left;">Filter or facet by offense category (e.g., assault, theft, drug possession).</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>High Day-to-Day Noise</strong></td>
+<td style="text-align: left;">Random fluctuations obscure subtle seasonal signals.</td>
+<td style="text-align: left;">Apply moving averages or model with smoothing (e.g., <code>geom_smooth()</code>, LOESS).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Changes in Policing Strategy</strong></td>
+<td style="text-align: left;">Shifts in enforcement priorities flatten earlier seasonal variation.</td>
+<td style="text-align: left;">Examine arrest type proportions or policy timelines.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Statistical Scale &amp; Power</strong></td>
+<td style="text-align: left;">Seasonal differences are small relative to total variance.</td>
+<td style="text-align: left;">Quantify effect size (η²) and discuss practical vs.&nbsp;statistical significance.</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p><strong>In summary:</strong> The lab’s finding of no significant seasonal effect doesn’t mean NYC lacks a summer pattern — it means that <strong>within this dataset, period, and aggregation level</strong>, the evidence for it is statistically weak. Context and scale matter as much as the calculation.</p>
+</blockquote>
+</section>
+</section>
+<section id="assignment-10-link" class="level2">
+<h2 class="anchored" data-anchor-id="assignment-10-link">Assignment 10 Link:</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c10_assignment">Assignment 10</a></li>
+</ul>
+<hr>
+</section>
+<section id="scripts-lab-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-lab-data">Scripts &amp; Lab Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 10 Lab 10 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_8&gt;scripts&gt;c10_lab10-script-1.R</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_10_data_subdirectory.zip">Data Subdirectory Download</a></p></li>
+</ul>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://www.nyc.gov/site/nypd/news/pr015/nypd-record-low-shooting-incidents-shooting-victims-first-nine-months-the-year">Most recent NYPD Crime Trend Bulletin - 10/01/2025</a></li>
+<li><a href="x">x</a></li>
+<li><a href="x">x</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c10_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

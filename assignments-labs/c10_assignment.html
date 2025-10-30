@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-10-30">
+
+<title>Class 10 Assignment: Correlation in R - NYC DOH Grades vs.&nbsp;Violations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="c10_assignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c10_assignment_files/libs/quarto-html/quarto.js"></script>
+<script src="c10_assignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="c10_assignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c10_assignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c10_assignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c10_assignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c10_assignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c10_assignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c10_assignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c10_assignment_files/styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#week-10-materials" id="toc-week-10-materials" class="nav-link" data-scroll-target="#week-10-materials">Week 10 Materials</a></li>
+  <li><a href="#week-10-assignment-data" id="toc-week-10-assignment-data" class="nav-link" data-scroll-target="#week-10-assignment-data">Week 10 Assignment Data</a></li>
+  <li><a href="#week-10-reading" id="toc-week-10-reading" class="nav-link" data-scroll-target="#week-10-reading">Week 10 Reading</a></li>
+  <li><a href="#assignment-10-nyc-restaurant-inspections" id="toc-assignment-10-nyc-restaurant-inspections" class="nav-link" data-scroll-target="#assignment-10-nyc-restaurant-inspections">Assignment 10 — NYC Restaurant Inspections</a></li>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">💡 Purpose</a></li>
+  <li><a href="#data-ingestion-normalization" id="toc-data-ingestion-normalization" class="nav-link" data-scroll-target="#data-ingestion-normalization">📥 1) Data Ingestion &amp; Normalization</a></li>
+  <li><a href="#critical-severity-determination" id="toc-critical-severity-determination" class="nav-link" data-scroll-target="#critical-severity-determination">⚙️ 2) Critical Severity Determination</a></li>
+  <li><a href="#collapse-to-one-row-per-inspection-camis-day" id="toc-collapse-to-one-row-per-inspection-camis-day" class="nav-link" data-scroll-target="#collapse-to-one-row-per-inspection-camis-day">🧮 3) Collapse to One Row per Inspection (CAMIS × day)</a></li>
+  <li><a href="#distributions-eda" id="toc-distributions-eda" class="nav-link" data-scroll-target="#distributions-eda">📊 4) Distributions (EDA)</a></li>
+  <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis">🔗 5) Correlation Analysis</a></li>
+  <li><a href="#scatterplot-no-smooth-line" id="toc-scatterplot-no-smooth-line" class="nav-link" data-scroll-target="#scatterplot-no-smooth-line">📈 6) Scatterplot (no smooth line)</a></li>
+  <li><a href="#map" id="toc-map" class="nav-link" data-scroll-target="#map">🗺️ 7) Map</a></li>
+  <li><a href="#save-png-outputs" id="toc-save-png-outputs" class="nav-link" data-scroll-target="#save-png-outputs">💾 8️⃣ Save PNG Outputs</a></li>
+  <li><a href="#results-interpretation" id="toc-results-interpretation" class="nav-link" data-scroll-target="#results-interpretation">💡 Results (Interpretation)</a>
+  <ul class="collapse">
+  <li><a href="#given-outputs" id="toc-given-outputs" class="nav-link" data-scroll-target="#given-outputs">Given outputs</a></li>
+  <li><a href="#what-these-mean" id="toc-what-these-mean" class="nav-link" data-scroll-target="#what-these-mean">What these mean</a></li>
+  <li><a href="#pearson-vs.-spearman-which-to-prefer-here" id="toc-pearson-vs.-spearman-which-to-prefer-here" class="nav-link" data-scroll-target="#pearson-vs.-spearman-which-to-prefer-here">Pearson vs.&nbsp;Spearman — which to prefer here?</a></li>
+  </ul></li>
+  <li><a href="#visual-diagnostics" id="toc-visual-diagnostics" class="nav-link" data-scroll-target="#visual-diagnostics">📊 Visual Diagnostics</a></li>
+  <li><a href="#prompts-for-.rmd-submission" id="toc-prompts-for-.rmd-submission" class="nav-link" data-scroll-target="#prompts-for-.rmd-submission">📝 Prompts for <code>.Rmd</code> submission</a>
+  <ul class="collapse">
+  <li><a href="#interpretation-causality" id="toc-interpretation-causality" class="nav-link" data-scroll-target="#interpretation-causality">1️⃣ Interpretation &amp; Causality</a></li>
+  <li><a href="#robustness-check" id="toc-robustness-check" class="nav-link" data-scroll-target="#robustness-check">2️⃣ Robustness Check</a></li>
+  <li><a href="#spatial-reflection" id="toc-spatial-reflection" class="nav-link" data-scroll-target="#spatial-reflection">3️⃣ Spatial Reflection</a></li>
+  </ul></li>
+  <li><a href="#part-ii-deliverables" id="toc-part-ii-deliverables" class="nav-link" data-scroll-target="#part-ii-deliverables">Part II Deliverables</a></li>
+  <li><a href="#what-to-report-checklist" id="toc-what-to-report-checklist" class="nav-link" data-scroll-target="#what-to-report-checklist">✅ What to Report (Checklist)</a></li>
+  <li><a href="#submission-notes" id="toc-submission-notes" class="nav-link" data-scroll-target="#submission-notes">Submission Notes</a></li>
+  <li><a href="#timeline-deliverables" id="toc-timeline-deliverables" class="nav-link" data-scroll-target="#timeline-deliverables">Timeline &amp; Deliverables</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 10 Assignment: Correlation in R - NYC DOH Grades vs.&nbsp;Violations</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 30, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this ninth week’s assignment, we will continue the <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c10_lab">Class 10 lab</a> exploration of correlation methods in R via the <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j/about_data">Department of Health’s (DOH) Restaurant’s Inspection Data Set</a>.</p>
+<p>As we did for assignment 9, we’ll integrate the plotting results as image files (.png) into the Class 10 Assignment <code>.Rmd</code> submission.</p>
+<p>Follow the steps below: first orient to this week’s materials, then work through this week’s script. Utilize the sections below in the assignment for an overview of the important sections of this week’s correlation exploration.</p>
+<p><strong>Due Sunday 11/09/25 at 11:59pm</strong>.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: this week’s assignment is not due on Thursday, but rather Sunday.</p>
+</div>
+</div>
+</section>
+<section id="week-10-materials" class="level2">
+<h2 class="anchored" data-anchor-id="week-10-materials">Week 10 Materials</h2>
+<ul>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/agendas/c10_agenda">Class 10 Agenda</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/lecture-slides/lecture.10/index.html">Class 10 Lecture Slides</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c10_lab">Class 10 lab</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c10_assignment">Class 10 Assignment - This Document</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_assignment10-script-1.R">Class 10 Assignment Script #1</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 10 Lab Script #1</a></li>
+<li><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_10.Rmd">Class 10 Assignment .Rmd ‘starter file’</a></li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As we have done for past assignments, Create an R Project pointing at your <code>assignment_10</code> folder with subdirectories: <code>/data</code>, <code>/scripts</code>, <code>/docs</code>, <code>/results</code>. Confirm your working directory with <code>getwd()</code> and list files via <code>list.files(recursive = TRUE)</code> as needed.</p>
+</div>
+</div>
+</section>
+<section id="week-10-assignment-data" class="level2">
+<h2 class="anchored" data-anchor-id="week-10-assignment-data">Week 10 Assignment Data</h2>
+<p>Like Lab 10, we will download the starter data, uncompress it and place into the <code>/data</code> directory. Make sure to alter your paths in the assignment scripts as needed.</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/assignment_10_data_subdirectory.zip">Assignment 10 Data Download LINK</a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c10_assignment_files/img/10-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><em>Class 10 assignment <code>/data</code> structure</em></figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="week-10-reading" class="level2">
+<h2 class="anchored" data-anchor-id="week-10-reading">Week 10 Reading</h2>
+<p>Next week’s quiz 10 will feature 5 multiple choice questions, and 5 True or False questions on the following online, accessible article:</p>
+<ul>
+<li><a href="https://www.nycfoodpolicy.org/restaurant-grading-system-hunter-college-nyc-food-policy-center">Hunter College NYC Food Policy Center: Understanding NYC’s Restaurant Grading System</a></li>
+</ul>
+<p>This week’s assignment will evaluate the correlative relationship <em>inside</em> the DOH Restaurant Inspection Data Set. This week’s reading contextualizes the findings within a larger discussion of the purpose, history and effectiveness of the city’s larger inspection system.</p>
+<p>Pay attention to the following components of the reading:</p>
+<p><strong>Origins &amp; Purpose</strong> — NYC’s restaurant letter-grade system, launched in 2010, was designed to improve sanitation and make food-safety performance visible to diners.</p>
+<p><strong>How It Works</strong> — DOHMH inspectors score violations by severity, assigning grades A–C based on total points and adjusting inspection frequency accordingly.</p>
+<p><strong>Implementation &amp; Coverage</strong> — Around 25,000 restaurants undergo routine and follow-up inspections, with new establishments graded soon after opening.</p>
+<p><strong>Effectiveness &amp; Response</strong> — Over 90 % of restaurants now earn A-grades, though operators raise concerns about consistency and inspection fairness.</p>
+<p><strong>Consumer Transparency</strong> — Publicly posted grades shape dining choices for most New Yorkers, reinforcing accountability while promoting safer practices.</p>
+<p>At 7am Sunday, November 9th, the tenth weekly quiz will open in Canvas. This will be our final quiz of the semester. The quiz code will be provided as an announcement (not agenda) on Sunday at 7am on 11/09/25. Expect 10 questions in total that cover the reading above.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: Check announcements in Canvas, not the weekly agenda, for the quiz code access on 11/09/25. The quiz will stay open through Monday 11/10/25, midnight.</p>
+</div>
+</div>
+</section>
+<section id="assignment-10-nyc-restaurant-inspections" class="level2">
+<h2 class="anchored" data-anchor-id="assignment-10-nyc-restaurant-inspections">Assignment 10 — NYC Restaurant Inspections</h2>
+<p><strong>SCORE vs.&nbsp;Number of Critical Violations</strong><br>
+<em>(Dataset: DOHMH New York City Restaurant Inspection Results)</em></p>
+</section>
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">💡 Purpose</h2>
+<p>Evaluate the relationship between a restaurant’s <strong>inspection SCORE</strong> (lower is better) and the <strong>number of critical violations</strong> cited on the same inspection day, using record-level data (restaurant × day) to minimize spatial autocorrelation. We keep in mind that there is an ‘internal logic’ to this relationship: <strong>inspection SCORE</strong> by its very nature involves violation activity. Here we are testing the sensitivity to <strong>number of critical violations</strong> which are a subset of <strong>all</strong> violations.</p>
+</section>
+<section id="data-ingestion-normalization" class="level2">
+<h2 class="anchored" data-anchor-id="data-ingestion-normalization">📥 1) Data Ingestion &amp; Normalization</h2>
+<ul>
+<li>Read the local CSV, standardize column names, and treat all fields as text initially to avoid mis-parsing.</li>
+<li>Build a canonical inspection date:
+<ul>
+<li>Parse <code>inspection_date</code> as <strong>MM/DD/YYYY</strong>.<br>
+</li>
+<li>Convert <strong>1/1/1900</strong> sentinel dates to <strong>NA</strong> (not yet inspected). We make this conversion per the data set metadata which states that this date is a flag for <em>not yet inspected</em>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="critical-severity-determination" class="level2">
+<h2 class="anchored" data-anchor-id="critical-severity-determination">⚙️ 2) Critical Severity Determination</h2>
+<ul>
+<li>Normalize <code>critical_flag</code> values:
+<ul>
+<li><strong>Critical → 1</strong>, <strong>Not Critical → 0</strong>, <strong>Not Applicable → 0</strong>.</li>
+</ul></li>
+<li>This produces <code>critical_ind</code> for counting critical violations.</li>
+</ul>
+</section>
+<section id="collapse-to-one-row-per-inspection-camis-day" class="level2">
+<h2 class="anchored" data-anchor-id="collapse-to-one-row-per-inspection-camis-day">🧮 3) Collapse to One Row per Inspection (CAMIS × day)</h2>
+<ul>
+<li>Many rows per inspection day (one per cited item).<br>
+</li>
+<li>Aggregate to a single record with:
+<ul>
+<li><code>score</code> (inspection’s numeric score),<br>
+</li>
+<li><code>criticals</code> (sum of <code>critical_ind</code>),<br>
+</li>
+<li><code>total_viol</code> (count of all cited items),<br>
+</li>
+<li>coordinates if present (<code>lat</code>, <code>lon</code>); these can be used for mapping.</li>
+</ul></li>
+</ul>
+</section>
+<section id="distributions-eda" class="level2">
+<h2 class="anchored" data-anchor-id="distributions-eda">📊 4) Distributions (EDA)</h2>
+<ul>
+<li>Plot <strong>two histograms</strong>:
+<ul>
+<li><strong>SCORE</strong> (lower is better)<br>
+</li>
+<li><strong># of critical violations</strong><br>
+</li>
+</ul></li>
+<li>Note: both are <strong>right-skewed</strong> but not multimodal/bimodal. We may indeed prioritize Spearman correlation over Pearson correlation as its more sensitive to non-normal distribution as well as outliers.</li>
+</ul>
+</section>
+<section id="correlation-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-analysis">🔗 5) Correlation Analysis</h2>
+<ul>
+<li>Compute <strong>Pearson</strong> (linear) and <strong>Spearman</strong> (rank/monotonic) correlations for <code>score</code> vs.&nbsp;<code>criticals</code>.<br>
+</li>
+<li>Show correlation matrices and run <code>cor.test()</code> for inferential results.</li>
+</ul>
+</section>
+<section id="scatterplot-no-smooth-line" class="level2">
+<h2 class="anchored" data-anchor-id="scatterplot-no-smooth-line">📈 6) Scatterplot (no smooth line)</h2>
+<ul>
+<li>Plot <code>criticals</code> (x) vs.&nbsp;<code>score</code> (y) as points to visualize the pattern.</li>
+</ul>
+</section>
+<section id="map" class="level2">
+<h2 class="anchored" data-anchor-id="map">🗺️ 7) Map</h2>
+<ul>
+<li>Read <strong>nybb</strong> (NYC boroughs, <strong>EPSG:2263</strong>), use as the map extent.<br>
+</li>
+<li>Transform points to <strong>2263</strong> and plot colored by <strong>binned SCORE</strong><br>
+with finer bins at low scores and a top outlier bin (<strong>50+</strong>).<br>
+</li>
+<li>Style boroughs with a <strong>0.5 pt black stroke</strong>.</li>
+</ul>
+</section>
+<section id="save-png-outputs" class="level2">
+<h2 class="anchored" data-anchor-id="save-png-outputs">💾 8️⃣ Save PNG Outputs</h2>
+<p>This section automatically creates an export folder — <code>~/Desktop/assignment_10/results</code> — and saves key visual outputs as high-resolution <code>.png</code> images. Revise your upstream path as needed. All plots can be referenced outside of the assignment script, i.e.&nbsp;the <code>.Rmd</code> assignment submission.</p>
+<table class="table">
+<colgroup>
+<col style="width: 57%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>📊 Plot / Output</th>
+<th>🗂️ Filename</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Score + Criticals histograms</td>
+<td><code>score_histograms.png</code></td>
+</tr>
+<tr class="even">
+<td>Pearson correlation heatmap</td>
+<td><code>corr_pearson.png</code></td>
+</tr>
+<tr class="odd">
+<td>Spearman correlation heatmap</td>
+<td><code>corr_spearman.png</code></td>
+</tr>
+<tr class="even">
+<td>SCORE vs # critical violations (scatter)</td>
+<td><code>score_vs_criticals_scatter.png</code></td>
+</tr>
+<tr class="odd">
+<td>NYC inspections map (if data present)</td>
+<td><code>nyc_inspections_map.png</code></td>
+</tr>
+</tbody>
+</table>
+<p>💡 <em>Tip:</em> Running this final code chunk will populate the <code>results</code> directory with all the visual outputs in one step — an easy plug into the .Rmd submission.</p>
+</section>
+<section id="results-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="results-interpretation">💡 Results (Interpretation)</h2>
+<section id="given-outputs" class="level3">
+<h3 class="anchored" data-anchor-id="given-outputs">Given outputs</h3>
+<ul>
+<li><strong>Pearson’s r</strong>:
+<ul>
+<li><strong>r = 0.838 | 95% CI [0.836, 0.840] | p = 0</strong></li>
+</ul></li>
+<li><strong>Spearman’s ρ</strong>:
+<ul>
+<li><strong>ρ = 0.848 | p = 0</strong></li>
+</ul></li>
+</ul>
+<blockquote class="blockquote">
+<p>In R, <code>p = 0</code> prints when the p-value is so small it underflows the display format.</p>
+</blockquote>
+</section>
+<section id="what-these-mean" class="level3">
+<h3 class="anchored" data-anchor-id="what-these-mean">What these mean</h3>
+<ul>
+<li><strong>Magnitude</strong>: Both coefficients (~0.84–0.85) indicate a <strong>very strong positive association</strong>: inspections with <strong>more critical violations</strong> almost always have <strong>worse (higher) scores</strong>.</li>
+<li><strong>Precision</strong>: The <strong>narrow 95% CI</strong> for Pearson (0.836–0.840) shows a highly stable estimate due to the large sample size.</li>
+<li><strong>Significance</strong>: p ≈ 0 implies the observed associations are <strong>not due to chance</strong>.</li>
+</ul>
+</section>
+<section id="pearson-vs.-spearman-which-to-prefer-here" class="level3">
+<h3 class="anchored" data-anchor-id="pearson-vs.-spearman-which-to-prefer-here">Pearson vs.&nbsp;Spearman — which to prefer here?</h3>
+<ul>
+<li><strong>Pearson’s r</strong> tests linear association on the <strong>raw values</strong> and assumes roughly linear form and limited outlier influence.<br>
+</li>
+<li><strong>Spearman’s ρ</strong> uses <strong>ranks</strong> and captures <strong>monotonic</strong> association; it is more <strong>robust to skew and outliers</strong>.</li>
+<li>In this dataset, both test results are extremely high and similar. Given the <strong>right-skew</strong> in both variables and the possibility of <strong>non-constant increments</strong> in score as criticals increase, <strong>Spearman’s ρ</strong> is a slightly more conservative choice.<br>
+</li>
+<li>That said, the near-equivalence of r and ρ here suggests the relationship is <strong>both monotonic and close to linear</strong> in practice.</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>Caveat for interpretation:</strong> NYC inspection <strong>SCORE</strong> is <strong>partly a function of violations</strong> (including critical ones). The strong correlation therefore reflects a <strong>construct relationship</strong> (not surprising), which is still valuable analytically but should be framed as <strong>validation/diagnostic</strong> rather than discovery of an independent association.</p>
+</blockquote>
+</section>
+</section>
+<section id="visual-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="visual-diagnostics">📊 Visual Diagnostics</h2>
+<ul>
+<li><strong>Histograms</strong> for SCORE and # critical violations are <strong>right-skewed</strong>, but <strong>not multimodal/bimodal</strong>.</li>
+<li>The scatter shows a tight, upward trend: more criticals → higher score.</li>
+</ul>
+</section>
+<section id="prompts-for-.rmd-submission" class="level2">
+<h2 class="anchored" data-anchor-id="prompts-for-.rmd-submission">📝 Prompts for <code>.Rmd</code> submission</h2>
+<section id="interpretation-causality" class="level3">
+<h3 class="anchored" data-anchor-id="interpretation-causality">1️⃣ Interpretation &amp; Causality</h3>
+<p><strong>Prompt:</strong><br>
+Explain why a strong positive correlation between SCORE and # critical violations is expected given how SCORE is computed. Why is this still an informative result?</p>
+<p><strong>Explainer:</strong><br>
+A strong positive correlation is expected because NYC inspection <strong>SCORE</strong> is derived directly from the <strong>accumulation of violation points</strong>, many of which are assigned higher weights when they are “critical.” Therefore, as the number of critical violations rises, the total inspection score mechanically increases.<br>
+This correlation is still informative because it <strong>confirms the internal consistency</strong> of the data system — higher critical counts align predictably with worse scores. The relationship validates the underlying inspection logic and provides a <strong>benchmark for cross-checking data quality or identifying anomalies</strong> (e.g., high scores with few criticals may indicate scoring or reporting errors).</p>
+</section>
+<section id="robustness-check" class="level3">
+<h3 class="anchored" data-anchor-id="robustness-check">2️⃣ Robustness Check</h3>
+<p><strong>Prompt:</strong><br>
+If we re-estimate correlations using (a) Pearson, (b) Spearman <em>after</em> removing inspections with <strong>SCORE ≥ 50</strong> (outliers), what happens to the coefficients, and why?</p>
+<p><strong>Explainer:</strong><br>
+When outlier inspections with extremely high scores are removed, both correlations typically <strong>decrease slightly</strong> because the most extreme data points often anchor the upper end of the trend. However, the Spearman ρ usually changes <strong>less</strong> than Pearson’s r, since rank-based correlation is <strong>less sensitive to outlier magnitude</strong>. The reduction in r demonstrates how extreme cases can exaggerate linear relationships, while the stability of ρ highlights that the <strong>overall monotonic pattern</strong> remains strong even after outlier removal.</p>
+<p>This robustness test confirms that the observed relationship is <strong>not driven solely by a few extreme events</strong>, but reflects a consistent pattern across the majority of inspections.</p>
+</section>
+<section id="spatial-reflection" class="level3">
+<h3 class="anchored" data-anchor-id="spatial-reflection">3️⃣ Spatial Reflection</h3>
+<p><strong>Prompt:</strong><br>
+Even though the analysis avoids tract-level aggregation, how might local context (e.g., dense commercial corridors) still influence the results?</p>
+<p><strong>Explainer:</strong><br>
+Even with restaurant-level data, <strong>spatial clustering</strong> may persist because certain neighborhoods (e.g., Midtown, Downtown Brooklyn, Chinatown) have higher densities of older facilities or more frequent inspections. These clusters can create <strong>localized score patterns</strong> that subtly bias correlations if conditions are spatially autocorrelated.</p>
+</section>
+</section>
+<section id="part-ii-deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="part-ii-deliverables">Part II Deliverables</h2>
+<p>In this week’s <code>.Rmd</code> submission, consider the previous 💡 Results and 📝 Prompts to guide your project summary section. To follow is a checklist for your submission:</p>
+</section>
+<section id="what-to-report-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-report-checklist">✅ What to Report (Checklist)</h2>
+<ul>
+<li>Short description of the dataset and unit of analysis (restaurant × inspection day).<br>
+</li>
+<li>Two histograms (SCORE, # criticals) with skew noted.<br>
+</li>
+<li>Pearson and Spearman correlation coefficients (with CIs/p-values for at least Pearson).<br>
+</li>
+<li>A scatterplot of SCORE vs # criticals.<br>
+</li>
+<li>(Optional) A borough map with <strong>binned score</strong> points over <strong>nybb</strong>.<br>
+</li>
+<li>A 2–3 paragraph interpretation addressing <strong>why</strong> the correlation is strong, how distributional shape matters, and when Pearson vs Spearman is the better choice.</li>
+</ul>
+</section>
+<section id="submission-notes" class="level2">
+<h2 class="anchored" data-anchor-id="submission-notes">Submission Notes</h2>
+<p>Submit an <strong>HTML</strong> or <strong>PDF</strong> produced from your Assignment 10 <code>.qmd</code> (use starter - <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_10.Rmd">Class 10 Assignment .Rmd ‘starter file’</a>).</p>
+<p>Utilize the <a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/assignment_10.Rmd">Class 10 Assignment .Rmd ‘starter file’</a> for the development of your write-up and correlation visuals and results.</p>
+</section>
+<section id="timeline-deliverables" class="level2">
+<h2 class="anchored" data-anchor-id="timeline-deliverables">Timeline &amp; Deliverables</h2>
+<ul>
+<li><strong>Due</strong>: <em>(Sunday, November 9th, 2025 - 11:59pm )</em><br>
+</li>
+<li><strong>Deliverables</strong>: rendered <code>.html</code> or <code>.pdf</code>; hold onto your <code>.qmd</code> in the project folder (do not remove after rendering).</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://lakens.github.io/statistical_inferences/01-pvalue.html">Using p-values to test a hypothesis</a></li>
+<li><a href="https://bookdown.org/ndphillips/YaRrr/correlation-cor-test.html">Correlation: <code>cor.test()</code></a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/www\.quarto\.org\/custom/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="c10_assignment_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

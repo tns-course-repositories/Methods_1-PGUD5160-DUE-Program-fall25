@@ -1,0 +1,68 @@
+---
+title: "assignment_10 - Starter Rmd"
+author: "metts"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# If you need/want to make a page break in PDF output, you can use the following code snippet:
+
+\newpage
+
+# This is the section following the `\newpage` page break for PDF.
+
+Remember, typically first load your needed libraries. This week the processing was done in the assignment script; thus we don't necessarily need to load specific libraries for processing in this `.Rmd` example.
+
+Incorporate your plot images and correlation tests as needed to frame your observations about the NYC DOH Restaurant Inspections Data Set. Notice that `echo=FALSE` is set as a parameter to hide the code chunk printing in the final document which gives a cleaner look.
+
+Like assignment 9, for this assignment plotting imports as `.png` is a clean, simple way to incorporate you analysis results.
+
+## Example paths of  `.png` files saved in the `/results` subdirectory that result from Assignment 10 script:
+
+
+`~/Desktop/assignment_10/results/score_histograms.png`
+
+`~/Desktop/assignment_10/results/corr_pearson.png`
+
+`~/Desktop/assignment_10/results/corr_spearman.png`
+
+`~/Desktop/assignment_10/results/score_vs_criticals_scatter.pn`
+
+`~/Desktop/assignment_10/results/nyc_inspections_map.png`
+
+
+|----------------------------------------------|----------------------------------|
+| Score + Criticals histograms                 | `score_histograms.png`           |
+| Pearson correlation heatmap                  | `corr_pearson.png`               |
+| Spearman correlation heatmap                 | `corr_spearman.png`              |
+| SCORE vs # critical violations (scatter)     | `score_vs_criticals_scatter.png` |
+| NYC inspections map (if data present)        | `nyc_inspections_map.png`        |
+
+
+```{r, out.width="100%", fig.align="center", echo=FALSE}
+
+knitr::include_graphics("~/Desktop/assignment_10/results/score_histograms.png")
+
+```
+
+## Findings Section:
+
+Your findings writeup should be placed here.
+
+
+
+
+
+
+
+
+
+
+
+

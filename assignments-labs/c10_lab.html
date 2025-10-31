@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-10-27">
+<meta name="dcterms.date" content="2025-10-31">
 
 <title>Class 10 Lab: Correlation in R</title>
 <style>
@@ -136,8 +136,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#check-data-distribution-visually-include-outlier-analysis" id="toc-check-data-distribution-visually-include-outlier-analysis" class="nav-link" data-scroll-target="#check-data-distribution-visually-include-outlier-analysis">2️⃣ Check data distribution visually (include outlier analysis)</a></li>
   <li><a href="#parametric-test-one-way-anova" id="toc-parametric-test-one-way-anova" class="nav-link" data-scroll-target="#parametric-test-one-way-anova">3️⃣ Parametric test — One-way ANOVA</a></li>
   <li><a href="#interpretation-1" id="toc-interpretation-1" class="nav-link" data-scroll-target="#interpretation-1">4️⃣⃣ Interpretation:</a></li>
-  <li><a href="#anova-summary-breakdown" id="toc-anova-summary-breakdown" class="nav-link" data-scroll-target="#anova-summary-breakdown">🔹 ANOVA Summary Breakdown</a></li>
-  <li><a href="#anova-summary-breakdown-1" id="toc-anova-summary-breakdown-1" class="nav-link" data-scroll-target="#anova-summary-breakdown-1">🔹 ANOVA Summary Breakdown</a></li>
+  <li><a href="#anova-breakdown" id="toc-anova-breakdown" class="nav-link" data-scroll-target="#anova-breakdown">🔹 ANOVA Breakdown</a></li>
+  <li><a href="#anova-summary" id="toc-anova-summary" class="nav-link" data-scroll-target="#anova-summary">🔹 ANOVA Summary</a></li>
   <li><a href="#key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative" id="toc-key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative" class="nav-link" data-scroll-target="#key-points-why-the-lab-results-differ-from-the-usual-summer-crime-narrative">🧾 Key Points — Why the Lab Results Differ from the Usual Summer Crime Narrative</a></li>
   </ul></li>
   <li><a href="#assignment-10-link" id="toc-assignment-10-link" class="nav-link" data-scroll-target="#assignment-10-link">Assignment 10 Link:</a></li>
@@ -162,7 +162,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 27, 2025</p>
+      <p class="date">October 31, 2025</p>
     </div>
   </div>
   
@@ -174,14 +174,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="preamble" class="level2">
 <h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
-<p>In this tenth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>lab_10</code>).</p>
+<p>In this tenth demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>c10_lab</code>).</p>
 <p>While we will continue to use <code>tidyverse</code> for the main body of the data manipulation, we will also use base r functions for correlation as well as the <code>tidyverse</code> built-in functions known as <code>corrr</code>.</p>
 <p>This lab can and should be used in conjunction with this week’s assignment 10 deliverable - <a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c10_assignment">Assignment 10</a>.</p>
 <hr>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
-<p>To start, we will utilize the</p>
 <p>To start, we will utilize <a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u/about_data">NYPD Arrest Data - Historic</a> from the OpenNYC platform. We first subset this large data set to just 5 years between 2019 December 31st and 2024 December 31st; this returns 973069 arrests:</p>
 <p>Our query to return 973,069 unique arrest events as follows:</p>
 <ul>
@@ -193,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption"><em>Query Filter on Data for NYC Arrest Data` </em></figcaption><p></p>
 </figure>
 </div>
-<p>For <code>lab_10</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
+<p>For <code>c10_lab</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab as well as assignment:</p>
 <p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_10_data_subdirectory.zip">Data Download LINK</a></p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -205,19 +204,19 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_10_data-subdirectory</code> to simply <code>data</code> and place it into your <code>lab_10</code> directory.</p>
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_10_data-subdirectory</code> to simply <code>data</code> and place it into your <code>c10_lab</code> directory.</p>
 </div>
 </div>
 <hr>
 </section>
 <section id="lab-setup---part-i-and-ii" class="level2">
 <h2 class="anchored" data-anchor-id="lab-setup---part-i-and-ii">Lab Setup - Part I and II</h2>
-<section id="step-1-project-management-in-rstudio-for-lab_10-also-applicable-for-assignment_10" class="level4">
-<h4 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-lab_10-also-applicable-for-assignment_10">Step 1: Project Management in RStudio for <code>lab_10</code> (also applicable for <code>assignment_10</code>)</h4>
-<p>As we have done for previous labs, we will create a <code>lab_10</code> project directory:</p>
+<section id="step-1-project-management-in-rstudio-for-c10_lab-also-applicable-for-assignment_10" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-c10_lab-also-applicable-for-assignment_10">Step 1: Project Management in RStudio for <code>c10_lab</code> (also applicable for <code>assignment_10</code>)</h4>
+<p>As we have done for previous labs, we will create a <code>c10_lab</code> project directory:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="c9_lab_files/img/9_3.png" class="img-fluid figure-img"></p>
+<p><img src="c10_lab_files/img/10-2.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><em>Lab 10 Directory + Subdirectory Structure</em></figcaption><p></p>
 </figure>
 </div>
@@ -229,7 +228,7 @@ Note
 </section>
 <section id="step-2" class="level4">
 <h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
-<p>With the <code>lab_10.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<p>With the <code>c10_lab.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>get(wd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {{r}} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>list.files("~/Desktop/lab_10", recursive = TRUE, include.dirs = TRUE, full.names = TRUE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout-warning callout callout-style-default callout-captioned">
@@ -242,11 +241,11 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/lab_10</code>. On macOS, this can also be expressed as <code>~/Desktop/lab_10</code>:</p>
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/c10_lab</code>. On macOS, this can also be expressed as <code>~/Desktop/c10_lab</code>:</p>
 <blockquote class="blockquote">
 <p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
 </blockquote>
-<p>This is fine; we want to simply make sure that the directory we created - <code>lab_10</code> is indeed the directory in which and from which we are and will be working.</p>
+<p>This is fine; we want to simply make sure that the directory we created - <code>c10_lab</code> is indeed the directory in which and from which we are and will be working.</p>
 </div>
 </div>
 </section>
@@ -254,7 +253,7 @@ Warning
 <h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
 <p>For this week’s lab, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_10_data_subdirectory.zip">data subdirectory download</a>.</p>
 <p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 10 Correlation lab script</a></p>
-<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;lab_7&gt;scripts&gt;c10_lab10-script-1.R</em></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;c10_lab&gt;scripts&gt;c10_lab10-script-1.R</em></p>
 <hr>
 </section>
 </section>
@@ -434,8 +433,8 @@ Understanding arrest patterns likely requires more complex modeling (seasonal cy
 <li>If not, arrests vary slightly but not systematically by season.</li>
 </ul>
 </section>
-<section id="anova-summary-breakdown" class="level3">
-<h3 class="anchored" data-anchor-id="anova-summary-breakdown">🔹 ANOVA Summary Breakdown</h3>
+<section id="anova-breakdown" class="level3">
+<h3 class="anchored" data-anchor-id="anova-breakdown">🔹 ANOVA Breakdown</h3>
 <table class="table">
 <colgroup>
 <col style="width: 25%">
@@ -497,8 +496,8 @@ Understanding arrest patterns likely requires more complex modeling (seasonal cy
 </tbody>
 </table>
 </section>
-<section id="anova-summary-breakdown-1" class="level3">
-<h3 class="anchored" data-anchor-id="anova-summary-breakdown-1">🔹 ANOVA Summary Breakdown</h3>
+<section id="anova-summary" class="level3">
+<h3 class="anchored" data-anchor-id="anova-summary">🔹 ANOVA Summary</h3>
 <p>A one-way ANOVA was conducted to compare the mean number of daily arrests across the four seasons (Winter, Spring, Summer, Fall).<br>
 Results showed a modest difference between group means — <em>F</em>(3, 1823) = 2.26, <em>p</em> = 0.0799 — indicating that while seasonal variation exists, it is <strong>not statistically significant</strong> at the conventional 0.05 level.</p>
 <p>In practical terms, this implies that while arrests may rise slightly during certain seasons (e.g., summer), the fluctuations are <strong>small relative to day-to-day variation</strong> and could plausibly be due to chance.</p>
@@ -577,7 +576,7 @@ Results showed a modest difference between group means — <em>F</em>(3, 1823) =
 <section id="scripts-lab-data" class="level2">
 <h2 class="anchored" data-anchor-id="scripts-lab-data">Scripts &amp; Lab Data:</h2>
 <ul>
-<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 10 Lab 10 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;lab_8&gt;scripts&gt;c10_lab10-script-1.R</em></p></li>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 10 Lab 10 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;c10_lab&gt;scripts&gt;c10_lab10-script-1.R</em></p></li>
 <li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_10_data_subdirectory.zip">Data Subdirectory Download</a></p></li>
 </ul>
 <hr>
@@ -585,9 +584,7 @@ Results showed a modest difference between group means — <em>F</em>(3, 1823) =
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References:</h2>
 <ul>
-<li><a href="https://www.nyc.gov/site/nypd/news/pr015/nypd-record-low-shooting-incidents-shooting-victims-first-nine-months-the-year">Most recent NYPD Crime Trend Bulletin - 10/01/2025</a></li>
-<li><a href="x">x</a></li>
-<li><a href="x">x</a></li>
+<li><a href="https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u/about_data">NYC Arrest Data - Historic</a></li>
 </ul>
 </section>
 

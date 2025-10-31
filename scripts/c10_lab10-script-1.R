@@ -13,7 +13,7 @@ library(ggcorrplot)
 
 
 # Read input data
-ar <- read_csv("~/Desktop/lab_10/data/NYPD_Arrests_Data_(Historic)_20251027.csv")
+ar <- read_csv("~/Desktop/c10_lab/data/NYPD_Arrests_Data_(Historic)_20251027.csv")
 
 # Basic structure check
 glimpse(ar)

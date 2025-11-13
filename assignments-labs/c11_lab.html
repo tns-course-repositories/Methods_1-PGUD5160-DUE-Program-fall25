@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-11-13">
+
+<title>Class 11 Lab: Migrating from Scripts to Quarto Publication</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="c11_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c11_lab_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="c11_lab_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="c11_lab_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="c11_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c11_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c11_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c11_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c11_lab_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c11_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c11_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c11_lab_files/libs/bootstrap/bootstrap-fc78cc84e086300a0584af8142339858.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c11_lab_files/styles.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#lab-setup---part-i" id="toc-lab-setup---part-i" class="nav-link" data-scroll-target="#lab-setup---part-i">Lab Setup - Part I</a></li>
+  <li><a href="#lab-11-eda-for-the-2015-nyc-tree-count-data-set" id="toc-lab-11-eda-for-the-2015-nyc-tree-count-data-set" class="nav-link" data-scroll-target="#lab-11-eda-for-the-2015-nyc-tree-count-data-set">Lab 11 | EDA for the 2015 NYC Tree Count Data Set</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">🔧 0) Setup</a></li>
+  <li><a href="#read-clean" id="toc-read-clean" class="nav-link" data-scroll-target="#read-clean">🧼 1) Read &amp; Clean</a></li>
+  <li><a href="#quick-summaries" id="toc-quick-summaries" class="nav-link" data-scroll-target="#quick-summaries">📊 2) Quick Summaries</a></li>
+  <li><a href="#identify-top-species" id="toc-identify-top-species" class="nav-link" data-scroll-target="#identify-top-species">🌿 3) Identify Top Species</a></li>
+  <li><a href="#eda-visualizations" id="toc-eda-visualizations" class="nav-link" data-scroll-target="#eda-visualizations">📈 4) EDA Visualizations</a>
+  <ul class="collapse">
+  <li><a href="#a-dbh-distribution-raw" id="toc-a-dbh-distribution-raw" class="nav-link" data-scroll-target="#a-dbh-distribution-raw">🌲 4a) DBH Distribution (Raw)</a></li>
+  <li><a href="#b-dbh-distribution-log1p" id="toc-b-dbh-distribution-log1p" class="nav-link" data-scroll-target="#b-dbh-distribution-log1p">🪵 4b) DBH Distribution (log1p)</a></li>
+  <li><a href="#c-status-composition" id="toc-c-status-composition" class="nav-link" data-scroll-target="#c-status-composition">📦 4c) Status Composition</a></li>
+  <li><a href="#d-top-species-overall" id="toc-d-top-species-overall" class="nav-link" data-scroll-target="#d-top-species-overall">🌳 4d) Top Species (Overall)</a></li>
+  <li><a href="#e-dbh-by-status-boxplot-trimmed" id="toc-e-dbh-by-status-boxplot-trimmed" class="nav-link" data-scroll-target="#e-dbh-by-status-boxplot-trimmed">📦 4e) DBH by Status (Boxplot, Trimmed)</a></li>
+  <li><a href="#f-median-dbh-by-species-top-n" id="toc-f-median-dbh-by-species-top-n" class="nav-link" data-scroll-target="#f-median-dbh-by-species-top-n">🌱 4f) Median DBH by Species (Top N)</a></li>
+  <li><a href="#g-top-districts-by-tree-count-cncldist" id="toc-g-top-districts-by-tree-count-cncldist" class="nav-link" data-scroll-target="#g-top-districts-by-tree-count-cncldist">🗺️ 4g) Top Districts by Tree Count (cncldist)</a></li>
+  <li><a href="#h-borough-overview-derived-from-borocode" id="toc-h-borough-overview-derived-from-borocode" class="nav-link" data-scroll-target="#h-borough-overview-derived-from-borocode">🏙️ 4h) Borough Overview (Derived from borocode)</a></li>
+  </ul></li>
+  <li><a href="#light-text-summaries" id="toc-light-text-summaries" class="nav-link" data-scroll-target="#light-text-summaries">🧮 5) Light Text Summaries</a>
+  <ul class="collapse">
+  <li><a href="#a-overall-summary" id="toc-a-overall-summary" class="nav-link" data-scroll-target="#a-overall-summary">🔢 5a) Overall Summary</a></li>
+  <li><a href="#b-status-summary-alivedeadstump" id="toc-b-status-summary-alivedeadstump" class="nav-link" data-scroll-target="#b-status-summary-alivedeadstump">📋 5b) Status Summary (Alive/Dead/Stump)</a></li>
+  <li><a href="#c-species-summary-top-species-only" id="toc-c-species-summary-top-species-only" class="nav-link" data-scroll-target="#c-species-summary-top-species-only">🌸 5c) Species Summary (Top Species Only)</a></li>
+  <li><a href="#save-png-outputs-optional" id="toc-save-png-outputs-optional" class="nav-link" data-scroll-target="#save-png-outputs-optional">💾 6) Save PNG Outputs (Optional)</a></li>
+  </ul></li>
+  <li><a href="#lab-setup---part-ii" id="toc-lab-setup---part-ii" class="nav-link" data-scroll-target="#lab-setup---part-ii">Lab Setup - Part II</a></li>
+  <li><a href="#scripts-lab-data" id="toc-scripts-lab-data" class="nav-link" data-scroll-target="#scripts-lab-data">Scripts &amp; Lab Data:</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 11 Lab: Migrating from Scripts to Quarto Publication</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 13, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preamble" class="level2">
+<h2 class="anchored" data-anchor-id="preamble">Preamble</h2>
+<p>In this final demonstration lab, we will continue to repeat the project setup phase of previous weeks (setting the working directory to <code>c11_lab</code>).</p>
+<p>To start, we will conduct an EDA workflow in R script format; followed by a <a href="https://quarto.org/">Quarto publication</a> format. We’ll see important differences between the purposes, formats and conventions of each workflow type. For our final projects, we will produce the deliverable itself as a Quarto publication for both online and offline distribution.</p>
+<hr>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>To start, we will utilize <a href="https://data.cityofnewyork.us/Environment/TreesCount-2015/6z3n-7bnr/about_data">NYC 2015 Tree Count</a> from the OpenNYC platform. We first subset this large data set to just 5 variables:</p>
+<ul>
+<li><code>tree_dbh</code> | Diameter of the tree, measured at approximately 54” / 137cm above the ground.</li>
+<li><code>status</code> | Indicates whether the tree is alive, standing dead, or a stump.</li>
+<li><code>spc_common</code> | Common name for species, e.g.&nbsp;“red maple”</li>
+<li><code>cncldist</code> | Council district in which tree point is located</li>
+<li><code>borocode</code> | Code for borough in which tree point is located: 1 (Manhattan), 2 (Bronx), 3 (Brooklyn), 4 (Queens), 5 (Staten Island)</li>
+</ul>
+<p>For <code>c11_lab</code>, we will download a prepared <code>data</code> directory that has all necessary data for both this week’s lab.</p>
+<p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_11_data_subdirectory.zip">Data Download LINK</a></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This data subdirectory will be in <code>.zip</code> format; make sure to uncompress the directory before engaging it with this week’s lab script. Further, change the name from <code>lab_11_data-subdirectory</code> to simply <code>data</code> and place it into your <code>c11_lab</code> directory.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="lab-setup---part-i" class="level2">
+<h2 class="anchored" data-anchor-id="lab-setup---part-i">Lab Setup - Part I</h2>
+<section id="step-1-project-management-in-rstudio-for-c11_lab" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-c11_lab">Step 1: Project Management in RStudio for <code>c11_lab</code></h4>
+<p>As we have done for previous labs, we will create a <code>c11_lab</code> project directory:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c11_lab_files/img/11-1.png" class="img-fluid figure-img"></p>
+<figcaption><em>Lab 11 Directory + Subdirectory Structure</em></figcaption>
+</figure>
+</div>
+<p>A well-organized folder structure within an RStudio project is crucial. Common conventions include:</p>
+<p><code>data/</code>: For raw data (treated as read-only).</p>
+<p><code>docs/</code>: For documentation or R Markdown files.</p>
+<p><code>results/</code>: For outputs and generated results.</p>
+<p><code>scripts/</code>: For R scripts and analysis pipelines.</p>
+</section>
+<section id="step-2" class="level4">
+<h4 class="anchored" data-anchor-id="step-2">Step 2:</h4>
+<p>With the <code>c11_lab.Rproj</code> established and the subdirectories for our data analyses established, we can print both the working directory and all the paths and files therein:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">get</span>(wd)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">list.files</span>(<span class="st">"~/Desktop/lab_10"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">include.dirs =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Your ‘upstream’ path will likely be different than <code>Users/x15</code>… if you are using macOS, your full path would be akin to <code>/Users/your_machine_name/Desktop/c11_lab</code>. On macOS, this can also be expressed as <code>~/Desktop/c11_lab</code>:</p>
+<blockquote class="blockquote">
+<p>The tilde ~ is a special character that acts as a shortcut for the current user’s home directory.</p>
+</blockquote>
+<p>This is fine; we want to simply make sure that the directory we created - <code>c11_lab</code> is indeed the directory in which and from which we are and will be working.</p>
+</div>
+</div>
+</section>
+<section id="step-3" class="level4">
+<h4 class="anchored" data-anchor-id="step-3">Step 3:</h4>
+<p>For this week’s lab, utilize the following script in conjunction with the previous <a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_11_data_subdirectory.zip">data subdirectory download</a>.</p>
+<p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c11_lab11-script-1.R">Class 11 lab script</a></p>
+<p>Open the script from the <code>scripts</code> subdirectory: <em>File&gt;Open File&gt;c11_lab&gt;scripts&gt;c11_lab11-script-1.R</em></p>
+<hr>
+</section>
+</section>
+<section id="lab-11-eda-for-the-2015-nyc-tree-count-data-set" class="level2">
+<h2 class="anchored" data-anchor-id="lab-11-eda-for-the-2015-nyc-tree-count-data-set">Lab 11 | EDA for the 2015 NYC Tree Count Data Set</h2>
+<p>This lab 11 will utilize EDA techniques that we learned in prior classes to read, organize, transform, explore, plot and visualize the 2015 NYC Tree Count Data Set across 5 dimensions of the larger data set. Once complete, we will explore then same EDA workflow from the script in a Quarto publication workflow. The goal of the lab is to embed typical EDA processes first in script format, followed by a polished publication format.</p>
+<hr>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">🔧 0) Setup</h2>
+<p><strong>Goal:</strong> Load required packages, set global options, and define the data path.</p>
+<ul>
+<li><strong>Packages loaded</strong>
+<ul>
+<li><code>tidyverse</code> — core data wrangling and plotting tools (<code>dplyr</code>, <code>ggplot2</code>, etc.).</li>
+<li><code>janitor</code> — cleaning column names (<code>clean_names()</code>).</li>
+<li><code>forcats</code> — working with factors (e.g., <code>fct_other()</code>, <code>fct_reorder()</code>).</li>
+<li><code>scales</code> — nicer numeric labels on axes (e.g., <code>label_comma()</code>).</li>
+<li><code>ggrepel</code> — (available for labeled plots if needed).</li>
+</ul></li>
+<li><strong>Global options</strong>
+<ul>
+<li><code>options(dplyr.summarise.inform = FALSE)</code><br>
+Suppresses verbose messages from <code>summarise()</code>.</li>
+<li><code>options(scipen = 999)</code><br>
+Reduces scientific notation so large numbers print normally.</li>
+</ul></li>
+<li><strong>Data path</strong>
+<ul>
+<li><code>data_path &lt;- "~Desktop/c11_lab/data/nyc_tree_census_2015.csv"</code></li>
+<li>This should point to the <strong>locally saved CSV</strong> of the 2015 Tree Census.</li>
+<li>Only a <strong>subset of columns</strong> is read later to keep things efficient.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="read-clean" class="level2">
+<h2 class="anchored" data-anchor-id="read-clean">🧼 1) Read &amp; Clean</h2>
+<p><strong>Goal:</strong> Read in the raw CSV, standardize key variables, and remove impossible/invalid values.</p>
+<ul>
+<li><strong>Selective column import</strong>
+<ul>
+<li>Uses <code>readr::read_csv()</code> with <code>col_select = c(tree_dbh, status, spc_common, cncldist, borocode)</code><br>
+→ Only pulls columns needed for this lab:
+<ul>
+<li><code>tree_dbh</code> (diameter at breast height, in inches)</li>
+<li><code>status</code> (Alive/Dead/Stump/etc.)</li>
+<li><code>spc_common</code> (common species name)</li>
+<li><code>cncldist</code> (council district)</li>
+<li><code>borocode</code> (numeric borough code: 1–5)</li>
+</ul></li>
+</ul></li>
+<li><strong>Cleaning column names</strong>
+<ul>
+<li><code>clean_names()</code> converts names to <code>snake_case</code> (e.g.&nbsp;<code>spc_common</code>).</li>
+</ul></li>
+<li><strong>Variable standardization in <code>mutate()</code></strong>
+<ul>
+<li><code>status</code> → converted to factor.</li>
+<li><code>spc_common</code>:
+<ul>
+<li>Empty strings converted to <code>NA</code> with <code>na_if(spc_common, "")</code>.</li>
+<li>Converted to title case (<code>str_to_title()</code>), then factor.</li>
+</ul></li>
+<li><code>tree_dbh</code>:
+<ul>
+<li>Converted to numeric with <code>as.numeric()</code> wrapped in <code>suppressWarnings()</code> to avoid noisy messages.</li>
+</ul></li>
+<li><code>cncldist</code> and <code>borocode</code>:
+<ul>
+<li>Cast to integer with <code>as.integer()</code> and <code>suppressWarnings()</code>.</li>
+</ul></li>
+</ul></li>
+<li><strong>Deriving borough name</strong>
+<ul>
+<li><code>boroname</code> created from <code>borocode</code> using <code>case_when()</code>:
+<ul>
+<li>1 → Manhattan<br>
+</li>
+<li>2 → Bronx<br>
+</li>
+<li>3 → Brooklyn<br>
+</li>
+<li>4 → Queens<br>
+</li>
+<li>5 → Staten Island</li>
+</ul></li>
+</ul></li>
+<li><strong>Defensive filtering on DBH</strong>
+<ul>
+<li><code>filter(!is.na(tree_dbh), tree_dbh &gt;= 0, tree_dbh &lt;= 200)</code><br>
+→ Removes missing or clearly invalid diameters.</li>
+</ul></li>
+<li><strong>Structure check</strong>
+<ul>
+<li><code>glimpse(trees)</code> provides a quick overview of the cleaned data (column types + sample values).</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="quick-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="quick-summaries">📊 2) Quick Summaries</h2>
+<p><strong>Goal:</strong> Get fast, high-level summaries before deeper visualization.</p>
+<ul>
+<li><strong>Base R summary</strong>
+<ul>
+<li><code>summary(select(trees, tree_dbh, status, spc_common, cncldist, borocode))</code><br>
+→ Shows:
+<ul>
+<li>Range and distribution for <code>tree_dbh</code> and <code>cncldist</code>.</li>
+<li>Counts for factor variables like <code>status</code> and <code>spc_common</code>.</li>
+<li>Quick check for missing values or strange ranges.</li>
+</ul></li>
+</ul></li>
+<li><strong>Counts by borough and status</strong>
+<ul>
+<li><code>trees %&gt;% count(boroname, status, sort = TRUE)</code><br>
+→ Produces a frequency table of tree counts for each combination of <strong>borough</strong> and <strong>status</strong>.</li>
+<li><code>print(n = 10)</code> shows the top 10 combinations:
+<ul>
+<li>Useful to see which boroughs have the most trees and typical status breakdowns.</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="identify-top-species" class="level2">
+<h2 class="anchored" data-anchor-id="identify-top-species">🌿 3) Identify Top Species</h2>
+<p><strong>Goal:</strong> Focus the analysis on the most common species to keep visualizations readable.</p>
+<ul>
+<li><strong>Parameter for how many species to keep</strong>
+<ul>
+<li><code>top_n_species &lt;- 15</code><br>
+→ You can change this number to show more/fewer species.</li>
+</ul></li>
+<li><strong>Finding top species</strong>
+<ul>
+<li><code>count(spc_common, sort = TRUE, name = "n")</code><br>
+→ Ranks species by total count.</li>
+<li><code>slice_head(n = top_n_species)</code> keeps the top N.</li>
+<li><code>pull(spc_common) %&gt;% as.character()</code><br>
+→ Extracts the names of these species as a character vector <code>top_species</code>.</li>
+</ul></li>
+<li><strong>Creating a grouped factor</strong>
+<ul>
+<li><code>trees &lt;- trees %&gt;% mutate(spc_common_top = fct_other(spc_common, keep = top_species))</code><br>
+→ Uses <code>fct_other()</code> to:
+<ul>
+<li>Keep the <strong>top species</strong> as distinct categories.</li>
+<li>Lump all other species into an <code>"Other"</code> category.</li>
+</ul></li>
+<li>This is handy for bar plots where you want to avoid a long tail of rare species cluttering the chart.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="eda-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="eda-visualizations">📈 4) EDA Visualizations</h2>
+<p><strong>Goal:</strong> Use <code>ggplot2</code> to visualize distributions and patterns in tree size, status, species, and geography.</p>
+<section id="a-dbh-distribution-raw" class="level3">
+<h3 class="anchored" data-anchor-id="a-dbh-distribution-raw">🌲 4a) DBH Distribution (Raw)</h3>
+<ul>
+<li><strong>Object:</strong> <code>p_dbh_hist</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Histogram of <code>tree_dbh</code> (diameter in inches).</li>
+<li>Reveals skewness, peaks in common tree sizes, and outliers.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Helps assess whether typical statistical assumptions (like normality) are reasonable.</li>
+<li>Gives an intuitive feel for the range of tree sizes.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="b-dbh-distribution-log1p" class="level3">
+<h3 class="anchored" data-anchor-id="b-dbh-distribution-log1p">🪵 4b) DBH Distribution (log1p)</h3>
+<ul>
+<li><strong>Object:</strong> <code>p_dbh_hist_log</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Histogram of <code>log1p(tree_dbh)</code> (i.e., <code>log(1 + DBH)</code>).</li>
+<li>Compresses the right tail of large tree diameters.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Makes patterns among smaller trees easier to see.</li>
+<li>Demonstrates how log transformations tame heavy-tailed distributions.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="c-status-composition" class="level3">
+<h3 class="anchored" data-anchor-id="c-status-composition">📦 4c) Status Composition</h3>
+<ul>
+<li><strong>Object:</strong> <code>p_status</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Bar chart of tree counts by <strong>status</strong> (Alive, Dead, Stump, etc.).</li>
+</ul></li>
+<li><strong>Key features:</strong>
+<ul>
+<li>Uses <code>fct_infreq(status)</code> to order bars from most to least common.</li>
+<li><code>scale_y_continuous(labels = label_comma())</code> makes large counts readable.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Quick view of the overall health/status distribution of trees citywide.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="d-top-species-overall" class="level3">
+<h3 class="anchored" data-anchor-id="d-top-species-overall">🌳 4d) Top Species (Overall)</h3>
+<ul>
+<li><strong>Object:</strong> <code>p_species_top</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Horizontal bar chart of counts for the <strong>top N species</strong> (using <code>top_species</code>).</li>
+</ul></li>
+<li><strong>Key steps:</strong>
+<ul>
+<li>Filter trees to <code>spc_common %in% top_species</code>.</li>
+<li>Count occurrences per species and reorder factors by count (<code>fct_reorder()</code>).</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Highlights which species dominate NYC street plantings.</li>
+<li>Useful for thinking about biodiversity and urban forestry policy.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="e-dbh-by-status-boxplot-trimmed" class="level3">
+<h3 class="anchored" data-anchor-id="e-dbh-by-status-boxplot-trimmed">📦 4e) DBH by Status (Boxplot, Trimmed)</h3>
+<ul>
+<li><strong>Object:</strong> <code>p_dbh_status</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Boxplots of <code>tree_dbh</code> for each <strong>status</strong> category.</li>
+</ul></li>
+<li><strong>Key features:</strong>
+<ul>
+<li><code>coord_cartesian()</code> limits the y-axis to the <strong>1st–99th percentile</strong> of DBH:
+<ul>
+<li>Focuses on the “typical” range without discarding data.</li>
+</ul></li>
+<li>Outliers are still included but visually clipped for clarity.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Compares typical tree sizes across status.</li>
+<li>Raises questions like: are dead trees typically smaller or larger?</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="f-median-dbh-by-species-top-n" class="level3">
+<h3 class="anchored" data-anchor-id="f-median-dbh-by-species-top-n">🌱 4f) Median DBH by Species (Top N)</h3>
+<ul>
+<li><strong>Object:</strong> <code>p_dbh_species</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Scatterplot of <strong>median DBH</strong> for each of the <strong>top species</strong>.</li>
+<li>Point size reflects <code>n</code> (number of trees of that species).</li>
+</ul></li>
+<li><strong>Key features:</strong>
+<ul>
+<li><code>fct_reorder(spc_common, median_dbh)</code> orders species by median DBH.</li>
+<li><code>scale_size_continuous(labels = label_comma())</code> improves size legend.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Shows which common species tend to be larger or smaller.</li>
+<li>Combines information about <strong>size</strong> and <strong>prevalence</strong> in one plot.</li>
+<li>Shows outliers which can be suppressed if desired.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="g-top-districts-by-tree-count-cncldist" class="level3">
+<h3 class="anchored" data-anchor-id="g-top-districts-by-tree-count-cncldist">🗺️ 4g) Top Districts by Tree Count (cncldist)</h3>
+<ul>
+<li><strong>Intermediate summary:</strong> <code>dist_summary</code>
+<ul>
+<li>Groups by <code>cncldist</code> and calculates:
+<ul>
+<li><code>n_trees</code> = total number of trees per district.</li>
+<li><code>med_dbh</code> = median DBH per district.</li>
+</ul></li>
+</ul></li>
+<li><strong>Plot object:</strong> <code>p_dist_counts</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Horizontal bar chart of the <strong>top 25 council districts</strong> by tree count.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Highlights geographic variation in tree abundance.</li>
+<li>Good starting point for thinking about equity and spatial distribution.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="h-borough-overview-derived-from-borocode" class="level3">
+<h3 class="anchored" data-anchor-id="h-borough-overview-derived-from-borocode">🏙️ 4h) Borough Overview (Derived from borocode)</h3>
+<ul>
+<li><strong>Object:</strong> <code>boro_summary</code></li>
+<li><strong>What it shows:</strong>
+<ul>
+<li>Table of:
+<ul>
+<li><code>boroname</code></li>
+<li><code>n_trees</code> (total trees in each borough)</li>
+<li><code>med_dbh</code> (median tree size in each borough)</li>
+</ul></li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Quick, interpretable summary by borough.</li>
+<li>Helps compare overall tree abundance and typical sizes across Manhattan, Bronx, Brooklyn, Queens, and Staten Island.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="light-text-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="light-text-summaries">🧮 5) Light Text Summaries</h2>
+<p><strong>Goal:</strong> Capture key numeric facts in small summary tables/tibbles.</p>
+<section id="a-overall-summary" class="level3">
+<h3 class="anchored" data-anchor-id="a-overall-summary">🔢 5a) Overall Summary</h3>
+<ul>
+<li><strong>Object:</strong> <code>overall</code></li>
+<li><strong>Metrics:</strong>
+<ul>
+<li><code>n</code> — total number of trees in the dataset after cleaning.</li>
+<li><code>median_dbh</code> — median diameter across all trees.</li>
+<li><code>p95_dbh</code> — 95th percentile of DBH (approximate upper range of “typical” large trees).</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Gives a compact numeric snapshot of data size and scale.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="b-status-summary-alivedeadstump" class="level3">
+<h3 class="anchored" data-anchor-id="b-status-summary-alivedeadstump">📋 5b) Status Summary (Alive/Dead/Stump)</h3>
+<ul>
+<li><strong>Object:</strong> <code>status_summ</code></li>
+<li><strong>Process:</strong>
+<ul>
+<li>Filters to statuses <code>"Alive"</code>, <code>"Dead"</code>, and <code>"Stump"</code>.</li>
+<li>Groups by <code>status</code> and computes:
+<ul>
+<li><code>n</code> — count of trees in each status category.</li>
+<li><code>median_dbh</code> — median diameter for that status.</li>
+</ul></li>
+<li>Adds <code>pct = n / sum(n)</code> to express each status as a <strong>share of the total</strong>.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Helps interpret the status composition numerically, not just visually.</li>
+<li>Encourages questions about survival, maintenance, and replacement.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="c-species-summary-top-species-only" class="level3">
+<h3 class="anchored" data-anchor-id="c-species-summary-top-species-only">🌸 5c) Species Summary (Top Species Only)</h3>
+<ul>
+<li><strong>Object:</strong> <code>species_summ</code></li>
+<li><strong>Process:</strong>
+<ul>
+<li>Filters to <code>spc_common %in% top_species</code>.</li>
+<li>Groups by <code>spc_common</code> and computes:
+<ul>
+<li><code>n</code> — count per species.</li>
+<li><code>median_dbh</code> — median diameter per species.</li>
+</ul></li>
+<li>Arranges in descending order of <code>n</code> and displays the <strong>top 10</strong>.</li>
+</ul></li>
+<li><strong>Why it’s useful:</strong>
+<ul>
+<li>Pairs abundance and size information for the most common species.</li>
+<li>Good for quickly scanning which species dominate both in count and canopy contribution.</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="save-png-outputs-optional" class="level3">
+<h3 class="anchored" data-anchor-id="save-png-outputs-optional">💾 6) Save PNG Outputs (Optional)</h3>
+<blockquote class="blockquote">
+<p>🔁 <strong>This section is optional.</strong><br>
+It <strong>exports</strong> plots and summary tables to files so you can reuse them in reports, slides, or other projects.</p>
+</blockquote>
+<p><strong>Goal:</strong> Write cleaned plots and summaries to disk as PNG images and small CSV files.</p>
+<ul>
+<li><strong>Output directory</strong>
+<ul>
+<li><code>out_dir &lt;- "./tree_eda_results"</code></li>
+<li>Creates the folder if it doesn’t exist:<br>
+<code>if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)</code></li>
+</ul></li>
+<li><strong>Helper function for saving plots</strong>
+<ul>
+<li><code>save_plot &lt;- function(p, filename, w = 9, h = 6, dpi = 150) { ... }</code></li>
+<li>Wraps <code>ggsave()</code> with sensible defaults:
+<ul>
+<li>Width = 9 inches</li>
+<li>Height = 6 inches</li>
+<li>DPI = 150 (reasonable for screen and basic printing)</li>
+</ul></li>
+</ul></li>
+<li><strong>Plots exported</strong>
+<ul>
+<li><code>dbh_hist.png</code> — Raw DBH distribution.</li>
+<li><code>dbh_hist_log.png</code> — DBH distribution on log1p scale.</li>
+<li><code>status_counts.png</code> — Counts of trees by status.</li>
+<li><code>top_species.png</code> — Top species overall (counts).</li>
+<li><code>dbh_by_status.png</code> — Boxplots of DBH by status.</li>
+<li><code>median_dbh_by_species.png</code> — Median DBH by species (Top N).</li>
+<li><code>district_top_counts.png</code> — Top 25 districts by tree count.</li>
+</ul></li>
+<li><strong>CSV summaries exported</strong>
+<ul>
+<li><code>district_summary.csv</code> — <code>dist_summary</code> (trees and median DBH by council district).</li>
+<li><code>borough_summary.csv</code> — <code>boro_summary</code> (trees and median DBH by borough).</li>
+<li><code>species_top_summary.csv</code> — <code>species_summ</code> (counts and median DBH for top species).</li>
+</ul></li>
+<li><strong>How to use this section</strong>
+<ul>
+<li>Run <strong>Sections 0–5</strong> to explore interactively in RStudio.</li>
+<li>Then, if you want to <strong>save outputs</strong> for later use, run <strong>Section 6</strong>.</li>
+<li>You can safely skip it if you don’t need files written to disk.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="lab-setup---part-ii" class="level2">
+<h2 class="anchored" data-anchor-id="lab-setup---part-ii">Lab Setup - Part II</h2>
+<section id="step-1-project-management-in-rstudio-for-c11_lab-1" class="level4">
+<h4 class="anchored" data-anchor-id="step-1-project-management-in-rstudio-for-c11_lab-1">Step 1: Project Management in RStudio for <code>c11_lab</code></h4>
+<p>With our EDA analyses complete via R Script format, we will segue to essentially the same workflow, but this time in the Quarto publication format. The advantage of Quarto is in its flexibility as a publication and dissemination format. A significant upgrade from R Markdown, Quarto allows both for more publication parameter options as well as easier code chunk formatting, library and data handling.</p>
+<p>To start, we will open the <code>c11_lab11-quarto-file.qmd</code> that should be located in our <code>/data</code> subdirectory.</p>
+<p>We will discuss the critical sections of a Quarto <code>.qmd</code> file to start, and how it operates:</p>
+<ul>
+<li><p><strong>YAML metadata header</strong>: This is a block of YAML code at the very top of the file, enclosed by — lines, that defines document-level options such as the title, author, date, and output format.</p></li>
+<li><p><strong>Plain text (Markdown)</strong>: This is the main content of your document, written using Markdown syntax for formatting text, creating lists, and adding links or images.</p></li>
+<li><p><strong>Executable code chunks</strong>: These are blocks of code, typically starting and ending with triple backticks () and a language identifier (e.g., {r}), that contain executable code.</p></li>
+<li><p><strong>Code chunk options</strong>: Options can be set at the top of each code chunk using special comments (e.g., #| include: false) to control how the code and its output are handled during rendering.</p></li>
+<li><p><strong>Inline code</strong>: Inline code expressions can also be used within the Markdown text to insert results directly into the document.</p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="scripts-lab-data" class="level2">
+<h2 class="anchored" data-anchor-id="scripts-lab-data">Scripts &amp; Lab Data:</h2>
+<ul>
+<li><p><a href="https://github.com/tns-course-repositories/Methods_1-PGUD5160-DUE-Program-fall25/blob/main/scripts/c10_lab10-script-1.R">Class 11 Lab 11 R Script #1</a> - open in your RStudio <code>scripts</code> <em>File&gt;Open File&gt;c11_lab&gt;scripts&gt;c11_lab11-script-1.R</em></p></li>
+<li><p><a href="https://weekly-materials.s3.us-west-1.amazonaws.com/lab_11_data_subdirectory.zip">Data Subdirectory Download</a></p></li>
+</ul>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/uvpi-gqnh/about_data">NYC Tree Count 2015</a></li>
+<li><a href="https://quarto.org/">Quarto Publication</a></li>
+<li><a href="https://weekly-reading-research.s3.us-east-1.amazonaws.com/The+Boss+Has+a+Message_+Use+AI+or+You%E2%80%99re+Fired+-+WSJ.pdf">Class Discussion - The Boss Has a Message: Use AI or You’re Fired - WSJ.pdf</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.quarto\.org\/custom");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="c11_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

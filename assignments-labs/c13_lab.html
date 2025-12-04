@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-12-04">
+
+<title>Class 13 Lab: Initiating, Loading and Deploying Final Project Sites at Cloudflare</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="c13_lab_files/libs/clipboard/clipboard.min.js"></script>
+<script src="c13_lab_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="c13_lab_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="c13_lab_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="c13_lab_files/libs/quarto-html/popper.min.js"></script>
+<script src="c13_lab_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="c13_lab_files/libs/quarto-html/anchor.min.js"></script>
+<link href="c13_lab_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="c13_lab_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="c13_lab_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="c13_lab_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="c13_lab_files/libs/bootstrap/bootstrap-fc78cc84e086300a0584af8142339858.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<link rel="stylesheet" href="c11_lab_files/styles.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#preamble" id="toc-preamble" class="nav-link active" data-scroll-target="#preamble">Preamble</a></li>
+  <li><a href="#understand-cloudflare-pages-free-tier" id="toc-understand-cloudflare-pages-free-tier" class="nav-link" data-scroll-target="#understand-cloudflare-pages-free-tier">1️⃣ 🌐 <strong>Understand Cloudflare Pages Free Tier</strong></a></li>
+  <li><a href="#what-you-need-before-you-start" id="toc-what-you-need-before-you-start" class="nav-link" data-scroll-target="#what-you-need-before-you-start">2️⃣ 🧰 <strong>What You Need Before You Start</strong></a></li>
+  <li><a href="#render-your-quarto-project-to-html" id="toc-render-your-quarto-project-to-html" class="nav-link" data-scroll-target="#render-your-quarto-project-to-html">3️⃣ 🧪 <strong>Render Your Quarto Project to HTML</strong></a></li>
+  <li><a href="#create-a-site-folder-for-upload" id="toc-create-a-site-folder-for-upload" class="nav-link" data-scroll-target="#create-a-site-folder-for-upload">4️⃣ 🗃️ <strong>Create a “Site Folder” for Upload</strong></a></li>
+  <li><a href="#sign-up-for-cloudflare-free" id="toc-sign-up-for-cloudflare-free" class="nav-link" data-scroll-target="#sign-up-for-cloudflare-free">5️⃣ 📝 <strong>Sign Up for Cloudflare (Free)</strong></a></li>
+  <li><a href="#create-a-cloudflare-pages-project-direct-upload" id="toc-create-a-cloudflare-pages-project-direct-upload" class="nav-link" data-scroll-target="#create-a-cloudflare-pages-project-direct-upload">6️⃣ 🏗️ <strong>Create a Cloudflare Pages Project (Direct Upload)</strong></a></li>
+  <li><a href="#upload-your-quarto-site-drag-drop" id="toc-upload-your-quarto-site-drag-drop" class="nav-link" data-scroll-target="#upload-your-quarto-site-drag-drop">7️⃣ 📤 <strong>Upload Your Quarto Site (Drag &amp; Drop)</strong></a></li>
+  <li><a href="#confirm-https-test-your-site" id="toc-confirm-https-test-your-site" class="nav-link" data-scroll-target="#confirm-https-test-your-site">8️⃣ 🔒 <strong>Confirm HTTPS &amp; Test Your Site</strong></a></li>
+  <li><a href="#updating-your-site-later" id="toc-updating-your-site-later" class="nav-link" data-scroll-target="#updating-your-site-later">9️⃣ 🔁 <strong>Updating Your Site Later</strong></a></li>
+  <li><a href="#copy-and-submit-your-final-url" id="toc-copy-and-submit-your-final-url" class="nav-link" data-scroll-target="#copy-and-submit-your-final-url">🔟 📎 <strong>Copy and Submit Your Final URL</strong></a></li>
+  <li><a href="#quick-checklist" id="toc-quick-checklist" class="nav-link" data-scroll-target="#quick-checklist">✅ <strong>Quick Checklist</strong></a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References:</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Class 13 Lab: Initiating, Loading and Deploying Final Project Sites at Cloudflare</h1>
+<p class="subtitle lead">Fall 2025 | Instructor: Stephen Metts | <a href="https://courses.newschool.edu/courses/PGUD5160/">PGUD 5160 - CRN 2247</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 4, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="preamble" class="level3">
+<h3 class="anchored" data-anchor-id="preamble">Preamble</h3>
+<p>In this demonstration lab, we will cover Hosting Your <em>Quarto Final Project on Cloudflare Pages (Free Tier)</em>.</p>
+<p>This lab guide covers steps to use <strong>Cloudflare Pages – Free Tier</strong> to host your Quarto final project as a live HTTPS website. For your final project deliverable, the critical steps are as follows:</p>
+<ol type="1">
+<li>Render your <code>.qmd</code> to HTML locally via RStudio.</li>
+<li>Upload the HTML + <code>assets/</code> folder to Cloudflare Pages using <strong>Direct Upload Option (drag &amp; drop)</strong>.</li>
+<li>Get a stable <code>https://...pages.dev</code> URL to submit at the Canvas Assignment Submission Location.</li>
+</ol>
+<hr>
+</section>
+<section id="understand-cloudflare-pages-free-tier" class="level3">
+<h3 class="anchored" data-anchor-id="understand-cloudflare-pages-free-tier">1️⃣ 🌐 <strong>Understand Cloudflare Pages Free Tier</strong></h3>
+<p>Cloudflare Pages is a static site hosting service that:</p>
+<ul>
+<li>Hosts your files on Cloudflare’s global network<br>
+</li>
+<li>Gives you <strong>free HTTPS (SSL)</strong> automatically<br>
+</li>
+<li>Provides a <code>https://your-project-name.pages.dev</code> URL<br>
+</li>
+<li>Has a generous free tier intended for personal, student, and small projects</li>
+</ul>
+<p>Key concepts:</p>
+<ul>
+<li><strong>Static site</strong> = HTML, CSS, JS, images.<br>
+</li>
+<li>Your Quarto project becomes a static site <strong>after you render your <code>.qmd</code> to <code>.html</code></strong> locally.<br>
+</li>
+<li>For our class projects, we’ll use <strong>Direct Upload (drag &amp; drop)</strong> — no Git or command line required.</li>
+</ul>
+<hr>
+</section>
+<section id="what-you-need-before-you-start" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-need-before-you-start">2️⃣ 🧰 <strong>What You Need Before You Start</strong></h3>
+<p>Make sure you have:</p>
+<ul>
+<li>✅ A Quarto project for your final project(<code>.qmd</code> file)<br>
+</li>
+<li>✅ Quarto installed and working locally within R</li>
+<li>✅ A <strong>Cloudflare account</strong> (free)<br>
+</li>
+<li>✅ A web browser and stable internet connection</li>
+</ul>
+<p>Optional:</p>
+<ul>
+<li>A simple, short <strong>project name</strong> (e.g., <code>lastname-methods-final</code>, <code>projectname-nyc</code>, <code>methods_final_lastname</code> etc.)</li>
+</ul>
+<hr>
+</section>
+<section id="render-your-quarto-project-to-html" class="level3">
+<h3 class="anchored" data-anchor-id="render-your-quarto-project-to-html">3️⃣ 🧪 <strong>Render Your Quarto Project to HTML</strong></h3>
+<p>Cloudflare Pages cannot run Quarto itself – it only serves <strong>pre-built HTML</strong>. You need to render your <code>.qmd</code> locally first.</p>
+<ol type="1">
+<li><p>Open your Quarto project in RStudio.</p></li>
+<li><p>Make sure your main file is something like <code>final_project.qmd</code>.<br>
+</p></li>
+<li><p>Render it:</p>
+<ul>
+<li>In RStudio: click <strong>Render</strong> (or the knit/Render button).</li>
+</ul></li>
+<li><p>After rendering, confirm you have:</p>
+<ul>
+<li>An <code>index.html</code> <strong>or</strong> a main HTML file (e.g., <code>final_project.html</code>)<br>
+</li>
+<li>An <code>assets/</code> folder (and possibly other supporting folders like <code>libs/</code>, <code>site_libs/</code>, etc.)</li>
+</ul></li>
+</ol>
+<p>💡 <strong>Tip:</strong> If your main HTML file is not named <code>index.html</code>, it’s easiest to <strong>rename it to <code>index.html</code></strong> before upload. Web servers look for <code>index.html</code> as the default homepage.</p>
+<hr>
+</section>
+<section id="create-a-site-folder-for-upload" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-site-folder-for-upload">4️⃣ 🗃️ <strong>Create a “Site Folder” for Upload</strong></h3>
+<p>To keep things tidy, make a folder that will become your site:</p>
+<ol type="1">
+<li>Create a new folder, for example:
+<ul>
+<li><code>my-final-project-site/</code><br>
+</li>
+</ul></li>
+<li>Move or copy into that folder:
+<ul>
+<li><code>index.html</code> (your rendered Quarto file)<br>
+</li>
+<li><code>assets/</code> folder<br>
+</li>
+<li>Any other folders your HTML needs (e.g., <code>libs/</code>, images, etc.)</li>
+</ul></li>
+</ol>
+<p>Your folder might look like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>my-final-project-site/</span>
+<span id="cb1-2"><a href="#cb1-2"></a>├─ index.html</span>
+<span id="cb1-3"><a href="#cb1-3"></a>├─ assets/</span>
+<span id="cb1-4"><a href="#cb1-4"></a>└─ libs/        (if present)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="sign-up-for-cloudflare-free" class="level3">
+<h3 class="anchored" data-anchor-id="sign-up-for-cloudflare-free">5️⃣ 📝 <strong>Sign Up for Cloudflare (Free)</strong></h3>
+<p>If you don’t have a Cloudflare account yet:</p>
+<p>Go to: <code>https://dash.cloudflare.com/sign-up</code></p>
+<p>Sign up with your school email or another email you check regularly.</p>
+<p>Verify your email as prompted.</p>
+<p>Log in to the Cloudflare dashboard.</p>
+<hr>
+</section>
+<section id="create-a-cloudflare-pages-project-direct-upload" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-cloudflare-pages-project-direct-upload">6️⃣ 🏗️ <strong>Create a Cloudflare Pages Project (Direct Upload)</strong></h3>
+<ul>
+<li><p>In the Cloudflare dashboard, look to the right-upper sidebar for the “+ Add” drop down menu.</p></li>
+<li><p>Choose the “Pages” option:</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c13_lab_files/img/13-1.png" class="img-fluid figure-img"></p>
+<figcaption><em>Add &gt; Pages</em></figcaption>
+</figure>
+</div>
+<ul>
+<li><p>When asked how you want to deploy, choose:</p>
+<ul>
+<li>Drag and drop your files (not Git)</li>
+</ul></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c13_lab_files/img/13-2.png" class="img-fluid figure-img"></p>
+<figcaption><em>Drag and drop your files &gt; Get started</em></figcaption>
+</figure>
+</div>
+<ul>
+<li><p>Enter a project name, such as:</p>
+<ul>
+<li><p><code>methods-final-lastname</code></p></li>
+<li><p><code>urban-ecologies-nyc-2025</code></p></li>
+<li><p>This will form part of your URL: <code>https://methods-final-lastname.pages.dev</code> (or similar).</p></li>
+</ul></li>
+<li><p>Click “Create project”</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="c13_lab_files/img/13-3.png" class="img-fluid figure-img"></p>
+<figcaption><em>Name Project &gt; Create project</em></figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In the example above the project is simply named <code>test</code> for demonstration purposes.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="upload-your-quarto-site-drag-drop" class="level3">
+<h3 class="anchored" data-anchor-id="upload-your-quarto-site-drag-drop">7️⃣ 📤 <strong>Upload Your Quarto Site (Drag &amp; Drop)</strong></h3>
+<ul>
+<li><p>You should now see an interface prompting you to upload your site.</p></li>
+<li><p>Locate your site folder on your computer, e.g.&nbsp;<code>my-final-project-site/</code>.</p></li>
+<li><p>You have two options:</p>
+<ul>
+<li><p>Drag &amp; drop the entire folder into the upload area, or</p></li>
+<li><p>Click a “Upload folder” / “Browse” button and select <code>my-final-project-site/</code>.</p></li>
+</ul></li>
+<li><p>Wait while Cloudflare:</p>
+<ul>
+<li><p>Uploads your files</p></li>
+<li><p>Creates a deployment</p></li>
+<li><p>Assigns a <code>https://your-project-name.pages.dev</code> URL</p></li>
+</ul></li>
+<li><p>When the deployment completes, you should see a success message and a link to “View site”.</p></li>
+<li><p>If something fails, read any error messages (often it’s missing index.html).</p></li>
+</ul>
+<hr>
+</section>
+<section id="confirm-https-test-your-site" class="level3">
+<h3 class="anchored" data-anchor-id="confirm-https-test-your-site">8️⃣ 🔒 <strong>Confirm HTTPS &amp; Test Your Site</strong></h3>
+<ul>
+<li><p>Click the “View site” button from the deployment screen or open the URL shown (e.g., <code>https://methods-final-jess.pages.dev</code>).</p></li>
+<li><p>In your browser, look for:</p>
+<ul>
+<li><p>A lock icon next to the URL (HTTPS is working).</p></li>
+<li><p>Your final project homepage loading as expected.</p></li>
+<li><p>Click through your navigation, check images and plots, and confirm that everything works.</p></li>
+<li><p>If you see 404 or broken layout:</p>
+<ul>
+<li><p>Make sure you uploaded index.html and supporting folders.</p></li>
+<li><p>Confirm folder structure wasn’t nested like <code>my-final-project-site/my-final-project-site/index.html</code>.</p></li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="updating-your-site-later" class="level3">
+<h3 class="anchored" data-anchor-id="updating-your-site-later">9️⃣ 🔁 <strong>Updating Your Site Later</strong></h3>
+<ul>
+<li><p>If you need to fix or update your project:</p>
+<ul>
+<li><p>Make edits locally to your .qmd and re-render to HTML.</p></li>
+<li><p>Replace the index.html and assets inside your local site folder.</p></li>
+</ul></li>
+<li><p>In the Cloudflare dashboard:</p>
+<ul>
+<li><p>Go to Workers &amp; Pages → Your project → Deployments.</p></li>
+<li><p>Click “Create a new deployment”.</p></li>
+<li><p>Drag &amp; drop the updated site folder again.</p></li>
+<li><p>Each new deployment keeps the same main URL, but you can also see previous versions.</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="copy-and-submit-your-final-url" class="level3">
+<h3 class="anchored" data-anchor-id="copy-and-submit-your-final-url">🔟 📎 <strong>Copy and Submit Your Final URL</strong></h3>
+<ul>
+<li><p>Once your site looks good, in the Cloudflare dashboard:</p>
+<ul>
+<li><p>Go to Workers &amp; Pages → Your project → Overview or Deployments.</p></li>
+<li><p>Find your Production deployment.</p></li>
+<li><p>Copy the URL that looks like: <code>https://your-project-name.pages.dev</code></p></li>
+<li><p>Paste this URL into the Canvas Submission Location; you can also attached a <code>.txt</code> with the site url for your Canvas Final Project Submisssion.</p></li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="quick-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="quick-checklist">✅ <strong>Quick Checklist</strong></h3>
+<ul>
+<li><p>Before submitting, check:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">I rendered my <code>.qmd</code> to HTML (<code>index.html</code> exists).</label></li>
+<li><label><input type="checkbox">I created a site folder with <code>index.html</code> + <code>assets/</code> (+ any other needed folders).</label></li>
+<li><label><input type="checkbox">I created a Cloudflare Pages project using <strong>Direct Upload</strong>.</label></li>
+<li><label><input type="checkbox">I dragged &amp; dropped my site folder and saw a successful deployment.</label></li>
+<li><label><input type="checkbox">My site loads correctly at <code>https://...pages.dev</code> over HTTPS.</label></li>
+<li><label><input type="checkbox">I copied and submitted the correct URL to the Canvas Final Project Assignment Location.</label></li>
+</ul></li>
+</ul>
+<p>If all are checked, you are done — <strong>your Quarto final project for the class is live on the web and you are complete. 🎉</strong></p>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References:</h2>
+<ul>
+<li><a href="https://dash.cloudflare.com/sign-up">Cloudflare Signup and/or Login</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/c11_lab">Class 11 Lab - Quarto Development for the final project</a></li>
+<li><a href="https://tns-course-repositories.github.io/Methods_1-PGUD5160-DUE-Program-fall25/assignments-labs/final_project_deliverable">Final Project Submission Assignment</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("^(?:http:|https:)\/\/www\.quarto\.org\/custom");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="c13_lab_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
